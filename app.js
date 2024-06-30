@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv').config();
@@ -5,6 +6,15 @@ const session = require('express-session');
 const passport = require('./config/passportConfig');
 
 const steamAuthRouter = require('./routes/steamAuthRoutes');
+
+mongoose
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log('MongoDB connection was successful!');
+  });
 
 // Set up view engine
 app.set('view engine', 'ejs');
