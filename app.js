@@ -31,7 +31,7 @@ app.use(
 );
 
 // Passport authentication middleware
-exports.ensureAuthenticated = (req, res, next) => {
+const ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
