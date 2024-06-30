@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
   steamID: {
-    type: BigInt,
+    type: String,
     unique: [true, 'A user must have a unique ID'],
     trim: true,
   },

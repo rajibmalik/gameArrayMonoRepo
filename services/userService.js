@@ -1,14 +1,12 @@
 const User = require('../model/userModel');
 
-const createUser = (steamId, username) => {
-  const newUser = new User({
-    steamID: steamId,
-    username: username,
-  });
-
-  return newUser.save();
-};
-
-module.exports = {
-  createUser,
+exports.createUser = async (steamID, username) => {
+  try {
+    console.log('CREATE USER');
+    const newUser = new User({ steamID, username });
+    await newUser.save();
+    return newUser;
+  } catch (err) {
+    throw new Error('Failed to create user: ' + err.message);
+  }
 };

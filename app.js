@@ -6,6 +6,7 @@ const session = require('express-session');
 const passport = require('./config/passportConfig');
 
 const steamAuthRouter = require('./routes/steamAuthRoutes');
+const accountRouter = require('./routes/accountRouter');
 
 mongoose
   .connect(process.env.DATABASE, {
@@ -30,7 +31,7 @@ app.use(
 );
 
 // Passport authentication middleware
-const ensureAuthenticated = (req, res, next) => {
+exports.ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
@@ -49,10 +50,7 @@ app.get('/', (req, res) => {
 // Routes redirected to steamAuthRouter
 app.use('/auth/steam', steamAuthRouter);
 
-// Route for account page
-app.get('/account', ensureAuthenticated, (req, res) => {
-  res.render('account', { user: req.user });
-});
+app.use('/account', accountRouter);
 
 // Initiates server
 app.listen(process.env.PORT, () => {
