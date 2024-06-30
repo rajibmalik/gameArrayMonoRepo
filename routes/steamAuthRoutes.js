@@ -1,19 +1,12 @@
 const express = require('express');
-const passport = require('../config/passportConfig');
+const steamAuthController = require('../controllers/steamAuthController');
 
 const router = express.Router();
 
 // Route to initiate Steam authentication
-router.get('/', passport.authenticate('steam'));
+router.get('/', steamAuthController.initiateSteamAuth);
 
 // Route to handle the callback after Steam authentication
-router.get(
-  '/callback',
-  passport.authenticate('steam', { failureRedirect: '/' }),
-  (req, res) => {
-    console.log('Authentication successful');
-    res.redirect('/account');
-  },
-);
+router.get('/callback', steamAuthController.steamAuthCallback);
 
 module.exports = router;

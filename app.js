@@ -3,7 +3,6 @@ const app = express();
 const dotenv = require('dotenv').config();
 const session = require('express-session');
 const passport = require('./config/passportConfig');
-const SteamStrategy = require('passport-steam').Strategy;
 
 const steamAuthRouter = require('./routes/steamAuthRoutes');
 
@@ -20,7 +19,7 @@ app.use(
   }),
 );
 
-// Ensure authentication middleware
+// Passport authentication middleware
 const ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
@@ -37,14 +36,15 @@ app.get('/', (req, res) => {
   res.render('index', { user: req.user });
 });
 
-// Use the Steam auth router
+// Routes redirected to steamAuthRouter
 app.use('/auth/steam', steamAuthRouter);
 
-// Route for the account page
+// Route for account page
 app.get('/account', ensureAuthenticated, (req, res) => {
   res.render('account', { user: req.user });
 });
 
+// Initiates server
 app.listen(process.env.PORT, () => {
   console.log(`App running on port ${process.env.PORT}!`);
 });
