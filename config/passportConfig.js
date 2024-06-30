@@ -2,23 +2,26 @@ const passport = require('passport');
 const SteamStrategy = require('passport-steam').Strategy;
 require('dotenv').config();
 
+// upon authentication, handles what to process
+const handleAuthentication = (identifier, profile, done) => {
+  const user = {
+    id: profile.id,
+    displayName: profile.displayName,
+  };
+
+  return done(null, user);
+};
+
+// Uses the SteamStrategy for authentication
 passport.use(
+  // SteamStrategy passes identifier, profile and done to the callback function handleAuthentication
   new SteamStrategy(
     {
       returnURL: 'http://localhost:3000/auth/steam/callback',
       realm: 'http://localhost:3000/',
       apiKey: process.env.STEAM_API_KEY,
     },
-    (identifier, profile, done) => {
-      console.log('Steam profile:', profile);
-
-      const user = {
-        id: profile.id,
-        displayName: profile.displayName,
-      };
-
-      return done(null, user);
-    },
+    handleAuthentication,
   ),
 );
 
