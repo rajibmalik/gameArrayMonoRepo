@@ -1,14 +1,22 @@
-// upon authentication, handles what to process
-const handleAuthentication = (identifier, profile, done) => {
-  // User information is stored in session data that can later be accessed
-  const user = {
-    id: profile.id,
-    displayName: profile.displayName,
-  };
+const userService = require('../services/userService');
+const User = require('../model/userModel');
 
-  return done(null, user);
-};
+exports.createUser = async (req, res) => {
+  try {
+    console.log('CREATE USER');
+    req.user.steamID, req.user.username;
+    const newUser = await User.create(req.user.steamID, req.user.username);
 
-module.exports = {
-  handleAuthentication,
+    res.status(201).json({
+      status: 'success',
+      data: {
+        user: newUser,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err,
+    });
+  }
 };

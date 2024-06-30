@@ -12,7 +12,15 @@ passport.use(
       realm: 'http://localhost:3000/',
       apiKey: process.env.STEAM_API_KEY,
     },
-    userController.handleAuthentication,
+    (identifier, profile, done) => {
+      // User information is stored in session data that can later be accessed
+      const user = {
+        steamID: profile.id,
+        username: profile.displayName,
+      };
+
+      return done(null, user);
+    },
   ),
 );
 

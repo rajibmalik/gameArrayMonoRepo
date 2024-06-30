@@ -1,5 +1,6 @@
 const express = require('express');
 const steamAuthController = require('../controllers/steamAuthController');
+const userController = require('../controllers/userController');
 
 const router = express.Router();
 
@@ -7,6 +8,10 @@ const router = express.Router();
 router.get('/', steamAuthController.initiateSteamAuth);
 
 // Route to handle the callback after Steam authentication
-router.get('/callback', steamAuthController.steamAuthCallback);
+router.get(
+  '/callback',
+  steamAuthController.steamAuthCallback,
+  userController.createUser,
+);
 
 module.exports = router;
