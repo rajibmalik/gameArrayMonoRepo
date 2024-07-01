@@ -1,5 +1,6 @@
 const express = require('express');
 const userController = require('../controllers/userController');
+const gamesController = require('../controllers/gamesController');
 
 const router = express.Router();
 
@@ -10,7 +11,16 @@ const ensureAuthenticated = (req, res, next) => {
   res.redirect('/');
 };
 
-// Route to initiate Steam authentication
-router.get('/', userController.createUser, userController.redirectToAccount);
+// Middleware chained before redirection to account page
+// 1) If a new user, a User model is created in the database
+// 2) If there are new games:
+//      - Adds new games to the database
+//      - Adds new userGames to the database
+router.get(
+  '/',
+  userController.createUser,
+  gamesController.fetchOwnedGames,
+  userController.redirectToAccount,
+);
 
 module.exports = router;
