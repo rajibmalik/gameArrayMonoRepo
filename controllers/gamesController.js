@@ -16,3 +16,13 @@ exports.fetchOwnedGames = async (req, res, next) => {
     });
   }
 };
+
+exports.fetchGame = async (req, res, next) => {
+  try {
+    const game = await steamService.getAppDetails();
+    console.log(game);
+    next();
+  } catch (err) {
+    console.log(err);
+  }
+};

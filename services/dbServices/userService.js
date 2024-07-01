@@ -1,4 +1,4 @@
-const User = require('../model/userModel');
+const User = require('../../model/userModel');
 
 exports.createUser = async (steamID, username) => {
   try {

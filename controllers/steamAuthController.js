@@ -1,5 +1,5 @@
 const passport = require('../config/passportConfig');
-const userService = require('../services/userService');
+const userService = require('../services/dbServices/userService');
 const userController = require('../controllers/userController');
 
 // Logic to authenticate with steam

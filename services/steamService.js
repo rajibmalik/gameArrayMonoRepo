@@ -24,6 +24,33 @@ const getOwnedGames = async (steamID) => {
   }
 };
 
+const updateGameDetails = async (appids) => {
+  try {
+  } catch (err) {
+    console.log('Error updating game details', err.message);
+    throw err(err.message);
+  }
+};
+
+const getAppDetails = async () => {
+  try {
+    const response = await axios.get(
+      'https://store.steampowered.com/api/appdetails/',
+      {
+        params: {
+          appids: 105600,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (err) {
+    console.log(`Error fetching appd etails for ${appid}`);
+    throw new Error(err.message);
+  }
+};
+
 module.exports = {
   getOwnedGames,
+  getAppDetails,
 };
