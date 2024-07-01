@@ -1,13 +1,16 @@
-const mongoose = require('mongoose');
-const express = require('express');
-const app = express();
 const dotenv = require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('./config/passportConfig');
 
+// Routers
 const steamAuthRouter = require('./routes/steamAuthRoutes');
 const accountRouter = require('./routes/accountRouter');
 
+const app = express();
+
+// Uses Mongoose to connect to the MongoDB database
 mongoose
   .connect(process.env.DATABASE, {
     useNewUrlParser: true,
@@ -50,6 +53,7 @@ app.get('/', (req, res) => {
 // Routes redirected to steamAuthRouter
 app.use('/auth/steam', steamAuthRouter);
 
+// Routes redirected to accounRouter
 app.use('/account', accountRouter);
 
 // Initiates server

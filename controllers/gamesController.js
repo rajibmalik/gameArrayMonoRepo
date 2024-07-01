@@ -1,14 +1,15 @@
 const steamService = require('../services/steamService');
 const gameService = require('../services/dbServices/gameService');
 
+// This is a controller class for the accountRouter
+// it contains relevant middleware for associated with Game models
+
+// Using the steamService, this obtains the games owned by the user
 exports.fetchOwnedGames = async (req, res, next) => {
   try {
-    // const steamID = req.user.steamID;
     const steamID = req.user.steamID;
     const ownedGames = await steamService.getOwnedGames(steamID);
-    // console.log(ownedGames);
     const appids = this.findNewGames(ownedGames);
-    // steamService.getManyAppDetails(appids);
 
     next();
   } catch (err) {
@@ -20,6 +21,8 @@ exports.fetchOwnedGames = async (req, res, next) => {
   }
 };
 
+// A utility function that takes the games owned by the user and
+// checks for new games that do not exist in the database
 exports.findNewGames = async (ownedGames) => {
   try {
     // 1) Obtain appids array from ownedGames object
@@ -41,13 +44,3 @@ exports.findNewGames = async (ownedGames) => {
     console.log(err);
   }
 };
-
-// exports.fetchGame = async (req, res, next) => {
-//   try {
-//     const game = await steamService.getAppDetails();
-//     console.log(game);
-//     next();
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };

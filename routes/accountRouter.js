@@ -2,8 +2,12 @@ const express = require('express');
 const userController = require('../controllers/userController');
 const gamesController = require('../controllers/gamesController');
 
+// This is a Router responsible for the routes associated with the account
+// userController and gamesController handle the logif for these routes
+
 const router = express.Router();
 
+// Middleware to ensure user is authenticated
 const ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
@@ -12,15 +16,12 @@ const ensureAuthenticated = (req, res, next) => {
 };
 
 // Middleware chained before redirection to account page
-// 1) If a new user, a User model is created in the database
-// 2) If there are new games:
-//      - Adds new games to the database
-//      - Adds new userGames to the database
 router.get(
   '/',
-  userController.createUser,
-  gamesController.fetchOwnedGames,
-  userController.redirectToAccount,
+  ensureAuthenticated, // Protects routes, ensuring authentication
+  userController.createUser, // Creates user if new
+  gamesController.fetchOwnedGames, // Fetches owned & updates owned games to database
+  userController.redirectToAccount, // Redirects to account page
 );
 
 module.exports = router;

@@ -2,10 +2,14 @@ const passport = require('../config/passportConfig');
 const userService = require('../services/dbServices/userService');
 const userController = require('../controllers/userController');
 
-// Logic to authenticate with steam
+// This is a controller class for the steamAuthRoutes, it contains
+// relevant middleware for Steam authentication
+
+// Middleware initiating authentication with Steam using Passport config
 const initiateSteamAuth = passport.authenticate('steam');
 
-// Logic to handle steam authentictaion callback
+// Middleware handling Steam authentication callback
+// Upon successful authentication, redirects to '/account' page
 const steamAuthCallback = (req, res) => {
   passport.authenticate('steam', { failureRedirect: '/' })(req, res, () => {
     console.log('Steam Authentication successful');

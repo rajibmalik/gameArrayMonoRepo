@@ -3,9 +3,17 @@ const SteamStrategy = require('passport-steam').Strategy;
 require('dotenv').config();
 const userController = require('../controllers/userController');
 
-// Uses the SteamStrategy for authentication
+// This is the configuration for Passport, which uses the SteamStrategy.
+
+// returnURL: where Steam redirects user after authentication
+// realm: URL for valid authentication purposes
+// apiKey: Steam API key, fetched using env
+
+// identifier: id provided by steam
+// profile: contains user information
+// done: callback function, called upon completion of authentication
 passport.use(
-  // SteamStrategy passes identifier, profile and done to the callback function handleAuthentication
+  // SteamStrategy passes identifier, profile and done to the anonymous callback function
   new SteamStrategy(
     {
       returnURL: 'http://localhost:3000/auth/steam/callback',
@@ -13,7 +21,7 @@ passport.use(
       apiKey: process.env.STEAM_API_KEY,
     },
     (identifier, profile, done) => {
-      // User information is stored in session data that can later be accessed
+      // Creates user object, this will be stored in session
       const user = {
         steamID: profile.id,
         username: profile.displayName,

@@ -1,6 +1,9 @@
 const userService = require('../services/dbServices/userService');
 const User = require('../model/userModel');
 
+// This is a controller that is associated with User model creation
+
+// Creates a User model if the user is new, using session data
 exports.createUser = async (req, res, next) => {
   try {
     console.log('CREATE USER');
@@ -21,6 +24,7 @@ exports.createUser = async (req, res, next) => {
   }
 };
 
+// Renders account page with associated user data
 exports.redirectToAccount = (req, res) => {
   res.render('account', { user: req.user });
 };
