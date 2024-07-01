@@ -24,21 +24,21 @@ const getOwnedGames = async (steamID) => {
   }
 };
 
-const updateGameDetails = async (appids) => {
-  try {
-  } catch (err) {
-    console.log('Error updating game details', err.message);
-    throw err(err.message);
-  }
-};
+// const updateGameDetails = async (appids) => {
+//   try {
+//   } catch (err) {
+//     console.log('Error updating game details', err.message);
+//     throw err(err.message);
+//   }
+// };
 
-const getAppDetails = async () => {
+const getAppDetails = async (appid) => {
   try {
     const response = await axios.get(
       'https://store.steampowered.com/api/appdetails/',
       {
         params: {
-          appids: 105600,
+          appids: appid,
         },
       },
     );

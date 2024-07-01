@@ -7,7 +7,7 @@ exports.getAllGames = async () => {
     return allGames;
   } catch (err) {
     console.log('Error getAllGames');
-    throw error(err);
+    throw err;
   }
 };
 
@@ -19,22 +19,3 @@ exports.findGameByAppID = async (appid) => {
     console.log('Error finding game by appid' + err.message);
   }
 };
-
-// exports.updateGameDetails = async (appid, gameDetails) => {
-//   try {
-//     // Finds a single document in the collection matching the
-//     // specified condition (appid) and updated it with
-//     // gameDetails an obect containing data
-//     // upsert:true indicates that if there are not matching documents
-//     // to create a new document based on gameDetails object
-//     const updatedGame = await Game.findOneAndUpdate(
-//       { appid },
-//       { $set: gameDetails },
-//       { upsert: true, new: true },
-//     );
-//     return updatedGame;
-//   } catch (err) {
-//     console.log('Error updating game details:' + err.message);
-//     throw error(err);
-//   }
-// };

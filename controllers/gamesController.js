@@ -7,7 +7,8 @@ exports.fetchOwnedGames = async (req, res, next) => {
     const steamID = req.user.steamID;
     const ownedGames = await steamService.getOwnedGames(steamID);
     // console.log(ownedGames);
-    this.findNewGames(ownedGames);
+    const appids = this.findNewGames(ownedGames);
+    // steamService.getManyAppDetails(appids);
 
     next();
   } catch (err) {
@@ -41,12 +42,12 @@ exports.findNewGames = async (ownedGames) => {
   }
 };
 
-exports.fetchGame = async (req, res, next) => {
-  try {
-    const game = await steamService.getAppDetails();
-    console.log(game);
-    next();
-  } catch (err) {
-    console.log(err);
-  }
-};
+// exports.fetchGame = async (req, res, next) => {
+//   try {
+//     const game = await steamService.getAppDetails();
+//     console.log(game);
+//     next();
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
