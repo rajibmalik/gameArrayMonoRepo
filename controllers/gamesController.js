@@ -9,21 +9,34 @@ const gameService = require('../services/dbServices/gameService');
 exports.fetchOwnedGames = async (req, res, next) => {
   try {
     const steamID = req.user.steamID;
+    // Obtain ownedGamed from Steam API
     const ownedGames = await steamService.getOwnedGames(steamID);
+    // console.log(ownedGames);
 
+    // Empty array for owned games that have been played
     const playedGames = [];
 
+    // Add games with playtime to playedGames array
     for (let i = 0; i < ownedGames.length; i++) {
       if (ownedGames[i].playtime_forever > 0) {
         playedGames.push(ownedGames[i]);
       }
     }
 
-    // console.log(playedGames);
+    // Find appids which are not in the database
+    const newAppids = await this.findNewGames(playedGames);
+    req.appids = newAppids;
 
-    const appids = await this.findNewGames(playedGames);
+    // create an array of games objects containing games and their playtime
+    const gamesWithPlaytime = playedGames.map((game) => ({
+      appid: game.appid,
+      playtime: game.playtime_forever,
+    }));
 
-    req.appids = appids;
+    console.log(gamesWithPlaytime);
+    console.log(`New games length ${gamesWithPlaytime.length}`);
+
+    req.usergames = gamesWithPlaytime;
 
     next();
   } catch (err) {
