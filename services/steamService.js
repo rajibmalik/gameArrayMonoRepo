@@ -10,7 +10,7 @@ const getOwnedGames = async (steamID) => {
       'https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/',
       {
         params: {
-          key: process.env.STEAM_API_KEY_TWO,
+          key: process.env.STEAM_API_KEY,
           steamid: steamID,
           include_played_free_games: true,
         },

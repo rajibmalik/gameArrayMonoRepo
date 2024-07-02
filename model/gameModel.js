@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const gameSchema = new mongoose.Schema({
-  appID: {
+  appid: {
     type: String,
     required: [true, 'A game must have a name'],
     unique: [true, 'A game must have a unique ID'],

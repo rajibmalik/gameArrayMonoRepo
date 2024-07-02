@@ -25,17 +25,17 @@ exports.findGameByAppID = async (appid) => {
 exports.createGames = async (games) => {
   try {
     for (const game of games) {
-      console.log(`GAME ID: ${game.appID}`);
-      let existingGame = await Game.findOne({ appID: game.appID });
+      console.log(`GAME ID: ${game.appid}`);
+      let existingGame = await Game.findOne({ appid: game.appid });
       console.log(`EXISTING GAME ${existingGame}`);
 
       if (existingGame === null) {
         // Takes each object and maps it to the Game schema, ignoring any information not related to schema
         await Game.create(game);
-        console.log(`Successfully created: ${game.appID} ${game.name}`);
+        console.log(`Successfully created: ${game.appid} ${game.name}`);
       } else {
         console.log(
-          `Game not created as it already exists: ${game.appID} ${game.name}`,
+          `Game not created as it already exists: ${game.appid} ${game.name}`,
         );
       }
 

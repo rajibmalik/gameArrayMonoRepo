@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 
 const userGameSchema = new mongoose.Schema({
   gameID: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'Game',
     required: true,
   },
   steamID: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'User',
     required: true,
   },

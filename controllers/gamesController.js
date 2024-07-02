@@ -19,6 +19,8 @@ exports.fetchOwnedGames = async (req, res, next) => {
       }
     }
 
+    // console.log(playedGames);
+
     const appids = await this.findNewGames(playedGames);
 
     req.appids = appids;
@@ -30,6 +32,28 @@ exports.fetchOwnedGames = async (req, res, next) => {
       message: 'Failed to fetch owned games',
       error: err.message,
     });
+  }
+};
+
+// A utility function that takes the games owned by the user and
+// checks for new games that do not exist in the database
+exports.findNewGames = async (ownedGames) => {
+  try {
+    // 1) Obtain appids array from ownedGames object
+    const appids = ownedGames.map((game) => game.appid);
+
+    // 2) Query MongoDB to find existing games
+    const allDatabaseGames = await gameService.getAllGames();
+    const allDatabaseGamesids = allDatabaseGames.map((game) => game.appid);
+
+    // 3 Filter out new appids that are not in the database
+    const newGamesids = appids.filter(
+      (game) => !allDatabaseGamesids.includes(game.toString()),
+    );
+
+    return newGamesids;
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -59,16 +83,16 @@ exports.queryGames = async (req, res, next) => {
     const games = [];
 
     for (let i = 0; i < responseData.length; i++) {
-      const appID = Object.keys(responseData[i])[0].toString();
-      console.log(appID);
-      const success = responseData[i][appID].success;
+      const appid = Object.keys(responseData[i])[0].toString();
+      console.log(appid);
+      const success = responseData[i][appid].success;
       console.log(success);
 
       if (success) {
-        const data = responseData[i][appID].data;
+        const data = responseData[i][appid].data;
 
         const game = {
-          appID: appID,
+          appid: appid,
           name: data.name,
           headerImage: data.header_image,
           genres: data.genres
@@ -98,14 +122,14 @@ exports.createGamesInDatabase = async (req, res, next) => {
     const games = req.games;
     // const games = [
     //   {
-    //     appID: '22380',
+    //     appid: '22380',
     //     name: 'Fallout: New Vegas',
     //     headerImage:
     //       'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/22380/header.jpg?t=1665072891',
     //     genres: ['Action', 'RPG'],
     //   },
     //   {
-    //     appID: '12830',
+    //     appid: '12830',
     //     name: 'Operation Flashpoint: Dragon Rising',
     //     headerImage:
     //       'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/12830/header.jpg?t=1627920748',
@@ -116,28 +140,6 @@ exports.createGamesInDatabase = async (req, res, next) => {
     await gameService.createGames(games);
 
     next();
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-// A utility function that takes the games owned by the user and
-// checks for new games that do not exist in the database
-exports.findNewGames = async (ownedGames) => {
-  try {
-    // 1) Obtain appids array from ownedGames object
-    const appids = ownedGames.map((game) => game.appid);
-
-    // 2) Query MongoDB to find existing games
-    const allDatabaseGames = await gameService.getAllGames();
-    const allDatabaseGamesIds = allDatabaseGames.map((game) => game.gameID);
-
-    // 3 Filter out new appids that are not in the database
-    const newGamesIds = appids.filter(
-      (game) => !allDatabaseGamesIds.includes(game.toString()),
-    );
-
-    return newGamesIds;
   } catch (err) {
     console.log(err);
   }
