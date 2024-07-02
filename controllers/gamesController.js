@@ -1,5 +1,6 @@
 const steamService = require('../services/steamService');
 const gameService = require('../services/dbServices/gameService');
+const userGameService = require('../services/dbServices/userGameService');
 
 // This is a controller class for the accountRouter
 // it contains relevant middleware for associated with Game models
@@ -45,6 +46,25 @@ exports.fetchOwnedGames = async (req, res, next) => {
       message: 'Failed to fetch owned games',
       error: err.message,
     });
+  }
+};
+
+exports.createUserGames = async (req, res, next) => {
+  try {
+    // test
+    // const games = [
+    //   { appid: 17470, playtime: 168 },
+    //   { appid: 109600, playtime: 12 },
+    // ];
+
+    const games = req.usergames;
+    // console.log(`Games HERE: ${games}`);
+
+    userGameService.updateUserGames(games, req.user.steamID);
+
+    next();
+  } catch (err) {
+    console.log('Error creating games' + err);
   }
 };
 
@@ -128,11 +148,13 @@ exports.queryGames = async (req, res, next) => {
   }
 };
 
-// test method to create game models from game objects
+// Create game models from game objects passed from queryGames
 exports.createGamesInDatabase = async (req, res, next) => {
   try {
     console.log('Creating games');
     const games = req.games;
+
+    // TEST
     // const games = [
     //   {
     //     appid: '22380',

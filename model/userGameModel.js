@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const userGameSchema = new mongoose.Schema({
-  gameID: {
+  appid: {
     type: String,
     ref: 'Game',
     required: true,
   },
-  steamID: {
+  steamid: {
     type: String,
     ref: 'User',
     required: true,

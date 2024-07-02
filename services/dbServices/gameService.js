@@ -24,6 +24,8 @@ exports.findGameByAppID = async (appid) => {
 // Takes an array of game objects and creates them in the database if they are new
 exports.createGames = async (games) => {
   try {
+    console.log(`CREATING GAMES ${games}`);
+
     for (const game of games) {
       console.log(`GAME ID: ${game.appid}`);
       let existingGame = await Game.findOne({ appid: game.appid });
