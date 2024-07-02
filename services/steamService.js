@@ -28,7 +28,7 @@ const getOwnedGames = async (steamID) => {
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Max number of concurrent requests allowed
-const MAX_CONCURRENT_REQUESTS = 10;
+const MAX_CONCURRENT_REQUESTS = 20;
 
 // Fetches details for an array of app ID's from the Steam API
 // Queries the API in concurrent batches of 5, with a short delay between batches

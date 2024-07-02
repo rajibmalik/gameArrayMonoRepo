@@ -22,6 +22,7 @@ router.get(
   userController.createUser, // Creates user if new
   gamesController.fetchOwnedGames, // Fetches owned & updates owned games to database
   gamesController.queryGames, // Queries new games for information
+  gamesController.createGamesInDatabase,
   userController.redirectToAccount, // Redirects to account page
 );
 

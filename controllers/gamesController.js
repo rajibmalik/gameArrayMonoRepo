@@ -5,6 +5,7 @@ const gameService = require('../services/dbServices/gameService');
 // it contains relevant middleware for associated with Game models
 
 // Using the steamService, this obtains the games owned by the user
+
 exports.fetchOwnedGames = async (req, res, next) => {
   try {
     const steamID = req.user.steamID;
@@ -55,6 +56,8 @@ exports.queryGames = async (req, res, next) => {
     // ]);
     // console.log(responseData);
 
+    const games = [];
+
     for (let i = 0; i < responseData.length; i++) {
       const appID = Object.keys(responseData[i])[0].toString();
       console.log(appID);
@@ -64,23 +67,53 @@ exports.queryGames = async (req, res, next) => {
       if (success) {
         const data = responseData[i][appID].data;
 
-        const name = data.name;
-        console.log(name);
-        const headerImage = data.header_image;
-        console.log(headerImage);
+        const game = {
+          appID: appID,
+          name: data.name,
+          headerImage: data.header_image,
+          genres: data.genres
+            ? data.genres.map((genre) => genre.description)
+            : [],
+        };
 
-        const genres = data.genres;
-        let genreNames = [];
+        console.log(game);
 
-        if (genres) {
-          for (let i = 0; i < genres.length; i++) {
-            genreNames.push(genres[i].description);
-          }
-
-          console.log(genreNames);
-        }
+        games.push(game);
+        console.log(`Number of games ${games.length}`);
       }
     }
+
+    req.games = games;
+
+    next();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// test method to create game models from game objects
+exports.createGamesInDatabase = async (req, res, next) => {
+  try {
+    console.log('Creating games');
+    const games = req.games;
+    // const games = [
+    //   {
+    //     appID: '22380',
+    //     name: 'Fallout: New Vegas',
+    //     headerImage:
+    //       'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/22380/header.jpg?t=1665072891',
+    //     genres: ['Action', 'RPG'],
+    //   },
+    //   {
+    //     appID: '12830',
+    //     name: 'Operation Flashpoint: Dragon Rising',
+    //     headerImage:
+    //       'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/12830/header.jpg?t=1627920748',
+    //     genres: ['Action'],
+    //   },
+    // ];
+
+    await gameService.createGames(games);
 
     next();
   } catch (err) {
