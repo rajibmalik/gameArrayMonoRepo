@@ -21,6 +21,7 @@ router.get(
   ensureAuthenticated, // Protects routes, ensuring authentication
   userController.createUser, // Creates user if new
   gamesController.fetchOwnedGames, // Fetches owned & updates owned games to database
+  gamesController.queryGames, // Queries new games for information
   userController.redirectToAccount, // Redirects to account page
 );
 
