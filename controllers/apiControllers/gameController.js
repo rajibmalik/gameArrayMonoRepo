@@ -17,3 +17,21 @@ exports.getGames = async (req, res) => {
     });
   }
 };
+
+exports.getGame = async (req, res) => {
+  try {
+    const game = await Game.findOne({ appid: req.params.appid });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        game: game,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err,
+    });
+  }
+};

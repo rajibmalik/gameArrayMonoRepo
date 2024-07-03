@@ -8,7 +8,7 @@ const passport = require('./config/passportConfig');
 const steamAuthRouter = require('./routes/steamAuthRoutes');
 const accountRouter = require('./routes/accountRouter');
 const userRouter = require('./routes/apiRoutes/userRoutes');
-const gameRouter = require('./routes/apiRoutes/gamesRouter');
+const gameRouter = require('./routes/apiRoutes/gamesRoutes');
 
 const app = express();
 

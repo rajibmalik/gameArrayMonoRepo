@@ -4,6 +4,6 @@ const gameController = require('../../controllers/apiControllers/gameController'
 
 router.route('/').get(gameController.getGames);
 
-// router.route('/:steamID').get(userController.getUser);
+router.route('/:appid').get(gameController.getGame);
 
 module.exports = router;
