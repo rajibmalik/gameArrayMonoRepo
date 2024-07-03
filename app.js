@@ -8,7 +8,8 @@ const passport = require('./config/passportConfig');
 const steamAuthRouter = require('./routes/steamAuthRoutes');
 const accountRouter = require('./routes/accountRouter');
 const userRouter = require('./routes/apiRoutes/userRoutes');
-const gameRouter = require('./routes/apiRoutes/gamesRoutes');
+const gameRouter = require('./routes/apiRoutes/gameRoutes');
+const userGameRouter = require('./routes/apiRoutes/userGameRouter');
 
 const app = express();
 
@@ -64,7 +65,7 @@ app.use('/account', accountRouter);
 // Routes redirected to API Routers
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/games', gameRouter);
-// app.use('/api/v1/usergames');
+app.use('/api/v1/usergames', userGameRouter);
 
 // Initiates server
 app.listen(process.env.PORT, () => {
