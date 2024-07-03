@@ -8,6 +8,7 @@ const passport = require('./config/passportConfig');
 const steamAuthRouter = require('./routes/steamAuthRoutes');
 const accountRouter = require('./routes/accountRouter');
 const userRouter = require('./routes/apiRoutes/userRoutes');
+const gameRouter = require('./routes/apiRoutes/gamesRouter');
 
 const app = express();
 
@@ -62,7 +63,7 @@ app.use('/account', accountRouter);
 
 // Routes redirected to API Routers
 app.use('/api/v1/users', userRouter);
-// app.use('/api/v1/games');
+app.use('/api/v1/games', gameRouter);
 // app.use('/api/v1/usergames');
 
 // Initiates server
