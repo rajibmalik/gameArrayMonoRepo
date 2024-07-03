@@ -41,7 +41,9 @@ const getAppDetails = async (appIDs) => {
     for (const appID of appIDs) {
       // Starts a request to fetch the details of an appID
       const request = axios
-        .get(`https://store.steampowered.com/api/appdetails/?appids=${appID}`)
+        .get(
+          `https://store.steampowered.com/api/appdetails/?appids=${appID}&l=english`,
+        )
         .then((response) => {
           // Check if the response is successful and contains data
           if (
