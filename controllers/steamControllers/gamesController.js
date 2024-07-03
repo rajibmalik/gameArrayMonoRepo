@@ -1,5 +1,5 @@
-const steamService = require('../services/steamService');
-const gameService = require('../services/dbServices/gameService');
+const steamService = require('../../services/steamService');
+const gameService = require('../../services/dbServices/gameService');
 
 // This is a controller class for the accountRouter
 // it contains relevant middleware for associated with Game models

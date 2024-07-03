@@ -45,6 +45,9 @@ const ensureAuthenticated = (req, res, next) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Middleware for parsing JSON
+app.use(express.json());
+
 // Home route
 app.get('/', (req, res) => {
   res.render('index', { user: req.user });

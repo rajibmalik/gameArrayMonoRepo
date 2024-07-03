@@ -1,4 +1,4 @@
-const userGameService = require('../services/dbServices/userGameService');
+const userGameService = require('../../services/dbServices/userGameService');
 
 // Creats UserGame documents in the MongoDB database
 exports.createUserGames = async (req, res, next) => {

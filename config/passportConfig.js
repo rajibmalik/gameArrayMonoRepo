@@ -1,7 +1,7 @@
 const passport = require('passport');
 const SteamStrategy = require('passport-steam').Strategy;
 require('dotenv').config();
-const userController = require('../controllers/userController');
+const userController = require('../controllers/steamControllers/userController');
 
 // This is the configuration for Passport, which uses the SteamStrategy.
 

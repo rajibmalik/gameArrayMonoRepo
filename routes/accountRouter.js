@@ -1,7 +1,7 @@
 const express = require('express');
-const userController = require('../controllers/userController');
-const gamesController = require('../controllers/gamesController');
-const userGamesController = require('../controllers/userGamesController');
+const userController = require('../controllers/steamControllers/userController');
+const gamesController = require('../controllers/steamControllers/gamesController');
+const userGamesController = require('../controllers/steamControllers/userGamesController');
 
 // This is a Router responsible for the routes associated with the account
 // userController and gamesController handle the logic for these routes

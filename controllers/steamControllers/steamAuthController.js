@@ -1,6 +1,6 @@
-const passport = require('../config/passportConfig');
-const userService = require('../services/dbServices/userService');
-const userController = require('../controllers/userController');
+const passport = require('../../config/passportConfig');
+const userService = require('../../services/dbServices/userService');
+const userController = require('../steamControllers/userController');
 
 // This is a controller class for the steamAuthRoutes, it contains
 // relevant middleware for Steam authentication

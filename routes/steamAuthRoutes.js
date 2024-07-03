@@ -1,6 +1,6 @@
 const express = require('express');
-const steamAuthController = require('../controllers/steamAuthController');
-const userController = require('../controllers/userController');
+const steamAuthController = require('../controllers/steamControllers/steamAuthController');
+const userController = require('../controllers/steamControllers/userController');
 
 // This is a Router which is responsible for the routes associated with Steam authentication
 // The steamAuthController handles the logic for these routes
