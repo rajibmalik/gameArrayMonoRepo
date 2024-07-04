@@ -4,6 +4,8 @@ const userGameController = require('../../controllers/apiControllers/userGameCon
 
 router.route('/').get(userGameController.getAllUserGames);
 
-router.route('/:steamid').get(userGameController.getAllUserGamesForOneUser);
+router
+  .route('/:steamid')
+  .get(userGameController.getAllUserGamesAndGamesForOneUser);
 
 module.exports = router;
