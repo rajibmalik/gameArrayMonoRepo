@@ -8,4 +8,8 @@ router
   .route('/:steamid')
   .get(userGameController.getAllUserGamesAndGamesForOneUser);
 
+router
+  .route('/top10-by-playtime/:steamid')
+  .get(userGameController.getTop10PlayedGames);
+
 module.exports = router;

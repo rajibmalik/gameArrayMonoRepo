@@ -56,9 +56,8 @@ exports.getAllUserGamesAndGamesForOneUser = async (req, res) => {
       const game = games.find((game) => game.appid === userGame.appid);
       // Return the object containing UserGame and corresponding Game information
       return {
-        steamid: userGame.steamid,
-        appid: userGame.appid,
-        game: game || { name: 'Unknown Game' },
+        ...userGame._doc,
+        ...(game._doc || { name: 'Unknown Game' }),
       };
     });
 
@@ -75,6 +74,45 @@ exports.getAllUserGamesAndGamesForOneUser = async (req, res) => {
       status: 'fail',
       message: 'failed to fetch user games',
       error: err.message,
+    });
+  }
+};
+
+exports.getTop10PlayedGames = async (req, res) => {
+  try {
+    const steamid = req.params.steamid;
+
+    // Fetch the top 10 user games by highest playtime
+    const userGames = await UserGame.find({ steamid })
+      .sort({ playtime: -1 })
+      .limit(10);
+
+    // Create an array of the appids from the UserGames
+    const appids = userGames.map((userGame) => userGame.appid);
+
+    // Find Game information related to the UserGame using the appid
+    const games = await Game.find({ appid: { $in: appids } });
+
+    // Combine UserGames with Games information
+    const userGamesWithGame = userGames.map((userGame) => {
+      const game = games.find((game) => game.appid === userGame.appid);
+      return {
+        ...userGame._doc, // spread operator passes on UserGame data onto new object
+        ...game._doc, // both UserGame & Game data are on one object now
+      };
+    });
+
+    res.status(200).json({
+      status: 'success',
+      results: userGamesWithGame.length,
+      data: {
+        userGames: userGamesWithGame,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err.message,
     });
   }
 };
