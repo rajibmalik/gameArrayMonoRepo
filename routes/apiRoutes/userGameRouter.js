@@ -12,8 +12,9 @@ router
   .route('/top10-by-playtime/:steamid')
   .get(userGameController.getTop10PlayedGames);
 
-// router
-//   .route('/top6-genres-by-playtime/:steamid')
-//   .get(userGameController.getTop6PlayedGenres);
+router
+  //:genres is the number of genres
+  .route('/top-genres-by-playtime/:steamid/:genres')
+  .get(userGameController.getTopPlayedGenres);
 
 module.exports = router;

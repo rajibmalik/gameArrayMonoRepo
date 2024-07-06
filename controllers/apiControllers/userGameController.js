@@ -57,6 +57,7 @@ const getUserGamesWithGames = async (steamid) => {
       // Return combined data
       return {
         ...userGame._doc,
+        playtimeHours: Math.round(userGame._doc.playtime / 60),
         ...game._doc,
       };
     });
@@ -115,21 +116,53 @@ exports.getTop10PlayedGames = async (req, res) => {
   }
 };
 
-// TESTING
-// exports.getTop6PlayedGenres = async (req, res) => {
-//   try {
-//     const steamid = req.params.steamid;
-//     const userGames = await UserGame.find({ steamid }).populate('game');
+exports.getTopPlayedGenres = async (req, res) => {
+  const steamid = req.params.steamid;
+  // Number of genres to retrieve
+  const numberOfGenres = req.params.genres;
+  try {
+    const userGames = await getUserGamesWithGames(steamid);
 
-//     res.status(200).json({
-//       status: 'success',
-//       results: userGames.length,
-//       data: { userGames },
-//     });
-//   } catch (err) {
-//     res.status(404).json({
-//       status: 'fail',
-//       message: err.message,
-//     });
-//   }
-// };
+    const topGenres = calculateTopGenres(userGames, numberOfGenres);
+
+    res.status(200).json({
+      status: 'success',
+      results: topGenres.length,
+      data: { topGenres },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
+// Utility method, that calculates the most played genres
+const calculateTopGenres = (userGames, numberOfGenres) => {
+  const genrePlaytime = {};
+
+  // Iterate for each game
+  userGames.forEach((game) => {
+    // Iterate for each genre within the game
+    game.genres.forEach((genre) => {
+      // If genrePlaytime[genre] already exist, add to that value, else add from 0
+      genrePlaytime[genre] = (genrePlaytime[genre] || 0) + game.playtime;
+    });
+  });
+
+  // Sort by the genres (keys) in the genrePlaytime object by descending order, returns as array
+  const sortedGenres = Object.keys(genrePlaytime).sort(
+    (a, b) => genrePlaytime[b] - genrePlaytime[a],
+  );
+
+  // Obtain numberOfGenres, for each obtain the genre and the total playtime from
+  // genrePlaytime
+  const topGenres = sortedGenres.slice(0, numberOfGenres).map((genre) => ({
+    genre,
+    totalPlaytime: genrePlaytime[genre],
+    totalPlaytimeHours: Math.round(genrePlaytime[genre] / 60),
+  }));
+
+  return topGenres;
+};
