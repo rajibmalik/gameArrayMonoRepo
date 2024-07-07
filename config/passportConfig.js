@@ -17,6 +17,7 @@ passport.use(
   new SteamStrategy(
     {
       returnURL: 'http://localhost:3000/auth/steam/callback',
+      // returnURL: 'http://localhost:5173/auth/steam',
       realm: 'http://localhost:3000/',
       apiKey: process.env.STEAM_API_KEY,
     },
