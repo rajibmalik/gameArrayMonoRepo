@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Flex, Grid, GridItem } from "@chakra-ui/react";
+import NavBar from "../components/NavBar";
 
 interface UserData {
   steamID: number;
@@ -29,29 +30,22 @@ const Library = () => {
   };
 
   return (
-    <Flex
-      minHeight={"100vh"}
-      minWidth={"100vw"}
-      alignItems={"flex-start"}
-      justifyContent={"flex-start"}
+    <Grid
+      templateAreas={{
+        base: `"nav" "search-bar" "main"`,
+      }}
     >
-      <Grid
-        templateAreas={{
-          base: `"nav" "search-bar" "main"`,
-        }}
-      >
-        <GridItem area="nav" backgroundColor={"red"}>
-          nav
-        </GridItem>
-        <GridItem area="search-bar" backgroundColor={"blue"}>
-          {" "}
-          search-bar
-        </GridItem>
-        <GridItem area="main" backgroundColor={"green"}>
-          main area
-        </GridItem>
-      </Grid>
-    </Flex>
+      <GridItem area="nav" backgroundColor={"red"}>
+        <NavBar />
+      </GridItem>
+      <GridItem area="search-bar" backgroundColor={"blue"}>
+        {" "}
+        search-bar
+      </GridItem>
+      <GridItem area="main" backgroundColor={"green"}>
+        main area
+      </GridItem>
+    </Grid>
 
     // <div>
     //   {error && <p>Error loading: {error}</p>}
