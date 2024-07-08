@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { Flex, Grid, GridItem } from "@chakra-ui/react";
 
 interface UserData {
   steamID: number;
@@ -28,16 +29,40 @@ const Library = () => {
   };
 
   return (
-    <div>
-      {error && <p>Error loading: {error}</p>}
-      {userData && (
-        <div>
-          <h2>
-            Welcome, {userData.steamID} {userData.username}
-          </h2>
-        </div>
-      )}
-    </div>
+    <Flex
+      minHeight={"100vh"}
+      minWidth={"100vw"}
+      alignItems={"flex-start"}
+      justifyContent={"flex-start"}
+    >
+      <Grid
+        templateAreas={{
+          base: `"nav" "search-bar" "main"`,
+        }}
+      >
+        <GridItem area="nav" backgroundColor={"red"}>
+          nav
+        </GridItem>
+        <GridItem area="search-bar" backgroundColor={"blue"}>
+          {" "}
+          search-bar
+        </GridItem>
+        <GridItem area="main" backgroundColor={"green"}>
+          main area
+        </GridItem>
+      </Grid>
+    </Flex>
+
+    // <div>
+    //   {error && <p>Error loading: {error}</p>}
+    //   {userData && (
+    //     <div>
+    //       <h2>
+    //         Welcome, {userData.steamID} {userData.username}
+    //       </h2>
+    //     </div>
+    //   )}
+    // </div>
   );
 };
 
