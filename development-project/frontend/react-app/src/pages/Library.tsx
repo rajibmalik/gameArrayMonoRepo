@@ -26,7 +26,7 @@ const Library = () => {
         setUserData(response.data.user);
       })
       .catch((err) => {
-        setError(err.response.data.message);
+        setError(err.message);
       });
   };
 
@@ -44,22 +44,12 @@ const Library = () => {
         search-bar
       </GridItem>
       <GridItem area="main" backgroundColor={"green"}>
+        {error && <p>Error loading: {error}</p>}
         {userData && (
           <GameGrid steamID={userData.steamID} username={userData.username} />
         )}
       </GridItem>
     </Grid>
-
-    // <div>
-    //   {error && <p>Error loading: {error}</p>}
-    //   {userData && (
-    //     <div>
-    //       <h2>
-    //         Welcome, {userData.steamID} {userData.username}
-    //       </h2>
-    //     </div>
-    //   )}
-    // </div>
   );
 };
 
