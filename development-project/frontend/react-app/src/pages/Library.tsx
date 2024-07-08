@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Grid, GridItem } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
+import GameGrid from "../components/GameGrid";
 
 interface UserData {
-  steamID: number;
-  username: string;
+  steamID: number | null;
+  username: string | null;
 }
 
 const Library = () => {
@@ -43,7 +44,9 @@ const Library = () => {
         search-bar
       </GridItem>
       <GridItem area="main" backgroundColor={"green"}>
-        main area
+        {userData && (
+          <GameGrid steamID={userData.steamID} username={userData.username} />
+        )}
       </GridItem>
     </Grid>
 
