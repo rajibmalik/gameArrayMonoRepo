@@ -3,10 +3,11 @@ import Homepage from "./pages/Homepage";
 import Library from "./pages/Library";
 import Dashboard from "./pages/Dashboard";
 import { ChakraProvider } from "@chakra-ui/react";
+import theme from "./theme";
 
 function App() {
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <BrowserRouter>
         <Routes>
           <Route index element={<Homepage />}></Route>
