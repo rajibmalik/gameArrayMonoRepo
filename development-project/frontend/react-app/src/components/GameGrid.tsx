@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import apiClient from "../services/api-client";
-import { Text } from "@chakra-ui/react";
+import { Heading, Text } from "@chakra-ui/react";
 
 interface UserGame {
-  id: string;
+  appid: string;
   playtimeHours: number;
   name: string;
   headerImage: string;
@@ -34,10 +34,12 @@ const GameGrid = ({ steamID, username }: UserData) => {
 
   return (
     <>
+      <Heading>Welcome {username} to your library</Heading>
+
       {error && <Text>{error}</Text>}
       <ul>
         {userGames.map((game) => (
-          <li key={game.id}>{game.name}</li>
+          <li key={game.appid}>{game.name}</li>
         ))}
       </ul>
     </>
