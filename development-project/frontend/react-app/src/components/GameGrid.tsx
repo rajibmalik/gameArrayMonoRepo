@@ -1,7 +1,6 @@
 import { Heading, Text } from "@chakra-ui/react";
 import useUserGames from "../hooks/useUserGames";
 
-// keep
 interface UserData {
   steamID: number | null;
   username: string | null;
@@ -9,6 +8,7 @@ interface UserData {
 
 const GameGrid = ({ steamID, username }: UserData) => {
   // Uses custom hook to get the UserGames with their respective game data
+  // else error information
   const { userGames, error } = useUserGames(steamID);
 
   return (

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import apiClient from "../services/api-client";
+import { CanceledError } from "axios";
 
 // The interface for a UserGame object that is retrieved from the
 // `/usergames/`${steamID}`endpoint, this is the data we are
@@ -27,12 +28,23 @@ const useUserGames = (steamID: number | null) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    // Cancelling the asynchronous operation
+    const controller = new AbortController();
     apiClient
       // Defines the get respones type to above inteface fetchUserGamesResponse
-      .get<fetchUserGamesResponse>(`/usergames/${steamID}`)
+      .get<fetchUserGamesResponse>(`/usergames/${steamID}`, {
+        signal: controller.signal,
+      })
       // Set userGames to userGames array from endpoint
       .then((res) => setUserGames(res.data.data.userGames))
-      .catch((err) => setError(err.message));
+      .catch((err) => {
+        // If request is cancelled, quit the method, else set the error message
+        if (err instanceof CanceledError) return;
+        setError(err.message);
+      });
+
+    // cleanup function for aborting the request
+    return () => controller.abort();
   }, []);
 
   // Return the userGames and error, enables caller to process data
