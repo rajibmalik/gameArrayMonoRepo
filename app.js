@@ -46,7 +46,7 @@ app.use(
     saveUninitialized: true,
     // The length of the session once a user authenticates
     cookie: {
-      maxAge: 1 * 60 * 60,
+      maxAge: 1 * 60 * 60 * 24 * 1000,
     },
   }),
 );
