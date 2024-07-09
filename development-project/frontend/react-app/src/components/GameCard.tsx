@@ -7,7 +7,13 @@ interface Props {
   game: UserGame;
 }
 
+const maxGameNameLength = 44;
+
 const GameCard = ({ game }: Props) => {
+  const truncatedName =
+    game.name.length > maxGameNameLength
+      ? `${game.name.substring(0, maxGameNameLength)}...`
+      : game.name;
   return (
     <Card borderRadius={5} overflow={"hidden"}>
       <Image src={game.headerImage}></Image>
@@ -21,7 +27,7 @@ const GameCard = ({ game }: Props) => {
           fontSize="xl"
           textOverflow="ellipsis" // Adds ellipsis for overflow text
         >
-          {game.name}
+          {truncatedName}
         </Heading>
         <HStack padding={"5px"} justifyContent={"center"}>
           <Badge>{game.playtimeHours} hours playtime</Badge>
