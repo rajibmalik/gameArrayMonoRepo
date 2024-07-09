@@ -1,5 +1,6 @@
-import { Heading, Text } from "@chakra-ui/react";
+import { Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import useUserGames from "../hooks/useUserGames";
+import GameCard from "./GameCard";
 
 interface UserData {
   steamID: number | null;
@@ -16,11 +17,15 @@ const GameGrid = ({ steamID, username }: UserData) => {
       <Heading>Welcome {username} to your library</Heading>
 
       {error && <Text>{error}</Text>}
-      <ul>
+      <SimpleGrid
+        columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
+        padding="15px"
+        spacing={10}
+      >
         {userGames.map((game) => (
-          <li key={game.appid}>{game.name}</li>
+          <GameCard key={game.appid} game={game}></GameCard>
         ))}
-      </ul>
+      </SimpleGrid>
     </>
   );
 };

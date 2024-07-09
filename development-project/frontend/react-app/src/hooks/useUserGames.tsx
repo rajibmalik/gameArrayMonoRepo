@@ -5,7 +5,7 @@ import { CanceledError } from "axios";
 // The interface for a UserGame object that is retrieved from the
 // `/usergames/`${steamID}`endpoint, this is the data we are
 // in the library section
-interface UserGame {
+export interface UserGame {
   appid: string;
   playtimeHours: number;
   name: string;
