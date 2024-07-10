@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import GameGrid from "../components/GameGrid";
 import SearchBar from "../components/SearchBar";
@@ -41,7 +41,9 @@ const Library = () => {
         <NavBar />
       </GridItem>
       <GridItem area="search-bar" backgroundColor={"blue"}>
-        <SearchBar />
+        <Box p={10}>
+          <SearchBar />
+        </Box>
       </GridItem>
       <GridItem area="main" backgroundColor={"green"}>
         {error && <p>Error loading: {error}</p>}

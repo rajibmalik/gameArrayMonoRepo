@@ -14,7 +14,9 @@ const GameGrid = ({ steamID, username }: UserData) => {
 
   return (
     <>
-      <Heading>Welcome {username} to your library</Heading>
+      <Heading display={"flex"} justifyContent={"center"} p={"10px"}>
+        Welcome {username} to your library
+      </Heading>
 
       {error && <Text>{error}</Text>}
       <SimpleGrid
