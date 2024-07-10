@@ -32,7 +32,7 @@ const Library = () => {
           p={5}
           borderColor={"black"}
           borderRadius={5}
-          borderWidth={1.5}
+          borderWidth={1}
         >
           <SearchBar onSearch={(searchText) => setGameQuery({ searchText })} />
         </Box>

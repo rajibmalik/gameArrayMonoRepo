@@ -15,17 +15,20 @@ const GameCard = ({ game }: Props) => {
       ? `${game.name.substring(0, maxGameNameLength)}...`
       : game.name;
   return (
-    <Card borderRadius={5} overflow={"hidden"}>
+    <Card
+      transition="transform 0.5s"
+      _hover={{ transform: "scale(1.10) translateX(-5px) translateY(-10px)" }}
+      borderRadius={5}
+      overflow={"hidden"}
+    >
       <Image src={game.headerImage}></Image>
       <CardBody>
         <Heading
           minH={"65px"}
-          //   height={"80px"}
           display={"flex"}
           justifyContent={"center"}
           overflow={"hidden"}
           fontSize="xl"
-          textOverflow="ellipsis" // Adds ellipsis for overflow text
         >
           {truncatedName}
         </Heading>

@@ -7,9 +7,9 @@ const NavBar = () => {
     <VStack backgroundColor="#17252A">
       <Heading size={"xs"}>GameArray</Heading>
       <HStack
-        padding={5}
         width={"100%"}
-        pb={5}
+        paddingX={10}
+        paddingBottom={4}
         justifyContent={"space-between"}
       >
         <Link to="/library">
