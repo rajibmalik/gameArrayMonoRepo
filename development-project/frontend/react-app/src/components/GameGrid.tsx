@@ -1,4 +1,4 @@
-import { Heading, SimpleGrid, Text } from "@chakra-ui/react";
+import { SimpleGrid, Text } from "@chakra-ui/react";
 import useUserGames from "../hooks/useUserGames";
 import GameCard from "./GameCard";
 import { GameQuery } from "../pages/Library";
@@ -20,10 +20,6 @@ const GameGrid = ({ steamID, username, gameQuery }: Props) => {
 
   return (
     <>
-      <Heading display={"flex"} justifyContent={"center"} p={"10px"}>
-        Welcome {username} to your library
-      </Heading>
-
       {error && <Text>{error}</Text>}
       <SimpleGrid
         columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}

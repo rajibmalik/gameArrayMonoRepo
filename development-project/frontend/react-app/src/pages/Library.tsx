@@ -19,15 +19,25 @@ const Library = () => {
         base: `"nav" "search-bar" "main"`,
       }}
     >
-      <GridItem area="nav" backgroundColor={"red"}>
+      <GridItem top={0} zIndex={20} position={"sticky"} area="nav">
         <NavBar />
       </GridItem>
-      <GridItem area="search-bar" backgroundColor={"blue"}>
-        <Box p={10}>
+      <GridItem display={"flex"} justifyContent={"center"} area="search-bar">
+        <Box
+          margin={10}
+          backgroundColor={"#F1F4F7"}
+          display={"flex"}
+          width={"75%"}
+          justifyContent={"center"}
+          p={5}
+          borderColor={"black"}
+          borderRadius={5}
+          borderWidth={1.5}
+        >
           <SearchBar onSearch={(searchText) => setGameQuery({ searchText })} />
         </Box>
       </GridItem>
-      <GridItem area="main" backgroundColor={"green"}>
+      <GridItem area="main">
         {error && <p>Error loading: {error}</p>}
         {userData && (
           <GameGrid
