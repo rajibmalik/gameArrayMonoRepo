@@ -30,7 +30,9 @@ const GameCard = ({ game }: Props) => {
           {truncatedName}
         </Heading>
         <HStack padding={"5px"} justifyContent={"center"}>
-          <Badge>{game.playtimeHours} hours playtime</Badge>
+          <Badge backgroundColor={"white"}>
+            {game.playtimeHours} hours played
+          </Badge>
           <FaClock />
         </HStack>
       </CardBody>
