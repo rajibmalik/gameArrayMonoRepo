@@ -3,14 +3,19 @@ import NavBar from "../components/NavBar";
 import GameGrid from "../components/GameGrid";
 import SearchBar from "../components/SearchBar";
 import useSessionData from "../hooks/useSessionData";
+import { useState } from "react";
 
-// interface UserData {
-//   steamID: number | null;
-//   username: string | null;
-// }
+interface Props {
+  onSearch: (searchText: string) => void;
+}
+
+export interface GameQuery {
+  searchText: string;
+}
 
 const Library = () => {
   const { userData, error } = useSessionData();
+  const [gameQuery, setGameQuery] = useState<GameQuery>({} as GameQuery);
 
   return (
     <Grid
@@ -23,7 +28,7 @@ const Library = () => {
       </GridItem>
       <GridItem area="search-bar" backgroundColor={"blue"}>
         <Box p={10}>
-          <SearchBar />
+          <SearchBar onSearch={(searchText) => setGameQuery({ searchText })} />
         </Box>
       </GridItem>
       <GridItem area="main" backgroundColor={"green"}>
