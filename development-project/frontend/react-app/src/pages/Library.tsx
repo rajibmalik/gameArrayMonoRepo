@@ -3,6 +3,7 @@ import axios from "axios";
 import { Grid, GridItem } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import GameGrid from "../components/GameGrid";
+import SearchBar from "../components/SearchBar";
 
 interface UserData {
   steamID: number | null;
@@ -40,8 +41,7 @@ const Library = () => {
         <NavBar />
       </GridItem>
       <GridItem area="search-bar" backgroundColor={"blue"}>
-        {" "}
-        search-bar
+        <SearchBar />
       </GridItem>
       <GridItem area="main" backgroundColor={"green"}>
         {error && <p>Error loading: {error}</p>}
