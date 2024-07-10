@@ -1,35 +1,16 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import GameGrid from "../components/GameGrid";
 import SearchBar from "../components/SearchBar";
+import useSessionData from "../hooks/useSessionData";
 
-interface UserData {
-  steamID: number | null;
-  username: string | null;
-}
+// interface UserData {
+//   steamID: number | null;
+//   username: string | null;
+// }
 
 const Library = () => {
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchSessionData();
-  }, []);
-
-  const fetchSessionData = () => {
-    axios
-      .get<{ user: UserData }>("http://localhost:3000/api/session", {
-        withCredentials: true,
-      })
-      .then((response) => {
-        setUserData(response.data.user);
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
-  };
+  const { userData, error } = useSessionData();
 
   return (
     <Grid
