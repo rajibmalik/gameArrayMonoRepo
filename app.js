@@ -32,7 +32,7 @@ app.set('views', `${__dirname}/views`);
 // Enable CORS, required to interact with the frontend application
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'http://localhost:5174'], // Adjust this to your React app's URL
+    origin: ['http://localhost:3000', 'http://localhost:5174'], // URL of live React app, could change!
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Allow cookies to be sent for ession
   }),

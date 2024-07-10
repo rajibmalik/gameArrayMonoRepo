@@ -9,6 +9,10 @@ router
   .get(userGameController.getAllUserGamesAndGamesForOneUser);
 
 router
+  .route('/:steamid/:searchtext')
+  .get(userGameController.getAllUserGamesForOneUserAndSearch);
+
+router
   .route('/top10-by-playtime/:steamid')
   .get(userGameController.getTop10PlayedGames);
 

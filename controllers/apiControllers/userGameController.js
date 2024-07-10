@@ -37,6 +37,36 @@ exports.getAllUserGamesForOneUser = async (req, res) => {
   }
 };
 
+exports.getAllUserGamesForOneUserAndSearch = async (req, res) => {
+  try {
+    const { steamid, searchtext } = req.params;
+
+    const userGamesWithGames = await getUserGamesWithGames(steamid);
+
+    // filter names to those that include the search text
+    const filteredGames = userGamesWithGames.filter((game) => {
+      const nameMatches = game.name
+        .toLowerCase()
+        .includes(searchtext.toLowerCase());
+      return nameMatches;
+    });
+
+    res.status(200).json({
+      status: 'success',
+      results: filteredGames.length,
+      data: {
+        // filteredGames: filteredGames,
+        filteredGames,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
 // Utility method for getting the UserGames with Game data associated with a steamid
 const getUserGamesWithGames = async (steamid) => {
   try {
@@ -74,6 +104,8 @@ exports.getAllUserGamesAndGamesForOneUser = async (req, res) => {
 
   try {
     const userGamesWithGames = await getUserGamesWithGames(steamid);
+
+    req.params.userGamesWithGames = userGamesWithGames; // test
 
     res.status(200).json({
       status: 'success',
