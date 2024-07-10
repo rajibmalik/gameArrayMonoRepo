@@ -5,10 +5,6 @@ import SearchBar from "../components/SearchBar";
 import useSessionData from "../hooks/useSessionData";
 import { useState } from "react";
 
-interface Props {
-  onSearch: (searchText: string) => void;
-}
-
 export interface GameQuery {
   searchText: string;
 }
@@ -34,7 +30,11 @@ const Library = () => {
       <GridItem area="main" backgroundColor={"green"}>
         {error && <p>Error loading: {error}</p>}
         {userData && (
-          <GameGrid steamID={userData.steamID} username={userData.username} />
+          <GameGrid
+            gameQuery={gameQuery}
+            steamID={userData.steamID}
+            username={userData.username}
+          />
         )}
       </GridItem>
     </Grid>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import apiClient from "../services/api-client";
 import { CanceledError } from "axios";
+import { GameQuery } from "../pages/Library";
 
 // The interface for a UserGame object that is retrieved from the
 // `/usergames/`${steamID}`endpoint, this is the data we are
@@ -22,7 +23,7 @@ interface fetchUserGamesResponse {
 }
 
 // Takes the steamID to make query related to an authenticated user session
-const useUserGames = (steamID: number | null) => {
+const useUserGames = (steamID: number | null, { searchText }: GameQuery) => {
   // Initialises to empty [] of type UserGame defined in above interface
   const [userGames, setUserGames] = useState<UserGame[]>([]);
   const [error, setError] = useState("");
@@ -30,9 +31,16 @@ const useUserGames = (steamID: number | null) => {
   useEffect(() => {
     // Cancelling the asynchronous operation
     const controller = new AbortController();
+
+    // If there is search text, use searchText & steamID parameters,
+    // else just search using steamID as parameter
+    const url = searchText
+      ? `/usergames/${steamID}/${searchText}`
+      : `/usergames/${steamID}`;
+
     apiClient
       // Defines the get respones type to above inteface fetchUserGamesResponse
-      .get<fetchUserGamesResponse>(`/usergames/${steamID}`, {
+      .get<fetchUserGamesResponse>(url, {
         signal: controller.signal,
       })
       // Set userGames to userGames array from endpoint
@@ -45,7 +53,7 @@ const useUserGames = (steamID: number | null) => {
 
     // cleanup function for aborting the request
     return () => controller.abort();
-  }, []);
+  }, [steamID, searchText]);
 
   // Return the userGames and error, enables caller to process data
   return { userGames, error };

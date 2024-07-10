@@ -1,16 +1,22 @@
 import { Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import useUserGames from "../hooks/useUserGames";
 import GameCard from "./GameCard";
+import { GameQuery } from "../pages/Library";
 
-interface UserData {
+interface Props {
   steamID: number | null;
   username: string | null;
+  gameQuery: GameQuery;
 }
 
-const GameGrid = ({ steamID, username }: UserData) => {
+// interface Props {
+
+// }
+
+const GameGrid = ({ steamID, username, gameQuery }: Props) => {
   // Uses custom hook to get the UserGames with their respective game data
   // else error information
-  const { userGames, error } = useUserGames(steamID);
+  const { userGames, error } = useUserGames(steamID, gameQuery);
 
   return (
     <>
