@@ -14,8 +14,8 @@ const steamAuthCallback = (req, res) => {
   passport.authenticate('steam', { failureRedirect: '/' })(req, res, () => {
     console.log('Steam Authentication successful');
 
-    // The route in the frontend application that the user should be redirected to upon successful authentication
-    res.redirect('http://localhost:5174/library');
+    // Redirect to the account route to initialise Steam API queries
+    res.redirect('/account');
   });
 };
 

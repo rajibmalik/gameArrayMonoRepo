@@ -56,7 +56,7 @@ exports.getAllUserGamesForOneUserAndSearch = async (req, res) => {
       results: filteredGames.length,
       data: {
         // filteredGames: filteredGames,
-        filteredGames,
+        userGames: filteredGames,
       },
     });
   } catch (err) {
