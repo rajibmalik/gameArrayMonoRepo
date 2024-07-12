@@ -5,16 +5,20 @@ const userGameController = require('../../controllers/apiControllers/userGameCon
 router.route('/').get(userGameController.getAllUserGames);
 
 router
+  .route('/total-playtime/:steamid')
+  .get(userGameController.getTotalPlaytime);
+
+router
   .route('/:steamid')
   .get(userGameController.getAllUserGamesAndGamesForOneUser);
 
 router
-  .route('/:steamid/:searchtext')
-  .get(userGameController.getAllUserGamesForOneUserAndSearch);
+  .route('/top-10-by-playtime/:steamid')
+  .get(userGameController.getTop10PlayedGames);
 
 router
-  .route('/top10-by-playtime/:steamid')
-  .get(userGameController.getTop10PlayedGames);
+  .route('/:steamid/:searchtext')
+  .get(userGameController.getAllUserGamesForOneUserAndSearch);
 
 router
   //:genres is the number of genres

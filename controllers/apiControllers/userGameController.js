@@ -198,3 +198,33 @@ const calculateTopGenres = (userGames, numberOfGenres) => {
 
   return topGenres;
 };
+
+exports.getTotalPlaytime = async (req, res) => {
+  const steamid = req.params.steamid;
+  try {
+    const userGamesWithGames = await getUserGamesWithGames(steamid);
+    const totalPlaytime = this.calculateTotalPlaytime(userGamesWithGames);
+
+    res.status(200).json({
+      data: {
+        totalPlaytime: totalPlaytime,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err.message,
+    });
+    console.log(err);
+  }
+};
+
+exports.calculateTotalPlaytime = (userGames) => {
+  let totalPlaytime = 0;
+
+  userGames.map((game) => {
+    totalPlaytime += game.playtimeHours;
+  });
+
+  return totalPlaytime;
+};
