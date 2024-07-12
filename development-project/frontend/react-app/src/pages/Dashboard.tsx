@@ -2,6 +2,8 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import SingleStat from "../components/dashboard/SingleStat";
 import { FaSteam } from "react-icons/fa";
+import { RadarChart } from "recharts";
+import RadarChartComponent from "../components/dashboard/RadarChartComponent";
 
 const Dashboard = () => {
   return (
@@ -27,7 +29,8 @@ const Dashboard = () => {
         <SingleStat title={"Total playtime"} number={0} />
       </GridItem>
       <GridItem margin={5} area="rosechart" backgroundColor="purple">
-        RoseChart Content
+        <RadarChartComponent />
+        {/* RoseChart Content */}
       </GridItem>
       <GridItem margin={5} area="barchart" backgroundColor="orange">
         BarChart Content
