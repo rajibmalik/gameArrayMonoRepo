@@ -54,25 +54,38 @@ const Dashboard = () => {
       "statbox2 rosechart"
       "barchart barchart"
     `}
-      gridTemplateRows={"auto 1.2fr 1.2fr 2.5fr"}
+      gridTemplateRows={"auto 1.0fr 1.0fr 2.5fr"}
       gridTemplateColumns={"1.25fr 2.5fr"}
       height="100vh"
+      width="100vw"
       gap={10}
     >
       <GridItem area="nav" backgroundColor="gray">
         <NavBar />
       </GridItem>
-      <GridItem margin={5} mb={0} area="statbox" backgroundColor="red">
+
+      <GridItem margin={10} mb={0} area="statbox" backgroundColor="red">
         <SingleStat title={"Total number of games"} number={0} />
       </GridItem>
-      <GridItem margin={5} mt={0} area="statbox2" backgroundColor="red">
+      <GridItem margin={10} mb={0} area="statbox2" backgroundColor="red">
         <SingleStat title={"Total playtime"} number={0} />
       </GridItem>
-      <GridItem margin={5} area="rosechart" backgroundColor="purple">
+      <GridItem
+        display={"flex"}
+        justifyContent={"end"}
+        margin={10}
+        marginBottom={0}
+        area="rosechart"
+        alignItems={"flex-end"}
+      >
         <RadarChartComponent topGenres={radarChartData} />
-        {/* RoseChart Content */}
       </GridItem>
-      <GridItem margin={5} area="barchart" backgroundColor="orange">
+      <GridItem
+        margin={10}
+        marginTop={0}
+        area="barchart"
+        backgroundColor="orange"
+      >
         BarChart Content
       </GridItem>
     </Grid>

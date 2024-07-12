@@ -32,36 +32,29 @@ const RadarChartComponent = ({ topGenres }: Props) => {
     fullMark: highestPlaytime,
   }));
 
-  // console.log(`Here is the radar data: ${topGenres}`);
-
   return (
     <>
       <Box
-        bg="black"
-        color="white"
-        p="2"
+        bg="white"
+        p="3"
         borderRadius="md"
         boxShadow="md"
-        // borderWidth={"2"}
-        width={"100%"}
+        width={"80%"}
         height={"100%"}
-        // marginRight={6}
       >
-        <Heading size={"sm"} textAlign={"center"}>
+        <Heading size={"sm"} textAlign={"center"} color={"black"} pb={1}>
           Your most played genres
         </Heading>
         <ResponsiveContainer width="100%" height="100%">
           <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
             <PolarGrid />
-            <PolarAngleAxis dataKey="subject" tickSize={17.5} />
-            <PolarRadiusAxis tick={false} axisLine={false} />
-            <Radar
-              name="Playtime"
-              dataKey="A"
-              stroke="#8884d8"
-              fill="#8884d8"
-              fillOpacity={0.6}
+            <PolarAngleAxis
+              dataKey="subject"
+              tick={{ fill: "black" }}
+              tickSize={17.5}
             />
+            <PolarRadiusAxis tick={false} axisLine={false} />
+            <Radar name="Playtime" dataKey="A" fill="black" fillOpacity={0.6} />
           </RadarChart>
         </ResponsiveContainer>
       </Box>
