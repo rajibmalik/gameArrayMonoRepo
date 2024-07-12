@@ -8,50 +8,36 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  {
-    subject: "Math",
-    A: 120,
-    B: 110,
-    fullMark: 150,
-  },
-  {
-    subject: "Chinese",
-    A: 98,
-    B: 130,
-    fullMark: 150,
-  },
-  {
-    subject: "English",
-    A: 86,
-    B: 130,
-    fullMark: 150,
-  },
-  {
-    subject: "Geography",
-    A: 99,
-    B: 100,
-    fullMark: 150,
-  },
-  {
-    subject: "Physics",
-    A: 85,
-    B: 90,
-    fullMark: 150,
-  },
-  {
-    subject: "History",
-    A: 65,
-    B: 85,
-    fullMark: 150,
-  },
-];
+interface Props {
+  topGenres: topGenres[];
+}
 
-const RadarChartComponent = () => {
+export interface topGenres {
+  genre: string;
+  totalPlaytime: number;
+  totalPlaytimeHours: number;
+}
+
+const RadarChartComponent = ({ topGenres }: Props) => {
+  console.log(JSON.stringify(topGenres));
+  const hours = topGenres.map((genre) => genre.totalPlaytimeHours);
+  const highestPlaytime = Math.max(...hours);
+
+  console.log(hours);
+  console.log(highestPlaytime);
+
+  const data = topGenres.map((genreData) => ({
+    subject: genreData.genre,
+    A: genreData.totalPlaytimeHours,
+    fullMark: highestPlaytime,
+  }));
+
+  // console.log(`Here is the radar data: ${topGenres}`);
+
   return (
     <>
       <Box
-        bg="teal.500"
+        bg="black"
         color="white"
         p="2"
         borderRadius="md"
@@ -59,18 +45,18 @@ const RadarChartComponent = () => {
         // borderWidth={"2"}
         width={"100%"}
         height={"100%"}
-        marginRight={6}
+        // marginRight={6}
       >
         <Heading size={"sm"} textAlign={"center"}>
           Your most played genres
         </Heading>
         <ResponsiveContainer width="100%" height="100%">
-          <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+          <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
             <PolarGrid />
-            <PolarAngleAxis dataKey="subject" />
-            <PolarRadiusAxis />
+            <PolarAngleAxis dataKey="subject" tickSize={17.5} />
+            <PolarRadiusAxis tick={false} axisLine={false} />
             <Radar
-              name="Mike"
+              name="Playtime"
               dataKey="A"
               stroke="#8884d8"
               fill="#8884d8"

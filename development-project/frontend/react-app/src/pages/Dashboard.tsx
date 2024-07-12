@@ -1,11 +1,51 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import SingleStat from "../components/dashboard/SingleStat";
-import { FaSteam } from "react-icons/fa";
-import { RadarChart } from "recharts";
+
 import RadarChartComponent from "../components/dashboard/RadarChartComponent";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import useSessionData from "../hooks/useSessionData";
+
+export interface topGenres {
+  genre: string;
+  totalPlaytime: number;
+  totalPlaytimeHours: number;
+}
+
+interface fetchDashboardDataResponse {
+  results: number;
+  // Uses the UserGame interface when defining UserGame[]
+  data: {
+    topGenres: topGenres[];
+  };
+}
 
 const Dashboard = () => {
+  const { userData, error } = useSessionData();
+  const [radarChartData, setRadarChartData] = useState<topGenres[]>([]);
+  // console.log(JSON.stringify(radarChartData));
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [userData]);
+
+  const fetchDashboardData = () => {
+    if (userData) {
+      axios
+        .get<fetchDashboardDataResponse>(
+          `http://localhost:3000/api/v1/usergames/top-genres-by-playtime/${userData.steamID}/6`
+        )
+        .then((res) => {
+          console.log("Data", res.data);
+          setRadarChartData(res.data.data.topGenres);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   return (
     <Grid
       templateAreas={`
@@ -29,7 +69,7 @@ const Dashboard = () => {
         <SingleStat title={"Total playtime"} number={0} />
       </GridItem>
       <GridItem margin={5} area="rosechart" backgroundColor="purple">
-        <RadarChartComponent />
+        <RadarChartComponent topGenres={radarChartData} />
         {/* RoseChart Content */}
       </GridItem>
       <GridItem margin={5} area="barchart" backgroundColor="orange">
