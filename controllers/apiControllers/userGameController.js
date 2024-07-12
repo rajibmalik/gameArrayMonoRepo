@@ -37,13 +37,12 @@ exports.getAllUserGamesForOneUser = async (req, res) => {
   }
 };
 
-exports.getAllUserGamesForOneUserAndSearch = async (req, res) => {
+exports.getSearchedGamesForOneUser = async (req, res) => {
+  const { steamid, searchtext } = req.params;
   try {
-    const { steamid, searchtext } = req.params;
-
     const userGamesWithGames = await getUserGamesWithGames(steamid);
 
-    // filter names to those that include the search text
+    // filter for game names including searchtext
     const filteredGames = userGamesWithGames.filter((game) => {
       const nameMatches = game.name
         .toLowerCase()
@@ -55,7 +54,6 @@ exports.getAllUserGamesForOneUserAndSearch = async (req, res) => {
       status: 'success',
       results: filteredGames.length,
       data: {
-        // filteredGames: filteredGames,
         userGames: filteredGames,
       },
     });
@@ -67,45 +65,9 @@ exports.getAllUserGamesForOneUserAndSearch = async (req, res) => {
   }
 };
 
-// Utility method for getting the UserGames with Game data associated with a steamid
-const getUserGamesWithGames = async (steamid) => {
-  try {
-    // Find UserGame documents associated with a steamid
-    const userGames = await UserGame.find({ steamid });
-
-    // Create an array of the appids from the UserGames
-    const appids = userGames.map((userGame) => userGame.appid);
-
-    // Find Game information related to the UserGame using the appid
-    const games = await Game.find({ appid: { $in: appids } });
-
-    // Combine UserGames with Games information
-    const userGamesWithGames = userGames.map((userGame) => {
-      // Find the corresponding game for the userGame
-      const game = games.find((game) => game.appid === userGame.appid);
-
-      // Return combined data
-      return {
-        ...userGame._doc,
-        playtimeHours: Math.round(userGame._doc.playtime / 60),
-        ...game._doc,
-      };
-    });
-
-    return userGamesWithGames;
-  } catch (err) {
-    console.error('Error fetching user games:', err);
-    throw new Error('Failed to fetch user games'); // caught by caller
-  }
-};
-
 exports.getAllUserGamesAndGamesForOneUser = async (req, res) => {
-  const { steamid } = req.params;
-
   try {
-    const userGamesWithGames = await getUserGamesWithGames(steamid);
-
-    req.params.userGamesWithGames = userGamesWithGames; // test
+    const userGamesWithGames = await getUserGamesWithGames(req.params.steamid);
 
     res.status(200).json({
       status: 'success',
@@ -115,7 +77,6 @@ exports.getAllUserGamesAndGamesForOneUser = async (req, res) => {
       },
     });
   } catch (err) {
-    console.error('Error fetching user games:', err);
     res.status(500).json({
       status: 'fail',
       message: 'failed to fetch user games',
@@ -125,12 +86,11 @@ exports.getAllUserGamesAndGamesForOneUser = async (req, res) => {
 };
 
 exports.getTop10PlayedGames = async (req, res) => {
-  const steamid = req.params.steamid;
   try {
-    const userGamesWithGames = await getUserGamesWithGames(steamid);
+    const userGamesWithGames = await getUserGamesWithGames(req.params.steamid);
     // Sort by playtime in descending order
     userGamesWithGames.sort((a, b) => b.playtime - a.playtime);
-    // Filter for the top 10 playtime
+    // Filter for the top 10
     const top10UserGamesWithGames = userGamesWithGames.slice(0, 10);
 
     res.status(200).json({
@@ -149,13 +109,11 @@ exports.getTop10PlayedGames = async (req, res) => {
 };
 
 exports.getTopPlayedGenres = async (req, res) => {
-  const steamid = req.params.steamid;
-  // Number of genres to retrieve
-  const numberOfGenres = req.params.genres;
+  // genres is the number of genres that shat should be retrieved
+  const { steamid, genres } = req.params;
   try {
     const userGames = await getUserGamesWithGames(steamid);
-
-    const topGenres = calculateTopGenres(userGames, numberOfGenres);
+    const topGenres = calculateTopGenres(userGames, genres);
 
     res.status(200).json({
       status: 'success',
@@ -170,8 +128,63 @@ exports.getTopPlayedGenres = async (req, res) => {
   }
 };
 
-// Utility method, that calculates the most played genres
-const calculateTopGenres = (userGames, numberOfGenres) => {
+exports.getTotalPlaytime = async (req, res) => {
+  try {
+    const userGamesWithGames = await getUserGamesWithGames(req.params.steamid);
+    let totalPlaytime = 0;
+
+    userGamesWithGames.map((game) => {
+      totalPlaytime += game.playtimeHours;
+    });
+
+    res.status(200).json({
+      data: {
+        totalPlaytime: totalPlaytime,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
+// Utility method for getting the UserGames with Game data associated with a steamid
+const getUserGamesWithGames = async (steamid) => {
+  try {
+    // UserGame documents associated with steamid
+    const userGames = await UserGame.find({ steamid });
+
+    // Array of the appids from the UserGames
+    const appids = userGames.map((userGame) => userGame.appid);
+
+    // Game document information related to the UserGame using the appid
+    const games = await Game.find({ appid: { $in: appids } });
+
+    // Combine UserGames with Games information
+    const userGamesWithGames = userGames.map((userGame) => {
+      // Find the corresponding game for the userGame
+      const game = games.find((game) => game.appid === userGame.appid);
+
+      return {
+        ...userGame._doc,
+        playtimeHours: Math.round(userGame._doc.playtime / 60),
+        ...game._doc,
+      };
+    });
+
+    return userGamesWithGames;
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
+// Utility method, calculates the most played genres
+const calculateTopGenres = (userGames, numGenres) => {
   const genrePlaytime = {};
 
   // Iterate for each game
@@ -188,43 +201,12 @@ const calculateTopGenres = (userGames, numberOfGenres) => {
     (a, b) => genrePlaytime[b] - genrePlaytime[a],
   );
 
-  // Obtain numberOfGenres, for each obtain the genre and the total playtime from
-  // genrePlaytime
-  const topGenres = sortedGenres.slice(0, numberOfGenres).map((genre) => ({
+  // Obtain the most played genres (numGenres), create an array of objects for these "topGenres"
+  const topGenres = sortedGenres.slice(0, numGenres).map((genre) => ({
     genre,
     totalPlaytime: genrePlaytime[genre],
     totalPlaytimeHours: Math.round(genrePlaytime[genre] / 60),
   }));
 
   return topGenres;
-};
-
-exports.getTotalPlaytime = async (req, res) => {
-  const steamid = req.params.steamid;
-  try {
-    const userGamesWithGames = await getUserGamesWithGames(steamid);
-    const totalPlaytime = this.calculateTotalPlaytime(userGamesWithGames);
-
-    res.status(200).json({
-      data: {
-        totalPlaytime: totalPlaytime,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err.message,
-    });
-    console.log(err);
-  }
-};
-
-exports.calculateTotalPlaytime = (userGames) => {
-  let totalPlaytime = 0;
-
-  userGames.map((game) => {
-    totalPlaytime += game.playtimeHours;
-  });
-
-  return totalPlaytime;
 };

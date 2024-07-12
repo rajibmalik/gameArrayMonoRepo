@@ -18,7 +18,7 @@ router
 
 router
   .route('/:steamid/:searchtext')
-  .get(userGameController.getAllUserGamesForOneUserAndSearch);
+  .get(userGameController.getSearchedGamesForOneUser);
 
 router
   //:genres is the number of genres
