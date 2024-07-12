@@ -1,5 +1,7 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
+import SingleStat from "../components/dashboard/SingleStat";
+import { FaSteam } from "react-icons/fa";
 
 const Dashboard = () => {
   return (
@@ -18,11 +20,11 @@ const Dashboard = () => {
       <GridItem area="nav" backgroundColor="gray">
         <NavBar />
       </GridItem>
-      <GridItem margin={5} area="statbox" backgroundColor="red">
-        StatBox Content
+      <GridItem margin={5} mb={0} area="statbox" backgroundColor="red">
+        <SingleStat title={"Total number of games"} number={0} />
       </GridItem>
-      <GridItem margin={5} area="statbox2" backgroundColor="red">
-        StatBox Content
+      <GridItem margin={5} mt={0} area="statbox2" backgroundColor="red">
+        <SingleStat title={"Total playtime"} number={0} />
       </GridItem>
       <GridItem margin={5} area="rosechart" backgroundColor="purple">
         RoseChart Content
