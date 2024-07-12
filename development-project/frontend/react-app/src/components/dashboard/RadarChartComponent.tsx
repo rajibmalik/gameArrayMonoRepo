@@ -1,4 +1,5 @@
 import { Box, Heading } from "@chakra-ui/react";
+
 import {
   Radar,
   RadarChart,
@@ -54,7 +55,16 @@ const RadarChartComponent = ({ topGenres }: Props) => {
               tickSize={17.5}
             />
             <PolarRadiusAxis tick={false} axisLine={false} />
-            <Radar name="Playtime" dataKey="A" fill="black" fillOpacity={0.6} />
+            <Radar
+              // Animation does not work as the component is rendered instantly
+              // research work around
+              animationBegin={400}
+              animationDuration={1000}
+              name="Playtime"
+              dataKey="A"
+              fill="black"
+              fillOpacity={0.6}
+            />
           </RadarChart>
         </ResponsiveContainer>
       </Box>
