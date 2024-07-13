@@ -66,10 +66,10 @@ const Dashboard = () => {
       </GridItem>
 
       <GridItem margin={10} mb={0} mt={0} area="statbox" backgroundColor="red">
-        <SingleStat title={"Total number of games"} number={0} />
+        <SingleStat label={"Total number of games"} number={0} />
       </GridItem>
       <GridItem margin={10} mb={0} mt={0} area="statbox2" backgroundColor="red">
-        <SingleStat title={"Total playtime"} number={0} />
+        <SingleStat label={"Total playtime"} number={0} />
       </GridItem>
       <GridItem
         display={"flex"}

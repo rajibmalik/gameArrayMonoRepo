@@ -5,26 +5,34 @@ import {
   StatLabel,
   StatNumber,
   Flex,
-  Box,
+  StatHelpText,
+  Icon as ChakraIcon,
 } from "@chakra-ui/react";
-import { ReactNode } from "react";
+import { IconType } from "react-icons";
 
 interface Props {
-  title: string;
+  label: string;
   number: number;
-  supplement?: string;
+  helpText?: string;
+  icon?: IconType;
 }
 
-const SingleStat = ({ title, number, supplement }: Props) => {
+const SingleStat = ({ label, number, helpText, icon: Icon }: Props) => {
   return (
     <Card width="100%" height="100%">
-      <CardBody>
-        <Flex alignItems="center" justifyContent="space-between">
+      <CardBody textColor={"black"}>
+        <Flex
+          textAlign={"center"}
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <Stat>
-            <StatLabel textAlign={"center"}>{title}</StatLabel>
-            <StatNumber textAlign={"center"}>
-              {number} {supplement}
-            </StatNumber>
+            <StatLabel fontWeight={"bold"} fontSize={"md"}>
+              {label}
+            </StatLabel>
+            <StatNumber>{number}</StatNumber>
+            <StatHelpText>{helpText}</StatHelpText>
+            {Icon && <ChakraIcon as={Icon} w={6} h={6} />}
           </Stat>
         </Flex>
       </CardBody>
