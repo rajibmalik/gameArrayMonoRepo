@@ -1,12 +1,12 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
-import SingleStat from "../components/dashboard/SingleStat";
-
 import RadarChartComponent from "../components/dashboard/RadarChartComponent";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import useSessionData from "../hooks/useSessionData";
 import BarChartComponent from "../components/dashboard/BarChartComponent";
+import TotalPlaytime from "../components/dashboard/TotalPlaytime";
+import TotalGames from "../components/dashboard/TotalGames";
 
 export interface topGenres {
   genre: string;
@@ -25,6 +25,7 @@ interface fetchDashboardDataResponse {
 interface fetchTotalPlaytimeResponse {
   data: {
     totalPlaytime: number;
+    numberOfGames: number;
   };
 }
 
@@ -32,6 +33,7 @@ const Dashboard = () => {
   const { userData, error } = useSessionData();
   const [radarChartData, setRadarChartData] = useState<topGenres[]>([]);
   const [totalPlaytime, setTotalPlaytime] = useState<number>();
+  const [totalGames, setTotalGames] = useState<number>();
 
   useEffect(() => {
     if (userData) {
@@ -56,6 +58,7 @@ const Dashboard = () => {
         )
         .then((res) => {
           setTotalPlaytime(res.data.data.totalPlaytime);
+          setTotalGames(res.data.data.numberOfGames);
         })
         .catch((err) => {
           console.log(err);
@@ -81,12 +84,14 @@ const Dashboard = () => {
         <NavBar />
       </GridItem>
 
-      <GridItem margin={10} mb={0} mt={0} area="statbox" backgroundColor="red">
-        <SingleStat label={"Total number of games"} number={0} />
+      <GridItem margin={10} mb={0} mt={0} area="statbox">
+        {totalGames && (
+          <TotalGames label={"Total number of games"} number={totalGames} />
+        )}
       </GridItem>
-      <GridItem margin={10} mb={0} mt={0} area="statbox2" backgroundColor="red">
+      <GridItem margin={10} mb={0} mt={0} area="statbox2">
         {totalPlaytime && (
-          <SingleStat
+          <TotalPlaytime
             label={"Total playtime"}
             number={totalPlaytime}
             helpText="hours"

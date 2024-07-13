@@ -19,7 +19,7 @@ interface Props {
   icon?: IconType;
 }
 
-const SingleStat = ({ label, number, icon: Icon }: Props) => {
+const TotalPlaytime = ({ label, number, icon: Icon }: Props) => {
   const [showHours, setShowHours] = useState(true);
 
   const displayNumber = showHours ? number : Math.round(number / 24);
@@ -57,4 +57,4 @@ const SingleStat = ({ label, number, icon: Icon }: Props) => {
   );
 };
 
-export default SingleStat;
+export default TotalPlaytime;

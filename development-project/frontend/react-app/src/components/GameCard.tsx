@@ -17,9 +17,10 @@ const GameCard = ({ game }: Props) => {
   return (
     <Card
       transition="transform 0.5s"
-      _hover={{ transform: "scale(1.10) translateX(-5px) translateY(-10px)" }}
+      _hover={{ transform: "scale(1.05)" }}
       borderRadius={5}
       overflow={"hidden"}
+      margin={3}
     >
       <Image src={game.headerImage}></Image>
       <CardBody>
