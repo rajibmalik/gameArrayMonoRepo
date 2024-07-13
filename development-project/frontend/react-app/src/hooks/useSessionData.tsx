@@ -11,22 +11,18 @@ const useSessionData = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchSessionData();
-  }, []);
-
-  const fetchSessionData = () => {
     axios
-      .get<{ user: UserData }>("http://localhost:3000/api/session", {
+      .get<{ user: UserData }>("http://localhost:3000/api/v1/session", {
         withCredentials: true,
       })
-      .then((response) => {
-        setUserData(response.data.user);
+      .then((res) => {
+        // Sets userData to user session object, created in Passport.js in Express backend
+        setUserData(res.data.user);
       })
       .catch((err) => {
         setError(err.message);
       });
-  };
-
+  }, []);
   return { userData, error };
 };
 
