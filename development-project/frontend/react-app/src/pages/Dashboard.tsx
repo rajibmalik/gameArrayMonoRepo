@@ -6,6 +6,7 @@ import RadarChartComponent from "../components/dashboard/RadarChartComponent";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import useSessionData from "../hooks/useSessionData";
+import BarChartComponent from "../components/dashboard/BarChartComponent";
 
 export interface topGenres {
   genre: string;
@@ -58,35 +59,31 @@ const Dashboard = () => {
       gridTemplateColumns={"1.25fr 2.5fr"}
       height="100vh"
       width="100vw"
-      gap={10}
+      gap={5}
     >
       <GridItem area="nav" backgroundColor="gray">
         <NavBar />
       </GridItem>
 
-      <GridItem margin={10} mb={0} area="statbox" backgroundColor="red">
+      <GridItem margin={10} mb={0} mt={0} area="statbox" backgroundColor="red">
         <SingleStat title={"Total number of games"} number={0} />
       </GridItem>
-      <GridItem margin={10} mb={0} area="statbox2" backgroundColor="red">
+      <GridItem margin={10} mb={0} mt={0} area="statbox2" backgroundColor="red">
         <SingleStat title={"Total playtime"} number={0} />
       </GridItem>
       <GridItem
         display={"flex"}
         justifyContent={"end"}
         margin={10}
+        mt={0}
         marginBottom={0}
         area="rosechart"
         alignItems={"flex-end"}
       >
         <RadarChartComponent topGenres={radarChartData} />
       </GridItem>
-      <GridItem
-        margin={10}
-        marginTop={0}
-        area="barchart"
-        backgroundColor="orange"
-      >
-        BarChart Content
+      <GridItem margin={10} marginTop={5} area="barchart">
+        <BarChartComponent />
       </GridItem>
     </Grid>
   );
