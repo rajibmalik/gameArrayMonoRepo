@@ -22,30 +22,46 @@ interface fetchDashboardDataResponse {
   };
 }
 
+interface fetchTotalPlaytimeResponse {
+  data: {
+    totalPlaytime: number;
+  };
+}
+
 const Dashboard = () => {
   const { userData, error } = useSessionData();
   const [radarChartData, setRadarChartData] = useState<topGenres[]>([]);
-  // console.log(JSON.stringify(radarChartData));
+  const [totalPlaytime, setTotalPlaytime] = useState<number>();
 
   useEffect(() => {
-    fetchDashboardData();
-  }, [userData]);
-
-  const fetchDashboardData = () => {
     if (userData) {
       axios
         .get<fetchDashboardDataResponse>(
           `http://localhost:3000/api/v1/usergames/top-genres-by-playtime/${userData.steamID}/6`
         )
         .then((res) => {
-          console.log("Data", res.data);
           setRadarChartData(res.data.data.topGenres);
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  };
+  }, [userData]);
+
+  useEffect(() => {
+    if (userData) {
+      axios
+        .get<fetchTotalPlaytimeResponse>(
+          `http://localhost:3000/api/v1/usergames/total-playtime/${userData.steamID}`
+        )
+        .then((res) => {
+          setTotalPlaytime(res.data.data.totalPlaytime);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  });
 
   return (
     <Grid
@@ -69,7 +85,13 @@ const Dashboard = () => {
         <SingleStat label={"Total number of games"} number={0} />
       </GridItem>
       <GridItem margin={10} mb={0} mt={0} area="statbox2" backgroundColor="red">
-        <SingleStat label={"Total playtime"} number={0} />
+        {totalPlaytime && (
+          <SingleStat
+            label={"Total playtime"}
+            number={totalPlaytime}
+            helpText="hours"
+          />
+        )}
       </GridItem>
       <GridItem
         display={"flex"}
