@@ -4,19 +4,12 @@ import GameCard from "./GameCard";
 import { GameQuery } from "../pages/Library";
 
 interface Props {
-  steamID: number | null;
-  username: string | null;
   gameQuery: GameQuery;
 }
 
-// interface Props {
-
-// }
-
-const GameGrid = ({ steamID, username, gameQuery }: Props) => {
-  // Uses custom hook to get the UserGames with their respective game data
-  // else error information
-  const { userGames, error } = useUserGames(steamID, gameQuery);
+const GameGrid = ({ gameQuery }: Props) => {
+  // Retrieves UserGame with Game data
+  const { userGames, error } = useUserGames(gameQuery);
 
   return (
     <>
