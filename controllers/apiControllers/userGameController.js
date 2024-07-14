@@ -135,6 +135,7 @@ exports.getTopPlayedGenres = async (req, res) => {
 exports.getTotalPlaytime = async (req, res) => {
   try {
     const userGamesWithGames = await getUserGamesWithGames(req.params.steamid);
+    const numberOfGames = userGamesWithGames.length;
     let totalPlaytime = 0;
 
     userGamesWithGames.map((game) => {
@@ -144,6 +145,7 @@ exports.getTotalPlaytime = async (req, res) => {
     res.status(200).json({
       data: {
         totalPlaytime: totalPlaytime,
+        numberOfGames: numberOfGames,
       },
     });
   } catch (err) {

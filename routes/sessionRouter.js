@@ -15,6 +15,7 @@ router.get('/', (req, res) => {
     res.status(401).json({
       isAuthenticated: false,
       message: 'User is not authenticated',
+      // user: req.user,
     });
   }
 });

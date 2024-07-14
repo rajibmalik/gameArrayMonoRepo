@@ -6,7 +6,7 @@ const passport = require('./config/passportConfig');
 const cors = require('cors');
 
 // Routers
-const steamAuthRouter = require('./routes/steamAuthRoutes');
+const steamAuthRouter = require('./routes/steamAuthRouter');
 const accountRouter = require('./routes/accountRouter');
 const userRouter = require('./routes/apiRoutes/userRoutes');
 const gameRouter = require('./routes/apiRoutes/gameRoutes');
@@ -78,7 +78,7 @@ app.use('/auth/steam', steamAuthRouter);
 app.use('/account', accountRouter);
 
 // Routes redirect to sessionRouter
-app.use('/api/session', sessionRouter);
+app.use('/api/v1/session', sessionRouter);
 
 // Routes redirected to API Routers
 app.use('/api/v1/users', userRouter);
