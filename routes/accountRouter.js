@@ -20,9 +20,9 @@ router.get(
   '/',
   ensureAuthenticated, // Protects routes, ensuring authentication
   userController.createUser, // Creates User document in MongoDB
-  gamesController.fetchAndProcessOwnedGames, // Fetches owned games from Steam API & processes data
+  gamesController.fetchAndProcessGames, // Fetches owned games from Steam API & processes data
   gamesController.queryGames, // Queries new games for information from Steam API
-  gamesController.createGamesInDatabase, // Creates Game documents in MongoDB
+  gamesController.createGames, // Creates Game documents in MongoDB
   userGamesController.createUserGames, // Creates UserGame documents in MongoDB
   userController.redirectToAccount, // Redirects to account page
 );

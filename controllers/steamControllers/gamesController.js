@@ -6,7 +6,7 @@ const gameService = require('../../services/dbServices/gameService');
 
 // Using the steamService, this obtains the games owned by the user and processes
 // data for subsequent middleware
-exports.fetchAndProcessOwnedGames = async (req, res, next) => {
+exports.fetchAndProcessGames = async (req, res, next) => {
   try {
     const steamID = req.user.steamID;
     // Obtain ownedGamed from Steam API
@@ -136,7 +136,7 @@ exports.queryGames = async (req, res, next) => {
 };
 
 // Create game models from game objects passed from queryGames
-exports.createGamesInDatabase = async (req, res, next) => {
+exports.createGames = async (req, res, next) => {
   try {
     console.log('Creating games');
     const games = req.games;
