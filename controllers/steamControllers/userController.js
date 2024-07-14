@@ -6,8 +6,6 @@ const User = require('../../model/userModel');
 // Creates a User model if the user is new, using session data
 exports.createUser = async (req, res, next) => {
   try {
-    console.log('CREATE USER');
-
     const userInfo = req.user;
     let user = await User.findOne({ steamID: userInfo.steamID });
 
@@ -19,7 +17,7 @@ exports.createUser = async (req, res, next) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
-      message: console.log(err),
+      error: err.message,
     });
   }
 };

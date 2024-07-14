@@ -128,7 +128,10 @@ exports.queryGames = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.log(err);
+    res.status(500).json({
+      message: 'Failed to fetch owned games',
+      error: err.message,
+    });
   }
 };
 
@@ -160,6 +163,9 @@ exports.createGamesInDatabase = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.log(err);
+    res.status(500).json({
+      message: 'Failed to fetch owned games',
+      error: err.message,
+    });
   }
 };

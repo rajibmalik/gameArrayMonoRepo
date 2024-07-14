@@ -16,6 +16,9 @@ exports.createUserGames = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.log('Error creating games' + err);
+    res.status(500).json({
+      message: 'Failed to fetch owned games',
+      error: err.message,
+    });
   }
 };
