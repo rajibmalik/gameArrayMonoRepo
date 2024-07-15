@@ -1,4 +1,4 @@
-const UserGame = require('./../../model/userGameModel');
+const UserGame = require('../../models/userGameModel');
 // const Game = require('./../../model/gameModel');
 const {
   getUserGamesWithGames,

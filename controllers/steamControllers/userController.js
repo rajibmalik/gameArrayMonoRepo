@@ -1,5 +1,5 @@
 const userService = require('../../services/dbServices/userService');
-const User = require('../../model/userModel');
+const User = require('../../models/userModel');
 
 // This is a controller that is associated with User model creation
 

@@ -4,12 +4,12 @@ const userGameSchema = new mongoose.Schema({
   appid: {
     type: String,
     ref: 'Game',
-    required: true,
+    required: [true, 'A userGame must have an appid'],
   },
   steamid: {
     type: String,
     ref: 'User',
-    required: true,
+    required: [true, 'A userGame must have a steamid'],
   },
   playtime: {
     type: Number,

@@ -1,6 +1,6 @@
-const UserGame = require('../../model/userGameModel');
-const Game = require('../../model/gameModel');
-const User = require('../../model/userModel');
+const UserGame = require('../../models/userGameModel');
+const Game = require('../../models/gameModel');
+const User = require('../../models/userModel');
 
 // takes an array of game objects and a steamid and updates or creates the UserGame documents
 // for that user in the MongoDB database

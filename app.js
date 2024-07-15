@@ -17,12 +17,12 @@ const app = express();
 
 // Uses Mongoose to connect to the MongoDB database
 mongoose
-  .connect(process.env.DATABASE, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.DATABASE, {})
   .then(() => {
     console.log('MongoDB connection was successful!');
+  })
+  .catch((err) => {
+    console.log('MongoDB connection error:', err.message);
   });
 
 // Set up view engine
@@ -34,7 +34,7 @@ app.use(
   cors({
     origin: ['http://localhost:3000', 'http://localhost:5173'], // URL of live React app, could change!
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Allow cookies to be sent for ession
+    credentials: true, // Allow cookies to be sent for session
   }),
 );
 

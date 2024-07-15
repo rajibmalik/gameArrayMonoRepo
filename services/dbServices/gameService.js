@@ -1,4 +1,4 @@
-const Game = require('../../model/gameModel');
+const Game = require('../../models/gameModel');
 
 // Fetches all of the games from the database
 exports.getAllGames = async () => {

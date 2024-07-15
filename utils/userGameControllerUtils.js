@@ -1,5 +1,5 @@
-const UserGame = require('./../model/userGameModel');
-const Game = require('./../model/gameModel');
+const UserGame = require('../models/userGameModel');
+const Game = require('../models/gameModel');
 
 // Utility method for getting the UserGames with Game data associated with a steamid
 const getUserGamesWithGames = async (steamid) => {
