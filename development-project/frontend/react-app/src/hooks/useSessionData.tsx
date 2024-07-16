@@ -2,13 +2,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 interface UserData {
-  steamID: number | null;
-  username: string | null;
+  steamID: number;
+  username: string;
 }
 
 const useSessionData = () => {
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [userData, setUserData] = useState<UserData>();
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     axios
