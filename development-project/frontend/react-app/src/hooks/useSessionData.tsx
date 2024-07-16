@@ -24,14 +24,14 @@ const useSessionData = () => {
       .then((res) => {
         // Sets userData to user session object, created in Passport.js in Express backend
         setUserData(res.data.user);
+        setIsLoading(false);
       })
       .catch((err) => {
         if (err instanceof CanceledError) return;
         setError(err.message);
-      })
-      .finally(() => {
         setIsLoading(false);
       });
+
     return () => controller.abort();
   }, []);
   return { userData, error, isLoading };

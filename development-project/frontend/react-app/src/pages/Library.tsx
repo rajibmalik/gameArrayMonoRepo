@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import GameGrid from "../components/GameGrid";
 import SearchBar from "../components/SearchBar";
@@ -59,6 +59,7 @@ const Library = () => {
         </Box>
       </GridItem>
       <GridItem area="main">
+        {isLoading && <Text>Loading</Text>}
         {error && <p>Error loading: {error}</p>}
         {userData && <GameGrid gameQuery={gameQuery} />}
       </GridItem>
