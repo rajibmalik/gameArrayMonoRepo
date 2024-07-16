@@ -12,7 +12,7 @@ export interface GameQuery {
 }
 
 const Library = () => {
-  const { userData, error } = useSessionData();
+  const { userData, error, isLoading } = useSessionData();
   const [gameQuery, setGameQuery] = useState<GameQuery>({} as GameQuery);
 
   // Set userData in gameQuery

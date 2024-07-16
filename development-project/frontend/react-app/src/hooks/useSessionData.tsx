@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { CanceledError } from "axios";
 import { useEffect, useState } from "react";
 
 interface UserData {
@@ -9,10 +9,16 @@ interface UserData {
 const useSessionData = () => {
   const [userData, setUserData] = useState<UserData>();
   const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    const controller = new AbortController();
+
+    setIsLoading(true);
+
     axios
       .get<{ user: UserData }>("http://localhost:3000/api/v1/session", {
+        signal: controller.signal,
         withCredentials: true,
       })
       .then((res) => {
@@ -20,10 +26,15 @@ const useSessionData = () => {
         setUserData(res.data.user);
       })
       .catch((err) => {
+        if (err instanceof CanceledError) return;
         setError(err.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
+    return () => controller.abort();
   }, []);
-  return { userData, error };
+  return { userData, error, isLoading };
 };
 
 export default useSessionData;
