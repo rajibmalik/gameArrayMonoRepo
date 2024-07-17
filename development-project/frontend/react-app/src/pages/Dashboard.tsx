@@ -1,46 +1,25 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import RadarChartComponent from "../components/dashboard/RadarChartComponent";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import useSessionData from "../hooks/useSessionData";
 import BarChartComponent from "../components/dashboard/BarChartComponent";
 import TotalPlaytime from "../components/dashboard/TotalPlaytime";
 import TotalGames from "../components/dashboard/TotalGames";
 import useTopGenres from "../hooks/useTopGenres";
-
-interface fetchTotalPlaytimeResponse {
-  data: {
-    totalPlaytime: number;
-    numberOfGames: number;
-  };
-}
+import useTotalPlaytime from "../hooks/useTotalPlaytime";
 
 const Dashboard = () => {
-  const { userData, error: sessionError } = useSessionData();
-  const [totalPlaytime, setTotalPlaytime] = useState<number>();
-  const [totalGames, setTotalGames] = useState<number>();
+  const {
+    totalPlaytime,
+    totalGames,
+    isLoading: totalPlaytimeLoading,
+    error: totalPlaytimeError,
+  } = useTotalPlaytime();
+
   const {
     topGenres,
     isLoading: topGenresLoading,
     error: topGenresError,
   } = useTopGenres();
-
-  useEffect(() => {
-    if (userData) {
-      axios
-        .get<fetchTotalPlaytimeResponse>(
-          `http://localhost:3000/api/v1/usergames/total-playtime/${userData.steamID}`
-        )
-        .then((res) => {
-          setTotalPlaytime(res.data.data.totalPlaytime);
-          setTotalGames(res.data.data.numberOfGames);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  });
 
   return (
     <Grid
@@ -83,7 +62,7 @@ const Dashboard = () => {
         area="rosechart"
         alignItems={"flex-end"}
       >
-        <RadarChartComponent topGenres={topGenres} />
+        {topGenres && <RadarChartComponent topGenres={topGenres} />}
       </GridItem>
       <GridItem margin={10} marginTop={5} area="barchart">
         <BarChartComponent />
