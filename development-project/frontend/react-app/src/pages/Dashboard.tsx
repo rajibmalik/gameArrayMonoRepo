@@ -7,20 +7,7 @@ import useSessionData from "../hooks/useSessionData";
 import BarChartComponent from "../components/dashboard/BarChartComponent";
 import TotalPlaytime from "../components/dashboard/TotalPlaytime";
 import TotalGames from "../components/dashboard/TotalGames";
-
-export interface topGenres {
-  genre: string;
-  totalPlaytime: number;
-  totalPlaytimeHours: number;
-}
-
-interface fetchDashboardDataResponse {
-  results: number;
-  // Uses the UserGame interface when defining UserGame[]
-  data: {
-    topGenres: topGenres[];
-  };
-}
+import useTopGenres from "../hooks/useTopGenres";
 
 interface fetchTotalPlaytimeResponse {
   data: {
@@ -31,24 +18,9 @@ interface fetchTotalPlaytimeResponse {
 
 const Dashboard = () => {
   const { userData, error } = useSessionData();
-  const [radarChartData, setRadarChartData] = useState<topGenres[]>([]);
   const [totalPlaytime, setTotalPlaytime] = useState<number>();
   const [totalGames, setTotalGames] = useState<number>();
-
-  useEffect(() => {
-    if (userData) {
-      axios
-        .get<fetchDashboardDataResponse>(
-          `http://localhost:3000/api/v1/usergames/top-genres-by-playtime/${userData.steamID}/6`
-        )
-        .then((res) => {
-          setRadarChartData(res.data.data.topGenres);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [userData]);
+  const topGenres = useTopGenres();
 
   useEffect(() => {
     if (userData) {
@@ -107,7 +79,7 @@ const Dashboard = () => {
         area="rosechart"
         alignItems={"flex-end"}
       >
-        <RadarChartComponent topGenres={radarChartData} />
+        <RadarChartComponent topGenres={topGenres} />
       </GridItem>
       <GridItem margin={10} marginTop={5} area="barchart">
         <BarChartComponent />
