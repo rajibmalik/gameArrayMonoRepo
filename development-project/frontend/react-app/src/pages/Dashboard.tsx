@@ -6,6 +6,7 @@ import TotalPlaytime from "../components/dashboard/TotalPlaytime";
 import TotalGames from "../components/dashboard/TotalGames";
 import useTopGenres from "../hooks/useTopGenres";
 import useTotalPlaytime from "../hooks/useTotalPlaytime";
+import useTopGames from "../hooks/useTopGames";
 
 const Dashboard = () => {
   const {
@@ -20,6 +21,14 @@ const Dashboard = () => {
     isLoading: topGenresLoading,
     error: topGenresError,
   } = useTopGenres();
+
+  const {
+    topGames,
+    isLoading: topGamesLoading,
+    error: topGamesError,
+  } = useTopGames();
+
+  console.log("HERE:", topGames);
 
   return (
     <Grid
@@ -65,7 +74,7 @@ const Dashboard = () => {
         {topGenres && <RadarChartComponent topGenres={topGenres} />}
       </GridItem>
       <GridItem margin={10} marginTop={5} area="barchart">
-        <BarChartComponent />
+        {topGames && <BarChartComponent userGames={topGames} />}
       </GridItem>
     </Grid>
   );
