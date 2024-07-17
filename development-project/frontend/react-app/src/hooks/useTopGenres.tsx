@@ -17,12 +17,16 @@ interface fetchDashboardDataResponse {
 }
 
 const useTopGenres = () => {
-  const { userData, error } = useSessionData();
+  const { userData, error: sessionError } = useSessionData();
   const [topGenres, setTopGenres] = useState<TopGenres[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     if (userData) {
       const controller = new AbortController();
+
+      setIsLoading(true);
 
       axios
         .get<fetchDashboardDataResponse>(
@@ -35,16 +39,20 @@ const useTopGenres = () => {
         .then((res) => {
           // Sets userData to user session object, created in Passport.js in Express backend
           setTopGenres(res.data.data.topGenres);
+          setIsLoading(false);
         })
         .catch((err) => {
           if (err instanceof CanceledError) return;
+          setIsLoading(false);
         });
 
       return () => controller.abort();
+    } else if (sessionError) {
+      setError(sessionError);
     }
   }, [userData]);
 
-  return topGenres;
+  return { topGenres, isLoading, error };
 };
 
 export default useTopGenres;

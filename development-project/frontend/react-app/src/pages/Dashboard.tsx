@@ -17,10 +17,14 @@ interface fetchTotalPlaytimeResponse {
 }
 
 const Dashboard = () => {
-  const { userData, error } = useSessionData();
+  const { userData, error: sessionError } = useSessionData();
   const [totalPlaytime, setTotalPlaytime] = useState<number>();
   const [totalGames, setTotalGames] = useState<number>();
-  const topGenres = useTopGenres();
+  const {
+    topGenres,
+    isLoading: topGenresLoading,
+    error: topGenresError,
+  } = useTopGenres();
 
   useEffect(() => {
     if (userData) {
