@@ -85,6 +85,14 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/games', gameRouter);
 app.use('/api/v1/usergames', userGameRouter);
 
+// Handles unhandled routes
+app.all('*', (req, res, next) => {
+  res.status(404).json({
+    status: 'fail',
+    message: `Can not find ${req.originalUrl} on this server`,
+  });
+});
+
 // Initiates server
 app.listen(process.env.PORT, () => {
   console.log(`App running on port ${process.env.PORT}!`);
