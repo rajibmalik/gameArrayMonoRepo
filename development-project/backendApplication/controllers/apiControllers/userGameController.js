@@ -69,6 +69,33 @@ exports.getSearchedGamesForOneUser = async (req, res) => {
   }
 };
 
+exports.getSearchedGamesAndGenre = async (req, res) => {
+  const { steamid, searchtext, genre } = req.params;
+
+  const userGamesWithGames = await getUserGamesWithGames(steamid);
+
+  const filteredGames = userGamesWithGames.filter(
+    (game) =>
+      game.name.toLowerCase().includes(searchtext.toLowerCase()) &&
+      // checks if one of the games genres matches the queries genre
+      game.genres.some((game) =>
+        game.toLowerCase().includes(genre.toLowerCase()),
+      ),
+  );
+
+  try {
+    res.status(200).json({
+      status: 'success',
+      results: filteredGames,
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
 exports.getAllUserGamesAndGamesForOneUser = async (req, res) => {
   try {
     const userGamesWithGames = await getUserGamesWithGames(req.params.steamid);

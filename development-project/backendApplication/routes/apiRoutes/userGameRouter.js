@@ -2,7 +2,14 @@ const express = require('express');
 const router = express.Router();
 const userGameController = require('../../controllers/apiControllers/userGameController');
 
-router.route('/').get(userGameController.getAllUserGames);
+router
+  //:genres is the number of genres
+  .route('/top-genres-by-playtime/:steamid/:genres')
+  .get(userGameController.getTopPlayedGenres);
+
+router
+  .route('/:steamid/:searchtext/:genre')
+  .get(userGameController.getSearchedGamesAndGenre);
 
 router
   .route('/total-playtime/:steamid')
@@ -20,9 +27,5 @@ router
   .route('/:steamid/:searchtext')
   .get(userGameController.getSearchedGamesForOneUser);
 
-router
-  //:genres is the number of genres
-  .route('/top-genres-by-playtime/:steamid/:genres')
-  .get(userGameController.getTopPlayedGenres);
-
+router.route('/').get(userGameController.getAllUserGames);
 module.exports = router;
