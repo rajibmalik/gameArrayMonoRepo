@@ -112,5 +112,26 @@ describe('User Game Router', () => {
       );
       expect(namesContainSearchText).toBe(true);
     });
+    it('should fail to return non existent game', async () => {
+      const response = await supertest(app)
+        .get('/api/v1/usergames/12356789123456789/gamethatdoesnotexist')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(response.body.status).toBe('success');
+      expect(response.body.data.userGames).toHaveLength(0);
+    });
+    it('should succeed in returning gameOne document', async () => {
+      const response = await supertest(app)
+        .get('/api/v1/usergames/12356789123456789/gAMeOnE')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(response.body.status).toBe('success');
+      expect(response.body.data.userGames).toHaveLength(1);
+      expect(response.body.data.userGames[0].name.toLowerCase()).toBe(
+        'gameone',
+      );
+    });
   });
 });
