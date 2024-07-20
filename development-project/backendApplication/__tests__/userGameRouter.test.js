@@ -2,9 +2,6 @@ const supertest = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
 const createServer = require('../utils/server');
-const UserGame = require('../models/userGameModel');
-const User = require('..//models/userModel');
-const Game = require('../models/gameModel');
 const DatabaseSetup = require('../utils/databaseSetup');
 
 // Creates instance of server without actually starting it
@@ -33,7 +30,7 @@ describe('User Game Router', () => {
   });
 
   describe('GET /api/v1/usergames/:steamid', () => {
-    it('should successfuly return 2 UserGame documents', async () => {
+    it('should successfuly return 4 UserGame documents', async () => {
       // Make request to endpoint
       const response = await supertest(app)
         .get('/api/v1/usergames/12356789123456789')
@@ -42,8 +39,9 @@ describe('User Game Router', () => {
 
       // Assertions of response data
       expect(response.body.status).toBe('success');
-      expect(response.body.data.userGames).toHaveLength(2);
+      expect(response.body.data.userGames).toHaveLength(4);
       expect(response.body.data.userGames[1].appid).toBe('2');
+      expect(response.body.data.userGames[1].playtime).toBe(200);
       expect(response.body.data.userGames[0].genres).toContain('RPG');
     });
     it('should successfuly return 0 UserGame for User without games', async () => {
@@ -84,6 +82,35 @@ describe('User Game Router', () => {
       expect(response.body.status).toBe('success');
       expect(response.body.data.userGames).toHaveLength(1000);
       expect(queryDuration).toBeLessThan(600);
+    });
+  });
+
+  describe('GET /api/v1/usergames/:steamid/:searchtext', () => {
+    it('should successfully return the userGame document for gameOne', async () => {
+      const response = await supertest(app)
+        .get('/api/v1/usergames/12356789123456789/gameOne')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(response.body.status).toBe('success');
+      expect(response.body.data.userGames).toHaveLength(1);
+      expect(response.body.data.userGames[0].name).toBe('gameOne');
+      expect(response.body.data.userGames[0].genres).toContain('Action');
+      expect(response.body.data.userGames[0].playtime).toBe(100);
+    });
+    it('should successfully return the userGame document for many games', async () => {
+      const response = await supertest(app)
+        .get('/api/v1/usergames/12356789123456789/Game')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(response.body.status).toBe('success');
+      expect(response.body.data.userGames).toHaveLength(3);
+      const names = response.body.data.userGames.map((game) => game.name);
+      const namesContainSearchText = names.every((name) =>
+        name.includes('game'),
+      );
+      expect(namesContainSearchText).toBe(true);
     });
   });
 });

@@ -26,6 +26,8 @@ exports.createInitialData = async () => {
     const games = [
       { appid: '1', name: 'gameOne', genres: ['Action', 'RPG'] },
       { appid: '2', name: 'gameTwo', genres: ['RPG'] },
+      { appid: '3', name: 'gameThree', genres: ['Simulation'] },
+      { appid: '4', name: 'four', genres: ['Sport'] },
     ];
     await Game.insertMany(games);
   } catch (err) {
@@ -46,6 +48,8 @@ exports.createLargeData = async () => {
     const userGames = [
       { appid: '1', steamid: '12356789123456789', playtime: 100 },
       { appid: '2', steamid: '12356789123456789', playtime: 200 },
+      { appid: '3', steamid: '12356789123456789', playtime: 300 },
+      { appid: '4', steamid: '12356789123456789', playtime: 250 },
     ];
     await UserGame.insertMany(userGames);
 
