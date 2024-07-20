@@ -6,6 +6,10 @@ interface Props {
   onSearch: (searchText: string) => void;
 }
 
+const sanitizeInput = (input: string): string => {
+  return input.replace(/[^a-zA-Z0-9\s]/g, ""); // Remove special characters, except spaces
+};
+
 const SearchBar = ({ onSearch }: Props) => {
   const ref = useRef<HTMLInputElement>(null);
   return (
@@ -13,7 +17,8 @@ const SearchBar = ({ onSearch }: Props) => {
       onChange={(event) => {
         event.preventDefault();
         if (ref.current) {
-          onSearch(ref.current.value);
+          const sanitizedSearchText = sanitizeInput(ref.current.value);
+          onSearch(sanitizedSearchText);
         }
       }}
     >
