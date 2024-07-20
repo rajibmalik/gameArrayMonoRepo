@@ -5,6 +5,7 @@ const createServer = require('../utils/server');
 const UserGame = require('../models/userGameModel');
 const User = require('..//models/userModel');
 const Game = require('../models/gameModel');
+const DatabaseSetup = require('../utils/databaseSetup');
 
 // Creates instance of server without actually starting it
 const app = createServer();
@@ -25,55 +26,10 @@ describe('User Game Router', () => {
   });
 
   beforeEach(async () => {
-    // Deletes existing collections in database
-    await User.deleteMany({});
-    await Game.deleteMany({});
-    await UserGame.deleteMany({});
-
-    // Creates User documents
-    const users = [
-      { steamID: '12356789123456789', username: 'userOne' },
-      { steamID: '23456789123456789', username: 'userTwo' },
-      { steamID: '34567891234567890', username: 'userThree' },
-    ];
-    await User.insertMany(users);
-
-    // Creates Game documents
-    const games = [
-      { appid: '1', name: 'gameOne', genres: ['Action', 'RPG'] },
-      { appid: '2', name: 'gameTwo', genres: ['RPG'] },
-    ];
-    await Game.insertMany(games);
-
-    // Creates many game documents
-    let manyGames = [];
-    for (let i = 1000; i < 2000; i++) {
-      const game = {
-        appid: i.toString(),
-        name: `game${i}`,
-      };
-      manyGames.push(game);
-    }
-    await Game.insertMany(manyGames);
-
-    // Creates UserGame documents
-    const userGames = [
-      { appid: '1', steamid: '12356789123456789', playtime: 100 },
-      { appid: '2', steamid: '12356789123456789', playtime: 200 },
-    ];
-    await UserGame.insertMany(userGames);
-
-    // Create many UserGame documents
-    let manyUserGames = [];
-    for (let i = 1000; i < 2000; i++) {
-      const game = {
-        appid: i.toString(),
-        steamid: '34567891234567890',
-        playtime: Math.floor(Math.random() * 1000) + 1,
-      };
-      manyUserGames.push(game);
-    }
-    await UserGame.insertMany(manyUserGames);
+    // DatabaseSetup is responsible for handling the mock database
+    await DatabaseSetup.clearDatabase();
+    await DatabaseSetup.createInitialData();
+    await DatabaseSetup.createLargeData();
   });
 
   describe('GET /api/v1/usergames/:steamid', () => {
