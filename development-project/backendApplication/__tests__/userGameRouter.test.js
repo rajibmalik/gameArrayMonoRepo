@@ -34,6 +34,7 @@ describe('User Game Router', () => {
     const users = [
       { steamID: '12356789123456789', username: 'userOne' },
       { steamID: '23456789123456789', username: 'userTwo' },
+      { steamID: '34567891234567890', username: 'userThree' },
     ];
     await User.insertMany(users);
 
@@ -44,12 +45,35 @@ describe('User Game Router', () => {
     ];
     await Game.insertMany(games);
 
+    // Creates many game documents
+    let manyGames = [];
+    for (let i = 1000; i < 2000; i++) {
+      const game = {
+        appid: i.toString(),
+        name: `game${i}`,
+      };
+      manyGames.push(game);
+    }
+    await Game.insertMany(manyGames);
+
     // Creates UserGame documents
     const userGames = [
       { appid: '1', steamid: '12356789123456789', playtime: 100 },
       { appid: '2', steamid: '12356789123456789', playtime: 200 },
     ];
     await UserGame.insertMany(userGames);
+
+    // Create many UserGame documents
+    let manyUserGames = [];
+    for (let i = 1000; i < 2000; i++) {
+      const game = {
+        appid: i.toString(),
+        steamid: '34567891234567890',
+        playtime: Math.floor(Math.random() * 1000) + 1,
+      };
+      manyUserGames.push(game);
+    }
+    await UserGame.insertMany(manyUserGames);
   });
 
   describe('GET /api/v1/usergames/:steamid', () => {
@@ -75,7 +99,7 @@ describe('User Game Router', () => {
       expect(response.body.status).toBe('success');
       expect(response.body.data.userGames).toHaveLength(0);
     });
-    it('should successfuly return 0 UserGame for User without games', async () => {
+    it('should fail and send validation error when requesting invalid steamid format', async () => {
       const response = await supertest(app)
         .get('/api/v1/usergames/a')
         .expect('Content-Type', /json/)
@@ -84,11 +108,26 @@ describe('User Game Router', () => {
       expect(response.body.status).toBe('fail');
       expect(response.body).toHaveProperty('errors');
 
+      //   Map error messages so they can easily be checked
       const errorMessages = response.body.errors.map((err) => err.msg);
       expect(errorMessages).toContain(
         'Steamid must be exactly 17 characters long',
       );
       expect(errorMessages).toContain('Steamid must be a number');
+    });
+    it('should successfully return 1000 UserGame with queryDuration <600ms', async () => {
+      const startTime = performance.now();
+      const response = await supertest(app)
+        .get('/api/v1/usergames/34567891234567890')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      const endTime = performance.now();
+      const queryDuration = endTime - startTime;
+
+      expect(response.body.status).toBe('success');
+      expect(response.body.data.userGames).toHaveLength(1000);
+      expect(queryDuration).toBeLessThan(600);
     });
   });
 });
