@@ -134,4 +134,75 @@ describe('User Game Router', () => {
       );
     });
   });
+  describe('GET /top-10-by-playtime/:steamid', () => {
+    it('should return 10 games with expected data', async () => {
+      const response = await supertest(app)
+        .get('/api/v1/usergames/top-10-by-playtime/34567891234567890')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      const userGames = response.body.data.userGames;
+
+      expect(response.body.status).toBe('success');
+      expect(userGames).toHaveLength(10);
+      const appids = userGames.map((game) => game.appid);
+      const uniqueAppids = new Set(appids);
+      expect(uniqueAppids.size).toBe(10);
+
+      for (let i = 0; i < userGames.length - 1; i++) {
+        expect(userGames[i].playtime).toBeGreaterThanOrEqual(
+          userGames[i + 1].playtime,
+        );
+      }
+    });
+    it('should return as many games as the User has if less than 10', async () => {
+      const response = await supertest(app)
+        .get('/api/v1/usergames/top-10-by-playtime/12356789123456789')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(response.body.status).toBe('success');
+      expect(response.body.data.userGames).toHaveLength(4);
+    });
+  });
+  describe('GET /total-playtime/:steamid', () => {
+    it('should return the totalplaytime and number of games', async () => {
+      const response = await supertest(app)
+        .get('/api/v1/usergames/total-playtime/12356789123456789')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(response.body.status).toBe('success');
+      expect(response.body.data.totalPlaytime).toBe(14);
+      expect(response.body.data.numberOfGames).toBe(4);
+    });
+  });
+  describe('GET /top-genres-by-playtime/:steamid/:genres', () => {
+    it('should return the top 6 genres by playtime with expected data', async () => {
+      const response = await supertest(app)
+        .get('/api/v1/usergames/top-genres-by-playtime/45678912345678901/6')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      const topGenres = response.body.data.topGenres;
+
+      expect(response.body.status).toBe('success');
+      expect(response.body.results).toBe(6);
+      for (let i = 0; i < response.body.results - 1; i++) {
+        expect(topGenres[i].totalPlaytime).toBeGreaterThanOrEqual(
+          topGenres[i].totalPlaytime,
+        );
+      }
+      expect(topGenres[0].genre).toBe('Building');
+    });
+    it('should return as many genres as possible if less than number requested available', async () => {
+      const response = await supertest(app)
+        .get('/api/v1/usergames/top-genres-by-playtime/12356789123456789/6')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(response.body.status).toBe('success');
+      expect(response.body.results).toBe(5);
+    });
+  });
 });

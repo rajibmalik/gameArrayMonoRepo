@@ -170,6 +170,7 @@ exports.getTotalPlaytime = async (req, res) => {
     });
 
     res.status(200).json({
+      status: 'success',
       data: {
         totalPlaytime: totalPlaytime,
         numberOfGames: numberOfGames,
