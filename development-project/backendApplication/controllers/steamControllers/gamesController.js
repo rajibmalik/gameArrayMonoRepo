@@ -83,9 +83,7 @@ exports.queryGames = async (req, res, next) => {
     // If the response is successful, create a game object and push it to games[]
     for (let i = 0; i < responseData.length; i++) {
       const appid = Object.keys(responseData[i])[0].toString();
-      console.log(appid);
       const success = responseData[i][appid].success;
-      console.log(success);
 
       if (success) {
         const data = responseData[i][appid].data;

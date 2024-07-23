@@ -67,8 +67,68 @@ describe('Game Controller', () => {
   });
 
   describe('queryGames', () => {
-    it('', () => {
-      const appids = [1, 2, 3];
+    it('should correctly pass data as games parameter', async () => {
+      const req = {
+        appids: ['1', '2', '3', '4'],
+      };
+
+      steamService.getAppDetails.mockResolvedValue([
+        {
+          1: {
+            success: true,
+            data: {
+              name: 'Game 1',
+              header_image: 'image1.jpg',
+              genres: [{ description: 'Action' }],
+            },
+          },
+        },
+        {
+          2: {
+            success: true,
+            data: {
+              name: 'Game 2',
+              header_image: 'image2.jpg',
+              genres: [{ description: 'RPG' }],
+            },
+          },
+        },
+        { 3: { success: false } },
+        {
+          4: {
+            success: true,
+            data: {
+              name: 'Game 4',
+              header_image: 'image4.jpg',
+              genres: [{ description: 'Simulation' }],
+            },
+          },
+        },
+      ]);
+
+      await gameController.queryGames(req, res, next);
+
+      expect(req.games).toEqual([
+        {
+          appid: '1',
+          name: 'Game 1',
+          headerImage: 'image1.jpg',
+          genres: ['Action'],
+        },
+        {
+          appid: '2',
+          name: 'Game 2',
+          headerImage: 'image2.jpg',
+          genres: ['RPG'],
+        },
+        {
+          appid: '4',
+          name: 'Game 4',
+          headerImage: 'image4.jpg',
+          genres: ['Simulation'],
+        },
+      ]);
+      expect(next).toHaveBeenCalled();
     });
   });
 });
