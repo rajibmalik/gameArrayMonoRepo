@@ -1,5 +1,5 @@
 const steamService = require('../../services/steamService');
-const gameService = require('../../services/dbServices/gameService');
+const Game = require('../../models/gameModel');
 
 // This is a controller class for the accountRouter
 // it contains relevant middleware for associated with Game models
@@ -56,7 +56,7 @@ exports.findNewGames = async (ownedGames) => {
     const appids = ownedGames.map((game) => game.appid);
 
     // 2) Query MongoDB to find existing games
-    const allDatabaseGames = await gameService.getAllGames();
+    const allDatabaseGames = await Game.find();
     const allDatabaseGamesids = allDatabaseGames.map((game) => game.appid);
 
     // 3 Filter out new appids that are not in the database
@@ -159,7 +159,23 @@ exports.createGames = async (req, res, next) => {
     //   },
     // ];
 
-    await gameService.createGames(games);
+    for (const game of games) {
+      console.log(`GAME ID: ${game.appid}`);
+      let existingGame = await Game.findOne({ appid: game.appid });
+      console.log(`EXISTING GAME ${existingGame}`);
+
+      if (existingGame === null) {
+        // Takes each object and maps it to the Game schema, ignoring any information not related to schema
+        await Game.create(game);
+        console.log(`Successfully created: ${game.appid} ${game.name}`);
+      } else {
+        console.log(
+          `Game not created as it already exists: ${game.appid} ${game.name}`,
+        );
+      }
+
+      existingGame = null;
+    }
 
     next();
   } catch (err) {
