@@ -10,15 +10,17 @@ exports.createUser = async (req, res, next) => {
     let user = await User.findOne({ steamID: userInfo.steamID });
 
     if (!user) {
-      User.create(req.user);
+      user = await User.create(req.user);
     }
 
     next();
+    return user;
   } catch (err) {
     res.status(400).json({
       status: 'fail',
       error: err.message,
     });
+    return null;
   }
 };
 

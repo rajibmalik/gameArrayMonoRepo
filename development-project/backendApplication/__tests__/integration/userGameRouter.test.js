@@ -1,8 +1,8 @@
 const supertest = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
-const createServer = require('../utils/server');
-const DatabaseSetup = require('../utils/databaseSetup');
+const createServer = require('../../utils/server');
+const DatabaseSetup = require('../../utils/databaseSetup');
 
 // Creates instance of server without actually starting it
 const app = createServer();
