@@ -9,36 +9,30 @@ const Game = require('../../models/gameModel');
 exports.fetchAndProcessGames = async (req, res, next) => {
   try {
     const steamID = req.user.steamID;
-    // Obtain ownedGamed from Steam API
     const ownedGames = await steamService.getOwnedGames(steamID);
-    // console.log(ownedGames);
-
-    // Empty array for owned games that have been played
     const playedGames = [];
 
-    // Add games with playtime to playedGames array
-    for (let i = 0; i < ownedGames.length; i++) {
-      if (ownedGames[i].playtime_forever > 0) {
-        playedGames.push(ownedGames[i]);
+    // Add games with playtime to playedGames
+    ownedGames.forEach((game) => {
+      if (game.playtime_forever > 0) {
+        playedGames.push(game);
       }
-    }
+    });
 
-    // Find appids which are not in the database
+    // Find games which are not already saved to the database
     const newAppids = await this.findNewGames(playedGames);
     req.appids = newAppids;
 
-    // create an array of games objects containing games and their playtime
+    // Create an array of games objects containing games and their playtime
     const gamesWithPlaytime = playedGames.map((game) => ({
       appid: game.appid,
       playtime: game.playtime_forever,
     }));
 
-    console.log(gamesWithPlaytime);
-    console.log(`New games length ${gamesWithPlaytime.length}`);
-
     req.usergames = gamesWithPlaytime;
 
     next();
+    return { gamesWithPlaytime, newAppids };
   } catch (err) {
     console.log('Error fetching owned games:' + err);
     res.status(500).json({
@@ -73,31 +67,20 @@ exports.findNewGames = async (ownedGames) => {
 // Using steamService, queries an array of appids for more game information
 exports.queryGames = async (req, res, next) => {
   try {
-    console.log('Querying appIDs');
     // Times the length of the query
     const startTime = Date.now();
 
-    // Obtains appids from previous middleware, fetchOwnedGames
     const appids = req.appids;
-
-    // Obtains response data using steamService
+    console.log(`appids ${appids}`);
     const responseData = await steamService.getAppDetails(appids);
 
     // Calculated length of time querying
     const elapsedTime = Date.now() - startTime;
     console.log(`Querying took ${elapsedTime} milliseconds`);
 
-    // test;
-    // const responseData = await steamService.getAppDetails([
-    //   17440, 105600, 4540,
-    // ]);
-    // console.log(responseData);
-
-    // Initilaise empty array of games
     const games = [];
 
-    // If the response is successful, create a game object and push it to the games
-    // array
+    // If the response is successful, create a game object and push it to games[]
     for (let i = 0; i < responseData.length; i++) {
       const appid = Object.keys(responseData[i])[0].toString();
       console.log(appid);
@@ -116,14 +99,11 @@ exports.queryGames = async (req, res, next) => {
             : [],
         };
 
-        console.log(game);
-
         games.push(game);
         console.log(`Number of games ${games.length}`);
       }
     }
 
-    // set req.games to be equal to the games array so that it can be processed in subsequent middleware
     req.games = games;
 
     next();
