@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nodemon app.js",
     "test": "jest",
-    "debug": "ndb app.js"
+    "debug": "ndb app.js",
+    "test:coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",
