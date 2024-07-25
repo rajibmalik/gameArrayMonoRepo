@@ -1,10 +1,10 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Icon } from "@chakra-ui/react";
 import { FaSteam } from "react-icons/fa";
 
 const AuthButton = () => {
   return (
     <Button
-      leftIcon={<FaSteam />}
+      leftIcon={<Icon as={FaSteam} boxSize="3rem" />}
       textColor={"white"}
       bgColor="#17252A"
       variant={"solid"}
