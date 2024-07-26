@@ -17,10 +17,15 @@ const getOwnedGames = async (steamID) => {
       },
     );
 
+    if (response.status !== 200) {
+      throw new Error(`HTTP error with status: ${response.status}`);
+    }
+
     return response.data.response.games;
   } catch (err) {
-    console.log('Error fetching owned games ' + err);
-    throw new Error(err.message);
+    throw new Error(
+      `Failed to fetch owned games from Steam API: ${err.message}`,
+    );
   }
 };
 
@@ -52,10 +57,14 @@ const getAppDetails = async (appIDs) => {
           ) {
             // Add app details to appDetails array
             appDetails.push(response.data);
+          } else {
+            throw new Error(
+              `Steam API response not successful for fetching app details for appID ${appID}`,
+            );
           }
         })
-        .catch((error) => {
-          console.error(`Error fetching details for appID ${appID}:`, error);
+        .catch((err) => {
+          throw new Error(`Error fetching details for appID ${appID}:`, err);
         });
 
       // Add the request to the concurrent batch
@@ -74,9 +83,10 @@ const getAppDetails = async (appIDs) => {
     await Promise.all(currentRequests);
 
     return appDetails;
-  } catch (error) {
-    console.error('Error fetching app details:', error);
-    throw error;
+  } catch (err) {
+    throw new Error(
+      `Failed to fetch game details from Steam API: ${err.message}`,
+    );
   }
 };
 
