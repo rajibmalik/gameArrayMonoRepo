@@ -23,7 +23,7 @@ interface fetchUserGamesResponse {
 }
 
 // Takes the steamID to make query related to an authenticated user session
-const useUserGames = ({ steamID, searchText }: GameQuery) => {
+const useUserGames = ({ steamID, searchText, genre }: GameQuery) => {
   // Initialises to empty [] of type UserGame defined in above interface
   const [userGames, setUserGames] = useState<UserGame[]>([]);
   const [error, setError] = useState("");
@@ -35,11 +35,16 @@ const useUserGames = ({ steamID, searchText }: GameQuery) => {
 
     setIsLoading(true);
 
-    // If there is search text, use searchText & steamID parameters,
-    // else just search using steamID as parameter
-    const url = searchText
-      ? `/usergames/${steamID}/${searchText}`
-      : `/usergames/${steamID}`;
+    // Base URL
+    const baseUrl = `/usergames/${steamID}`;
+
+    // Create URLSearchParams object for query parameters
+    const params = new URLSearchParams();
+    if (searchText) params.append("searchtext", searchText);
+    if (genre) params.append("genre", genre);
+
+    // Constructs full URL with base and query parameters
+    const url = `${baseUrl}?${params.toString()}`;
 
     apiClient
       // Defines the get respones type to above inteface fetchUserGamesResponse
@@ -60,7 +65,7 @@ const useUserGames = ({ steamID, searchText }: GameQuery) => {
 
     // cleanup function for aborting the request
     return () => controller.abort();
-  }, [steamID, searchText]);
+  }, [steamID, searchText, genre]);
 
   // Return the userGames and error, enables caller to process data
   return { userGames, error, isLoading };

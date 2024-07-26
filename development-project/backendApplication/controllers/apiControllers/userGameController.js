@@ -41,62 +41,7 @@ exports.getAllUserGamesForOneUser = async (req, res) => {
   }
 };
 
-exports.getSearchedGamesForOneUser = async (req, res) => {
-  const { steamid, searchtext } = req.params;
-  try {
-    const userGamesWithGames = await getUserGamesWithGames(steamid);
-
-    // filter for game names including searchtext
-    const filteredGames = userGamesWithGames.filter((game) => {
-      const nameMatches = game.name
-        .toLowerCase()
-        .includes(searchtext.toLowerCase());
-      return nameMatches;
-    });
-
-    res.status(200).json({
-      status: 'success',
-      results: filteredGames.length,
-      data: {
-        userGames: filteredGames,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err.message,
-    });
-  }
-};
-
-exports.getSearchedGamesAndGenre = async (req, res) => {
-  const { steamid, searchtext, genre } = req.params;
-
-  const userGamesWithGames = await getUserGamesWithGames(steamid);
-
-  const filteredGames = userGamesWithGames.filter(
-    (game) =>
-      game.name.toLowerCase().includes(searchtext.toLowerCase()) &&
-      // checks if one of the games genres matches the queries genre
-      game.genres.some((game) =>
-        game.toLowerCase().includes(genre.toLowerCase()),
-      ),
-  );
-
-  try {
-    res.status(200).json({
-      status: 'success',
-      results: filteredGames,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err.message,
-    });
-  }
-};
-
-exports.getAllUserGamesAndGamesForOneUser = async (req, res) => {
+exports.getAllUserGames = async (req, res) => {
   try {
     const userGamesWithGames = await getUserGamesWithGames(req.params.steamid);
 
@@ -180,6 +125,45 @@ exports.getTotalPlaytime = async (req, res) => {
     res.status(404).json({
       status: 'fail',
       message: err.message,
+    });
+  }
+};
+
+exports.getFilteredGames = async (req, res) => {
+  const { steamid } = req.params;
+  const { searchtext, genre } = req.query;
+
+  try {
+    const userGamesWithGames = await getUserGamesWithGames(steamid);
+
+    let filteredGames = userGamesWithGames;
+
+    // Filter by searchtext
+    if (searchtext) {
+      filteredGames = filteredGames.filter((game) =>
+        game.name.toLowerCase().includes(searchtext.toLowerCase()),
+      );
+    }
+
+    // Filter by genre
+    if (genre) {
+      filteredGames = filteredGames.filter((game) =>
+        game.genres.some((g) => g.toLowerCase().includes(genre.toLowerCase())),
+      );
+    }
+
+    res.status(200).json({
+      status: 'success',
+      results: filteredGames.length,
+      data: {
+        userGames: filteredGames,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'fail',
+      message: 'Failed to fetch filtered games',
+      error: err.message,
     });
   }
 };

@@ -4,11 +4,13 @@ import GameGrid from "../components/GameGrid";
 import SearchBar from "../components/SearchBar";
 import useSessionData from "../hooks/useSessionData";
 import { useEffect, useState } from "react";
+import SearchBox from "../components/SearchBox";
 
 export interface GameQuery {
   steamID: number | null;
   username: string | null;
   searchText: string;
+  genre: string;
 }
 
 const Library = () => {
@@ -34,6 +36,14 @@ const Library = () => {
     }));
   };
 
+  const handleGenreChange = (genre: string) => {
+    console.log(genre);
+    setGameQuery((prevGameQuery) => ({
+      ...prevGameQuery,
+      genre: genre,
+    }));
+  };
+
   return (
     <Grid
       templateAreas={{
@@ -55,7 +65,10 @@ const Library = () => {
           borderRadius={5}
           borderWidth={1}
         >
-          <SearchBar onSearch={handleSearch} />
+          <SearchBox
+            onSearch={handleSearch}
+            onGenreChange={handleGenreChange}
+          />
         </Box>
       </GridItem>
       <GridItem area="main">
