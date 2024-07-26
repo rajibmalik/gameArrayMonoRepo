@@ -30,7 +30,7 @@ describe('User Game Router', () => {
   });
 
   describe('GET /api/v1/usergames/:steamid', () => {
-    it('should successfuly return 4 UserGame documents', async () => {
+    it('should successfuly return 4 UserGames with correct data', async () => {
       // Make request to endpoint
       const response = await supertest(app)
         .get('/api/v1/usergames/12356789123456789')
@@ -62,14 +62,14 @@ describe('User Game Router', () => {
       expect(response.body.status).toBe('fail');
       expect(response.body).toHaveProperty('errors');
 
-      //   Map error messages so they can easily be checked
+      //   Map error messages so they be checked
       const errorMessages = response.body.errors.map((err) => err.msg);
       expect(errorMessages).toContain(
         'Steamid must be exactly 17 characters long',
       );
       expect(errorMessages).toContain('Steamid must be a number');
     });
-    it('should successfully return 1000 UserGame with queryDuration <600ms', async () => {
+    it('should successfully return 1000 UserGames with queryDuration <600ms', async () => {
       const startTime = performance.now();
       const response = await supertest(app)
         .get('/api/v1/usergames/34567891234567890')
@@ -82,6 +82,72 @@ describe('User Game Router', () => {
       expect(response.body.status).toBe('success');
       expect(response.body.data.userGames).toHaveLength(1000);
       expect(queryDuration).toBeLessThan(600);
+    });
+    it('should successfully return 3 UserGames with a partially correct name', async () => {
+      const searchtext = 'game';
+      const response = await supertest(app)
+        .get(`/api/v1/usergames/12356789123456789/?searchtext=${searchtext}`)
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(response.body.status).toBe('success');
+      expect(response.body.data.userGames).toHaveLength(3);
+      const allGamesContainSearchText = response.body.data.userGames.every(
+        (game) => {
+          return game.name.includes(searchtext);
+        },
+      );
+      expect(allGamesContainSearchText).toBe(true);
+    });
+    it('should successfully return 1 UserGames with the exact correct name case insensitively', async () => {
+      const searchtext = 'Four';
+      const response = await supertest(app)
+        .get(`/api/v1/usergames/12356789123456789/?searchtext=${searchtext}`)
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(response.body.status).toBe('success');
+      expect(response.body.data.userGames).toHaveLength(1);
+      expect(response.body.data.userGames[0].name).toBe('four');
+    });
+    it('should successfully return one UserGame with the correct genre', async () => {
+      const genre = 'Simulation';
+      const response = await supertest(app)
+        .get(`/api/v1/usergames/12356789123456789/?genre=${genre}`)
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(response.body.status).toBe('success');
+      expect(response.body.data.userGames).toHaveLength(1);
+      expect(response.body.data.userGames[0].genres[0]).toBe('Simulation');
+    });
+    it('should successfully return 1 UserGame with the correct searchtext and genre', async () => {
+      const genre = 'Action';
+      const searchtext = 'gameOne';
+      const response = await supertest(app)
+        .get(
+          `/api/v1/usergames/12356789123456789/?searchtext=${searchtext}&genre=${genre}`,
+        )
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(response.body.status).toBe('success');
+      expect(response.body.data.userGames).toHaveLength(1);
+      expect(response.body.data.userGames[0].genres[0]).toBe('Action');
+      expect(response.body.data.userGames[0].name).toBe('gameOne');
+    });
+    it('should successfully return 0 UserGames matching the searchtext and genre', async () => {
+      const genre = 'Simulation';
+      const searchtext = 'gameOne';
+      const response = await supertest(app)
+        .get(
+          `/api/v1/usergames/12356789123456789/?searchtext=${searchtext}&genre=${genre}`,
+        )
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(response.body.status).toBe('success');
+      expect(response.body.data.userGames).toHaveLength(0);
     });
   });
   describe('GET /top-10-by-playtime/:steamid', () => {
@@ -155,54 +221,4 @@ describe('User Game Router', () => {
       expect(response.body.results).toBe(5);
     });
   });
-
-  // describe('GET /api/v1/usergames/:steamid/:searchtext', () => {
-  //   it('should successfully return the userGame document for gameOne', async () => {
-  //     const response = await supertest(app)
-  //       .get('/api/v1/usergames/12356789123456789/gameOne')
-  //       .expect('Content-Type', /json/)
-  //       .expect(200);
-
-  //     expect(response.body.status).toBe('success');
-  //     expect(response.body.data.userGames).toHaveLength(1);
-  //     expect(response.body.data.userGames[0].name).toBe('gameOne');
-  //     expect(response.body.data.userGames[0].genres).toContain('Action');
-  //     expect(response.body.data.userGames[0].playtime).toBe(100);
-  //   });
-  //   it('should successfully return the userGame document for many games', async () => {
-  //     const response = await supertest(app)
-  //       .get('/api/v1/usergames/12356789123456789/Game')
-  //       .expect('Content-Type', /json/)
-  //       .expect(200);
-
-  //     expect(response.body.status).toBe('success');
-  //     expect(response.body.data.userGames).toHaveLength(3);
-  //     const names = response.body.data.userGames.map((game) => game.name);
-  //     const namesContainSearchText = names.every((name) =>
-  //       name.includes('game'),
-  //     );
-  //     expect(namesContainSearchText).toBe(true);
-  //   });
-  //   it('should fail to return non existent game', async () => {
-  //     const response = await supertest(app)
-  //       .get('/api/v1/usergames/12356789123456789/gamethatdoesnotexist')
-  //       .expect('Content-Type', /json/)
-  //       .expect(200);
-
-  //     expect(response.body.status).toBe('success');
-  //     expect(response.body.data.userGames).toHaveLength(0);
-  //   });
-  //   it('should succeed in returning gameOne document', async () => {
-  //     const response = await supertest(app)
-  //       .get('/api/v1/usergames/12356789123456789/gAMeOnE')
-  //       .expect('Content-Type', /json/)
-  //       .expect(200);
-
-  //     expect(response.body.status).toBe('success');
-  //     expect(response.body.data.userGames).toHaveLength(1);
-  //     expect(response.body.data.userGames[0].name.toLowerCase()).toBe(
-  //       'gameone',
-  //     );
-  //   });
-  // });
 });
