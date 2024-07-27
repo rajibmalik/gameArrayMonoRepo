@@ -131,4 +131,63 @@ describe('Game Controller', () => {
       expect(next).toHaveBeenCalled();
     });
   });
+
+  describe('createGames', () => {
+    it('creates one game with correct data', async () => {
+      const req = {
+        games: [
+          {
+            appid: '22380',
+            name: 'Fallout: New Vegas',
+            headerImage:
+              'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/22380/header.jpg?t=1665072891',
+            genres: ['Action', 'RPG'],
+          },
+        ],
+      };
+
+      await gameController.createGames(req, res, next);
+
+      expect(next).toHaveBeenCalled;
+      const createdGame = await Game.findOne({ appid: '22380' });
+      expect(createdGame).toBeTruthy();
+      expect(createdGame.appid).toBe('22380');
+      expect(createdGame.name).toBe('Fallout: New Vegas');
+      expect(createdGame.headerImage).toBe(
+        'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/22380/header.jpg?t=1665072891',
+      );
+      expect(createdGame.genres).toEqual(['Action', 'RPG']);
+    });
+    it('creates two games with correct data', async () => {
+      const req = {
+        games: [
+          {
+            appid: '22380',
+            name: 'Fallout: New Vegas',
+            headerImage:
+              'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/22380/header.jpg?t=1665072891',
+            genres: ['Action', 'RPG'],
+          },
+          {
+            appid: '12830',
+            name: 'Operation Flashpoint: Dragon Rising',
+            headerImage:
+              'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/12830/header.jpg?t=1627920748',
+            genres: ['Action'],
+          },
+        ],
+      };
+
+      await gameController.createGames(req, res, next);
+
+      for (const game of req.games) {
+        const createdGame = await Game.findOne({ appid: game.appid });
+        expect(createdGame).toBeTruthy();
+        expect(createdGame.appid).toBe(game.appid);
+        expect(createdGame.name).toBe(game.name);
+        expect(createdGame.headerImage).toBe(game.headerImage);
+        expect(createdGame.genres).toEqual(game.genres);
+      }
+    });
+  });
 });
