@@ -116,50 +116,20 @@ exports.queryGames = async (req, res, next) => {
 // Create game models from game objects passed from queryGames
 exports.createGames = async (req, res, next) => {
   try {
-    console.log('Creating games');
     const games = req.games;
 
-    // TEST
-    // const games = [
-    //   {
-    //     appid: '22380',
-    //     name: 'Fallout: New Vegas',
-    //     headerImage:
-    //       'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/22380/header.jpg?t=1665072891',
-    //     genres: ['Action', 'RPG'],
-    //   },
-    //   {
-    //     appid: '12830',
-    //     name: 'Operation Flashpoint: Dragon Rising',
-    //     headerImage:
-    //       'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/12830/header.jpg?t=1627920748',
-    //     genres: ['Action'],
-    //   },
-    // ];
-
     for (const game of games) {
-      console.log(`GAME ID: ${game.appid}`);
       let existingGame = await Game.findOne({ appid: game.appid });
-      console.log(`EXISTING GAME ${existingGame}`);
 
       if (existingGame === null) {
-        // Takes each object and maps it to the Game schema, ignoring any information not related to schema
         await Game.create(game);
-        console.log(`Successfully created: ${game.appid} ${game.name}`);
-      } else {
-        console.log(
-          `Game not created as it already exists: ${game.appid} ${game.name}`,
-        );
       }
-
-      existingGame = null;
     }
 
     next();
   } catch (err) {
-    res.status(500).json({
-      message: 'Failed to fetch owned games',
-      error: err.message,
-    });
+    throw new Error(
+      `Failed to create game details from Steam API: ${err.message}`,
+    );
   }
 };
