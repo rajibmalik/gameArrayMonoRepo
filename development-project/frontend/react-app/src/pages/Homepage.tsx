@@ -1,6 +1,6 @@
 import { Box, Grid, GridItem, Heading } from "@chakra-ui/react";
-import AuthButton from "../components/AuthButton";
-import InfoContainer from "../components/InfoContainer";
+import AuthButton from "../components/homepage/AuthButton";
+import InfoContainer from "../components/homepage/InfoContainer";
 import Footer from "../components/Footer";
 
 const Homepage = () => {

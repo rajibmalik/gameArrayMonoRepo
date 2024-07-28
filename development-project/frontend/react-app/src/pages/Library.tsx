@@ -1,9 +1,9 @@
 import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
-import GameGrid from "../components/GameGrid";
+import GameGrid from "../components/library/GameGrid";
 import useSessionData from "../hooks/useSessionData";
 import { useEffect, useState } from "react";
-import SearchBox from "../components/SearchBox";
+import SearchBox from "../components/library/SearchBox";
 import Footer from "../components/Footer";
 
 export interface GameQuery {

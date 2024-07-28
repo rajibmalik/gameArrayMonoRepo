@@ -1,4 +1,4 @@
-import { UserGame } from "../hooks/useUserGames";
+import { UserGame } from "../../hooks/useUserGames";
 import { Card, CardBody, HStack, Heading, Image } from "@chakra-ui/react";
 import { FaClock } from "react-icons/fa6";
 import { Badge } from "@chakra-ui/react";
