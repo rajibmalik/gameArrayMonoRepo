@@ -7,6 +7,7 @@ import TotalGames from "../components/dashboard/TotalGames";
 import useTopGenres from "../hooks/useTopGenres";
 import useTotalPlaytime from "../hooks/useTotalPlaytime";
 import useTopGames from "../hooks/useTopGames";
+import Footer from "../components/Footer";
 
 const Dashboard = () => {
   const {
@@ -28,8 +29,6 @@ const Dashboard = () => {
     error: topGamesError,
   } = useTopGames();
 
-  console.log("HERE:", topGames);
-
   return (
     <Grid
       templateAreas={`
@@ -37,11 +36,12 @@ const Dashboard = () => {
       "statbox rosechart"
       "statbox2 rosechart"
       "barchart barchart"
+      "footer footer"
     `}
-      gridTemplateRows={"auto 1.0fr 1.0fr 2.5fr"}
+      gridTemplateRows={"auto 1.0fr 1.0fr 3fr 0.5fr"}
       gridTemplateColumns={"1.25fr 2.5fr"}
-      height="100vh"
-      width="100vw"
+      maxHeight="100vh"
+      maxWidth="100vw"
       gap={5}
     >
       <GridItem area="nav" backgroundColor="gray">
@@ -75,6 +75,10 @@ const Dashboard = () => {
       </GridItem>
       <GridItem margin={10} marginTop={5} area="barchart">
         {topGames && <BarChartComponent userGames={topGames} />}
+      </GridItem>
+
+      <GridItem area="footer" backgroundColor={"blue"}>
+        <Footer />
       </GridItem>
     </Grid>
   );

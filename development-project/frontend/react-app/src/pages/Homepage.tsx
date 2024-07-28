@@ -1,6 +1,7 @@
 import { Box, Grid, GridItem, Heading } from "@chakra-ui/react";
 import AuthButton from "../components/AuthButton";
 import InfoContainer from "../components/InfoContainer";
+import Footer from "../components/Footer";
 
 const Homepage = () => {
   return (
@@ -15,9 +16,9 @@ const Homepage = () => {
       `}
       gridTemplateRows={"1fr 1fr 1fr 1fr 4fr 1fr "}
       gridTemplateColumns={"1fr 1fr"}
-      height="100vh"
-      width="100vw"
-      gap={5}
+      maxHeight="100vh"
+      maxWidth="100vw"
+      gap={1}
     >
       <GridItem area="header">HEADER</GridItem>
       <GridItem area="welcome">
@@ -49,9 +50,8 @@ const Homepage = () => {
           text={"View graphs visualising your gaming data"}
         />
       </GridItem>
-      <GridItem area="footer" margin={10}>
-        {" "}
-        FOOTER
+      <GridItem area="footer">
+        <Footer />
       </GridItem>
     </Grid>
   );

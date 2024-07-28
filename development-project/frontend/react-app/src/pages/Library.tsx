@@ -1,10 +1,10 @@
 import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import GameGrid from "../components/GameGrid";
-import SearchBar from "../components/SearchBar";
 import useSessionData from "../hooks/useSessionData";
 import { useEffect, useState } from "react";
 import SearchBox from "../components/SearchBox";
+import Footer from "../components/Footer";
 
 export interface GameQuery {
   steamID: number | null;
@@ -47,7 +47,7 @@ const Library = () => {
   return (
     <Grid
       templateAreas={{
-        base: `"nav" "search-bar" "main"`,
+        base: `"nav" "search-bar" "main" "footer"`,
       }}
     >
       <GridItem top={0} zIndex={20} position={"sticky"} area="nav">
@@ -75,6 +75,10 @@ const Library = () => {
         {isLoading && <Text>Loading</Text>}
         {error && <p>Error loading: {error}</p>}
         {userData && <GameGrid gameQuery={gameQuery} />}
+      </GridItem>
+
+      <GridItem area="footer" backgroundColor={"blue"}>
+        <Footer />
       </GridItem>
     </Grid>
   );
