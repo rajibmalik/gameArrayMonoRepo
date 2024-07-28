@@ -1,7 +1,7 @@
 const express = require('express');
 const userController = require('../controllers/steamControllers/userController');
-const gamesController = require('../controllers/steamControllers/gamesController');
-const userGamesController = require('../controllers/steamControllers/userGamesController');
+const gameController = require('../controllers/steamControllers/gameController');
+const userGameController = require('../controllers/steamControllers/userGameController');
 
 // This is a Router responsible for the routes associated with the account
 // userController and gamesController handle the logic for these routes
@@ -20,10 +20,10 @@ router.get(
   '/',
   ensureAuthenticated, // Protects routes, ensuring authentication
   userController.createUser, // Creates User document in MongoDB
-  gamesController.fetchAndProcessGames, // Fetches owned games from Steam API & processes data
-  gamesController.queryGames, // Queries new games for information from Steam API
-  gamesController.createGames, // Create and updates Game documents in MongoDB
-  userGamesController.createAndUpdateUserGames, // Creates UserGame documents in MongoDB
+  gameController.fetchAndProcessGames, // Fetches owned games from Steam API & processes data
+  gameController.queryGames, // Queries new games for information from Steam API
+  gameController.createGames, // Create Game documents in MongoDB
+  userGameController.createAndUpdateUserGames, // Creates UserGame documents in MongoDB
   userController.redirectToAccount, // Redirects to account page
 );
 

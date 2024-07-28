@@ -1,4 +1,4 @@
-const { getAppDetails } = require('../../services/steamService');
+const { getAppDetails } = require('../../../services/steamService');
 
 describe('Steam API Integration', () => {
   it('should fetch correct data for appid 570 (Dota 2)', async () => {
@@ -32,13 +32,5 @@ describe('Steam API Integration', () => {
     expect(csSearchSuccess).toBe(true);
     expect(cs.name).toBe('Counter-Strike 2');
     expect(cs.steam_appid).toBe(730);
-  });
-  it('should handle errors for invalid appid', async () => {
-    // appIDs for Dota 2 and CS GO 2
-    const appIDs = [999999999999999];
-
-    await expect(getAppDetails(appIDs)).rejects.toThrow(
-      'Failed to fetch game details from Steam API: Error fetching details for appID 999999999999999:',
-    );
   });
 });

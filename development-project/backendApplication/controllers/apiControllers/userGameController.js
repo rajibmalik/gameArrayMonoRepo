@@ -1,5 +1,4 @@
 const UserGame = require('../../models/userGameModel');
-// const Game = require('./../../model/gameModel');
 const {
   getUserGamesWithGames,
   calculateTopGenres,

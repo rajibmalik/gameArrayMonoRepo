@@ -1,8 +1,8 @@
-const userController = require('../../controllers/steamControllers/userController');
-const User = require('../../models/userModel');
+const userController = require('../../../controllers/steamControllers/userController');
+const User = require('../../../models/userModel');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
-const DatabaseSetup = require('../../utils/databaseSetup');
+const DatabaseSetup = require('../../../utils/databaseSetup');
 
 describe('User Controller', () => {
   let mongoServer, res, next;

@@ -57,10 +57,6 @@ const getAppDetails = async (appIDs) => {
           ) {
             // Add app details to appDetails array
             appDetails.push(response.data);
-          } else {
-            throw new Error(
-              `Steam API response not successful for fetching app details for appID ${appID}`,
-            );
           }
         })
         .catch((err) => {

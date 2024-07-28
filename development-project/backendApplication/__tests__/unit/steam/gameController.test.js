@@ -1,10 +1,10 @@
-const gameController = require('../../controllers/steamControllers/gamesController');
-const Game = require('../../models/gameModel');
+const gameController = require('../../../controllers/steamControllers/gameController');
+const Game = require('../../../models/gameModel');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
-const DatabaseSetup = require('../../utils/databaseSetup');
-jest.mock('../../services/steamService');
-const steamService = require('../../services/steamService');
+const DatabaseSetup = require('../../../utils/databaseSetup');
+const steamService = require('../../../services/steamService');
+jest.mock('../../../services/steamService');
 
 describe('Game Controller', () => {
   let mongoServer, res, next;
