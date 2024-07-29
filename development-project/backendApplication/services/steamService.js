@@ -86,6 +86,57 @@ const getAppDetails = async (appIDs) => {
   }
 };
 
+const queryUserAchievements = async (appIDs, steamID) => {
+  try {
+    const achievements = [];
+    let currentRequests = [];
+
+    for (const appID of appIDs) {
+      const request = axios
+        .get(
+          `http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/`,
+          {
+            params: {
+              appid: appID,
+              key: process.env.STEAM_API_KEY,
+              steamid: steamID,
+            },
+          },
+        )
+        .then((response) => {
+          if (response.data && response.data.playerstats.success) {
+            achievements.push({
+              appID: appID,
+              achievements: response.data.playerstats.achievements,
+            });
+          }
+        })
+        .catch((err) => {
+          throw new Error(
+            `Error fetching achievements for appID ${appID}:`,
+            err,
+          );
+        });
+
+      currentRequests.push(request);
+
+      if (currentRequests.length >= MAX_CONCURRENT_REQUESTS) {
+        await Promise.all(currentRequests);
+        currentRequests = [];
+        await sleep(10);
+      }
+    }
+
+    await Promise.all(currentRequests);
+
+    return achievements;
+  } catch (err) {
+    throw new Error(
+      `Failed to fetch game achievements from Steam API: ${err.message}`,
+    );
+  }
+};
+
 const getAppDetailsForOneApp = async (appID) => {
   try {
     const response = await axios.get(
@@ -103,4 +154,5 @@ module.exports = {
   getOwnedGames,
   getAppDetails,
   getAppDetailsForOneApp,
+  queryUserAchievements,
 };
