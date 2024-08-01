@@ -86,12 +86,13 @@ const getAppDetails = async (appIDs) => {
   }
 };
 
-const queryUserAchievements = async (appIDs, steamID) => {
+const getUserAchievements = async (appIDs, steamID) => {
   try {
     const achievements = [];
     let currentRequests = [];
 
     for (const appID of appIDs) {
+      console.log(`Querying game achievements for ${appID}`);
       const request = axios
         .get(
           `http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/`,
@@ -104,18 +105,26 @@ const queryUserAchievements = async (appIDs, steamID) => {
           },
         )
         .then((response) => {
-          if (response.data && response.data.playerstats.success) {
+          if (response.data.playerstats && response.data.playerstats.success) {
             achievements.push({
               appID: appID,
               achievements: response.data.playerstats.achievements,
             });
-          }
+          } else
+            achievements.push({
+              appID: appID,
+              achievements: null,
+            });
         })
         .catch((err) => {
-          throw new Error(
-            `Error fetching achievements for appID ${appID}:`,
-            err,
+          const message = 'Game may not have any achievement details';
+          console.error(
+            `Error fetching achievements for appID ${appID}: ${err.message}, ${message}`,
           );
+          achievements.push({
+            appID: appID,
+            achievements: null,
+          });
         });
 
       currentRequests.push(request);
@@ -129,11 +138,11 @@ const queryUserAchievements = async (appIDs, steamID) => {
 
     await Promise.all(currentRequests);
 
+    console.log('Achievements: ' + JSON.stringify(achievements, null, 2));
+
     return achievements;
   } catch (err) {
-    throw new Error(
-      `Failed to fetch game achievements from Steam API: ${err.message}`,
-    );
+    throw new Error(`Failed to fetch game achievements from Steam API: ${err}`);
   }
 };
 
@@ -154,5 +163,5 @@ module.exports = {
   getOwnedGames,
   getAppDetails,
   getAppDetailsForOneApp,
-  queryUserAchievements,
+  getUserAchievements,
 };

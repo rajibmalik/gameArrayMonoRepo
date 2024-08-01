@@ -98,7 +98,6 @@ exports.queryGames = async (req, res, next) => {
         };
 
         games.push(game);
-        console.log(`Number of games ${games.length}`);
       }
     }
 
@@ -130,6 +129,60 @@ exports.createGames = async (req, res, next) => {
   } catch (err) {
     throw new Error(
       `Failed to create game details from Steam API: ${err.message}`,
+    );
+  }
+};
+
+exports.queryUserAchievements = async (req, res, next) => {
+  try {
+    console.log('Querying game achievement');
+    const steamid = req.user.steamID;
+    const games = req.games;
+    const achievementList = {};
+
+    const appids = games.map((game) => game.appid);
+
+    const responseData = await steamService.getUserAchievements(
+      appids,
+      steamid,
+    );
+
+    responseData.forEach((game) => {
+      console.log('GAME: ' + JSON.stringify(game, null, 2));
+      const appid = game.appID;
+      console.log(`Appid: ${appid}`);
+      const gameAchievements = game.achievements;
+
+      if (gameAchievements) {
+        const totalAchievements = gameAchievements.length;
+        console.log(totalAchievements);
+        const acquiredAchievements = gameAchievements.filter(
+          (a) => a.achieved === 1,
+        ).length;
+        console.log(acquiredAchievements);
+
+        const gameIndex = req.games.findIndex((game) => game.appid === appid);
+
+        if (gameIndex !== -1) {
+          req.games[gameIndex].totalAchievements = totalAchievements;
+          achievementList[appid] = {
+            acquiredAchievements: acquiredAchievements,
+          };
+        }
+      }
+    });
+
+    console.log(`Updated Games Data: ${JSON.stringify(games, null, 2)}`);
+    console.log(
+      `Achievements List: ${JSON.stringify(achievementList, null, 2)}`,
+    );
+
+    req.achievements = achievementList;
+
+    next();
+  } catch (err) {
+    throw new Error(
+      `Failed to query game achievements from Steam API in gameController: ${err.message}`,
     );
   }
 };

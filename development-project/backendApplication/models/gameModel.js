@@ -21,6 +21,10 @@ const gameSchema = new mongoose.Schema({
     default: [],
     trim: true,
   },
+  totalAchievements: {
+    type: Number,
+    trim: true,
+  },
 });
 
 const Game = mongoose.model('Game', gameSchema);

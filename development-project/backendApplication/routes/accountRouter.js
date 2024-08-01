@@ -22,6 +22,9 @@ router.get(
   userController.createUser, // Creates User document in MongoDB
   gameController.fetchAndProcessGames, // Fetches owned games from Steam API & processes data
   gameController.queryGames, // Queries new games for information from Steam API
+  // Query game achievements
+  gameController.queryUserAchievements,
+
   gameController.createGames, // Create Game documents in MongoDB
   userGameController.createAndUpdateUserGames, // Creates UserGame documents in MongoDB
   userController.redirectToAccount, // Redirects to account page
