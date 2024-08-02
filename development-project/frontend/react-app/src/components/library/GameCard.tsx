@@ -5,6 +5,7 @@ import {
   HStack,
   Heading,
   Image,
+  Tooltip,
   VStack,
 } from "@chakra-ui/react";
 import { FaClock, FaTrophy } from "react-icons/fa6";
@@ -31,52 +32,64 @@ const GameCard = ({ game }: Props) => {
     window.location.href = gameUrl;
   };
   return (
-    <Card
-      transition="transform 0.5s"
-      _hover={{ transform: "scale(1.05)" }}
-      borderRadius={5}
-      overflow={"hidden"}
-      margin={3}
-      onClick={launchGame}
-      cursor="pointer"
+    <Tooltip
+      label="Click to play"
+      fontSize={"md"}
+      placement="top"
+      hasArrow
+      arrowSize={20}
+      p={2}
+      borderRadius={"md"}
+      fontWeight={"bold"}
+      bg={"#17252A"}
     >
-      <Image src={game.headerImage}></Image>
-      <CardBody>
-        <Heading
-          minH={"65px"}
-          display={"flex"}
-          justifyContent={"center"}
-          overflow={"hidden"}
-          fontSize="xl"
-        >
-          {truncatedName}
-        </Heading>
-        <VStack justifyContent={"center"}>
-          <HStack>
-            <HStack padding={"2.5px"}>
-              <Badge backgroundColor={"white"}>
-                {game.playtimeHours} hours played
-              </Badge>
-              <FaClock />
-            </HStack>
-            {game.acquiredAchievements >= 0 && game.totalAchievements > 0 && (
+      <Card
+        transition="transform 0.5s"
+        _hover={{ transform: "scale(1.05)" }}
+        borderRadius={5}
+        overflow={"hidden"}
+        margin={3}
+        onClick={launchGame}
+        cursor="pointer"
+      >
+        <Image src={game.headerImage}></Image>
+        <CardBody>
+          <Heading
+            minH={"65px"}
+            display={"flex"}
+            justifyContent={"center"}
+            overflow={"hidden"}
+            fontSize="xl"
+          >
+            {truncatedName}
+          </Heading>
+          <VStack justifyContent={"center"}>
+            <HStack>
               <HStack padding={"2.5px"}>
                 <Badge backgroundColor={"white"}>
-                  {achievementProgression}%
+                  {game.playtimeHours} hours played
                 </Badge>
-                <FaTrophy />
+                <FaClock />
               </HStack>
-            )}
-            {!game.totalAchievements && (
-              <HStack padding={"2.5px"}>
-                <Badge backgroundColor={"white"}>N/A</Badge>
-                <FaTrophy />
-              </HStack>
-            )}
-          </HStack>
-        </VStack>
-      </CardBody>
-    </Card>
+              {game.acquiredAchievements >= 0 && game.totalAchievements > 0 && (
+                <HStack padding={"2.5px"}>
+                  <Badge backgroundColor={"white"}>
+                    {achievementProgression}%
+                  </Badge>
+                  <FaTrophy />
+                </HStack>
+              )}
+              {!game.totalAchievements && (
+                <HStack padding={"2.5px"}>
+                  <Badge backgroundColor={"white"}>N/A</Badge>
+                  <FaTrophy />
+                </HStack>
+              )}
+            </HStack>
+          </VStack>
+        </CardBody>
+      </Card>
+    </Tooltip>
   );
 };
 
