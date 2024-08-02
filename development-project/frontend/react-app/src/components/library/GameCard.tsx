@@ -1,6 +1,13 @@
 import { UserGame } from "../../hooks/useUserGames";
-import { Card, CardBody, HStack, Heading, Image } from "@chakra-ui/react";
-import { FaClock } from "react-icons/fa6";
+import {
+  Card,
+  CardBody,
+  HStack,
+  Heading,
+  Image,
+  VStack,
+} from "@chakra-ui/react";
+import { FaClock, FaTrophy } from "react-icons/fa6";
 import { Badge } from "@chakra-ui/react";
 
 interface Props {
@@ -18,6 +25,11 @@ const GameCard = ({ game }: Props) => {
   const achievementProgression = Math.round(
     (game.acquiredAchievements / game.totalAchievements) * 100
   );
+
+  const launchGame = () => {
+    const gameUrl = `steam://rungameid/${game.appid}`;
+    window.location.href = gameUrl;
+  };
   return (
     <Card
       transition="transform 0.5s"
@@ -25,6 +37,8 @@ const GameCard = ({ game }: Props) => {
       borderRadius={5}
       overflow={"hidden"}
       margin={3}
+      onClick={launchGame}
+      cursor="pointer"
     >
       <Image src={game.headerImage}></Image>
       <CardBody>
@@ -37,16 +51,30 @@ const GameCard = ({ game }: Props) => {
         >
           {truncatedName}
         </Heading>
-        <HStack padding={"5px"} justifyContent={"center"}>
-          <Badge backgroundColor={"white"}>
-            {game.playtimeHours} hours played
-          </Badge>
-          {game.acquiredAchievements > 0 && (
-            <Badge>{achievementProgression}%</Badge>
-          )}
-          {!game.totalAchievements && <Badge>N/A</Badge>}
-          <FaClock />
-        </HStack>
+        <VStack justifyContent={"center"}>
+          <HStack>
+            <HStack padding={"2.5px"}>
+              <Badge backgroundColor={"white"}>
+                {game.playtimeHours} hours played
+              </Badge>
+              <FaClock />
+            </HStack>
+            {game.acquiredAchievements >= 0 && game.totalAchievements > 0 && (
+              <HStack padding={"2.5px"}>
+                <Badge backgroundColor={"white"}>
+                  {achievementProgression}%
+                </Badge>
+                <FaTrophy />
+              </HStack>
+            )}
+            {!game.totalAchievements && (
+              <HStack padding={"2.5px"}>
+                <Badge backgroundColor={"white"}>N/A</Badge>
+                <FaTrophy />
+              </HStack>
+            )}
+          </HStack>
+        </VStack>
       </CardBody>
     </Card>
   );
