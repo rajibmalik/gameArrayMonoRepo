@@ -10,6 +10,7 @@ exports.createAndUpdateUserGames = async (req, res, next) => {
       user: { steamID: steamid },
     } = req;
 
+    console.log('userGames: ' + JSON.stringify(games, null, 2));
     const [existingGames, existingUser] = await Promise.all([
       Game.find({ appid: { $in: games.map((game) => game.appid.toString()) } }),
       User.findOne({ steamID: steamid }),
@@ -29,7 +30,12 @@ exports.createAndUpdateUserGames = async (req, res, next) => {
       .map((game) => ({
         updateOne: {
           filter: { appid: game.appid.toString(), steamid },
-          update: { $set: { playtime: game.playtime } },
+          update: {
+            $set: {
+              playtime: game.playtime,
+              acquiredAchievements: game.acquiredAchievements || 0,
+            },
+          },
           // Create new game if it does not exist
           upsert: true,
         },

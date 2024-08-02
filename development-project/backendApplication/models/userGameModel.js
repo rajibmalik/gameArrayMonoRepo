@@ -15,9 +15,9 @@ const userGameSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  achievements: {
-    totalAchievements: Number,
-    acquiredAchievements: Number,
+  acquiredAchievements: {
+    type: Number,
+    trim: true,
   },
 });
 
