@@ -7,23 +7,22 @@ const Homepage = () => {
   return (
     <Grid
       templateAreas={`
-      "header header"
+     
       "welcome welcome"
       "login-button login-button"
       "subheading subheading"
       "info-box-one info-box-two"
       "footer footer"
       `}
-      gridTemplateRows={"1fr 1fr 1fr 1fr 4fr 1fr "}
+      gridTemplateRows={"1fr 1fr 1fr 4fr 1fr "}
       gridTemplateColumns={"1fr 1fr"}
       maxHeight="100vh"
       maxWidth="100vw"
       gap={1}
     >
-      <GridItem area="header">HEADER</GridItem>
       <GridItem area="welcome">
-        <Heading size={"xl"} textAlign={"center"}>
-          WELCOME
+        <Heading size={"xl"} textAlign={"center"} p={5}>
+          WELCOME TO GAME ARRAY
         </Heading>
       </GridItem>
       <GridItem area="login-button">
