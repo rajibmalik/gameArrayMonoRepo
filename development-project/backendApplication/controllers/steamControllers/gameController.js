@@ -174,9 +174,9 @@ exports.queryUserAchievements = async (req, res, next) => {
     });
 
     // console.log(`Updated Games Data: ${JSON.stringify(games, null, 2)}`);
-    // console.log(
-    //   `Updated userGames Data: ${JSON.stringify(req.usergames, null, 2)}`,
-    // );
+    console.log(
+      `Updated userGames Data: ${JSON.stringify(req.usergames, null, 2)}`,
+    );
 
     next();
   } catch (err) {

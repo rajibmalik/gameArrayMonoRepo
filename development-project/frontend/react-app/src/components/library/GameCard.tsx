@@ -14,6 +14,10 @@ const GameCard = ({ game }: Props) => {
     game.name.length > maxGameNameLength
       ? `${game.name.substring(0, maxGameNameLength)}...`
       : game.name;
+
+  const achievementProgression = Math.round(
+    (game.acquiredAchievements / game.totalAchievements) * 100
+  );
   return (
     <Card
       transition="transform 0.5s"
@@ -37,6 +41,10 @@ const GameCard = ({ game }: Props) => {
           <Badge backgroundColor={"white"}>
             {game.playtimeHours} hours played
           </Badge>
+          {game.acquiredAchievements > 0 && (
+            <Badge>{achievementProgression}%</Badge>
+          )}
+          {!game.totalAchievements && <Badge>N/A</Badge>}
           <FaClock />
         </HStack>
       </CardBody>

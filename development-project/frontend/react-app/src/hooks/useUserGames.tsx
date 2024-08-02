@@ -11,6 +11,8 @@ export interface UserGame {
   playtimeHours: number;
   name: string;
   headerImage: string;
+  totalAchievements: number;
+  acquiredAchievements: number;
 }
 
 // The interface for the response data
