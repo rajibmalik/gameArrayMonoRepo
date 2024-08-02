@@ -64,7 +64,7 @@ const GameCard = ({ game }: Props) => {
             {truncatedName}
           </Heading>
           <VStack justifyContent={"center"}>
-            <HStack>
+            <HStack spacing={7}>
               <HStack padding={"2.5px"}>
                 <Badge backgroundColor={"white"}>
                   {game.playtimeHours} hours played
