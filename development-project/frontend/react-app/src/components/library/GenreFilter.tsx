@@ -19,7 +19,8 @@ interface Props {
 const GenreFilter = ({ onGenreChange }: Props) => {
   return (
     <Select
-      width={"20%"}
+      minWidth={"75px"}
+      maxWidth={"125px"}
       icon={<IoMdArrowDropdown />}
       backgroundColor={"#FEFFFF"}
       borderColor={"black"}

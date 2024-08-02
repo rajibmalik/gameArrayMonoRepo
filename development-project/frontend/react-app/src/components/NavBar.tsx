@@ -9,7 +9,7 @@ const NavBar = () => {
       <HStack
         width={"100%"}
         paddingX={10}
-        paddingBottom={4}
+        paddingBottom={10}
         justifyContent={"space-between"}
       >
         <Link to="/library">
