@@ -39,7 +39,9 @@ const Homepage = () => {
         <InfoContainer
           header={"LIBRARY"}
           image={"/images/Library.png"}
-          text={"Explore your gaming collection and search for your games"}
+          text={
+            "Search and filter games by genre, sort your collection, view achievement progress and playtime, and launch your favorite games."
+          }
         />
       </GridItem>
       <GridItem area="info-box-two" margin={10}>
