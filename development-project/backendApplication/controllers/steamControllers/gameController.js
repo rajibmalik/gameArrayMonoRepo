@@ -36,7 +36,8 @@ exports.fetchAndProcessGames = async (req, res, next) => {
   } catch (err) {
     console.log('Error fetching owned games:' + err);
     res.status(500).json({
-      message: 'Failed to fetch owned games',
+      message:
+        'Failed to fetch owned games, please ensure your Steam profile is public',
       error: err.message,
     });
   }
