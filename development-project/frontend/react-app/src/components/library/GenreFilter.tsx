@@ -6,10 +6,11 @@ const popularGenres = [
   "Adventure",
   "RPG",
   "Strategy",
-  "Shooter",
   "Simulation",
   "Puzzle",
   "Sports",
+  "Casual",
+  "Indie",
 ];
 
 interface Props {
