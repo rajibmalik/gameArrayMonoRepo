@@ -11,6 +11,7 @@ export interface GameQuery {
   username: string | null;
   searchText: string;
   genre: string;
+  sort: string;
 }
 
 const Library = () => {
@@ -44,6 +45,14 @@ const Library = () => {
     }));
   };
 
+  const handleSortChange = (sort: string) => {
+    console.log(sort);
+    setGameQuery((prevGameQuery) => ({
+      ...prevGameQuery,
+      sort: sort,
+    }));
+  };
+
   return (
     <Grid
       templateAreas={{
@@ -68,6 +77,7 @@ const Library = () => {
           <SearchBox
             onSearch={handleSearch}
             onGenreChange={handleGenreChange}
+            onSortChange={handleSortChange}
           />
         </Box>
       </GridItem>

@@ -130,7 +130,7 @@ exports.getTotalPlaytime = async (req, res) => {
 
 exports.getFilteredGames = async (req, res) => {
   const { steamid } = req.params;
-  const { searchtext, genre } = req.query;
+  const { searchtext, genre, sort } = req.query;
 
   try {
     const userGamesWithGames = await getUserGamesWithGames(steamid);
@@ -149,6 +149,17 @@ exports.getFilteredGames = async (req, res) => {
       filteredGames = filteredGames.filter((game) =>
         game.genres.some((g) => g.toLowerCase().includes(genre.toLowerCase())),
       );
+    }
+
+    if (sort) {
+      switch (sort.toLowerCase()) {
+        case 'playtime':
+          filteredGames.sort((a, b) => b.playtimeHours - a.playtimeHours);
+          break;
+        case 'name':
+          filteredGames.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+      }
     }
 
     res.status(200).json({
