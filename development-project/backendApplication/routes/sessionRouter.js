@@ -20,4 +20,12 @@ router.get('/', (req, res) => {
   }
 });
 
+router.get('/logout', (req, res) => {
+  req.logout(() => {
+    req.session.destroy(() => {
+      res.redirect('http://localhost:5173');
+    });
+  });
+});
+
 module.exports = router;
