@@ -1,21 +1,13 @@
 import axios, { CanceledError } from "axios";
 import { useEffect, useState } from "react";
 import useSessionData from "./useSessionData";
+import { UserGame } from "./useUserGames";
 
 interface fetchTopGamesResponse {
   results: number;
   data: {
     userGames: UserGame[];
   };
-}
-
-interface UserGame {
-  appid: string;
-  playtime: number;
-  playtimeHours: number;
-  name: string;
-  headerImage: string;
-  genres: string[];
 }
 
 const useTopGames = () => {

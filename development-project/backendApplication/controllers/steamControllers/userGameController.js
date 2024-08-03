@@ -11,6 +11,7 @@ exports.createAndUpdateUserGames = async (req, res, next) => {
     } = req;
 
     console.log('createAndUpdateuserGames: ' + JSON.stringify(games, null, 2));
+
     const [existingGames, existingUser] = await Promise.all([
       Game.find({ appid: { $in: games.map((game) => game.appid.toString()) } }),
       User.findOne({ steamID: steamid }),
@@ -24,22 +25,25 @@ exports.createAndUpdateUserGames = async (req, res, next) => {
       existingGames.map((game) => game.appid.toString()),
     );
 
-    // Array of bulk operations for updating / creating new documents
     const bulkOps = games
       .filter((game) => existingGameAppids.has(game.appid.toString()))
-      .map((game) => ({
-        updateOne: {
-          filter: { appid: game.appid.toString(), steamid },
-          update: {
-            $set: {
-              playtime: game.playtime,
-              acquiredAchievements: game.acquiredAchievements || 0,
-            },
+      .map((game) => {
+        const updateFields = {
+          playtime: game.playtime,
+        };
+
+        if (game.acquiredAchievements !== undefined) {
+          updateFields.acquiredAchievements = game.acquiredAchievements;
+        }
+
+        return {
+          updateOne: {
+            filter: { appid: game.appid.toString(), steamid },
+            update: { $set: updateFields },
+            upsert: true,
           },
-          // Create new game if it does not exist
-          upsert: true,
-        },
-      }));
+        };
+      });
 
     if (bulkOps.length > 0) {
       await UserGame.bulkWrite(bulkOps);
