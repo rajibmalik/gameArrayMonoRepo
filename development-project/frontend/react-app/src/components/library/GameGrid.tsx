@@ -1,4 +1,4 @@
-import { SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, SimpleGrid, Spinner, Text } from "@chakra-ui/react";
 import useUserGames from "../../hooks/useUserGames";
 import GameCard from "./GameCard";
 import { GameQuery } from "../../pages/Library";
@@ -12,7 +12,12 @@ const GameGrid = ({ gameQuery }: Props) => {
 
   return (
     <>
-      {isLoading && <Text>Loading</Text>}
+      {isLoading && (
+        <Box textAlign="center" padding="50px">
+          <Spinner size="xl" color="blue.500" speed="0.65s" thickness="5px" />
+        </Box>
+      )}
+
       {error && <Text>{error}</Text>}
 
       <SimpleGrid
