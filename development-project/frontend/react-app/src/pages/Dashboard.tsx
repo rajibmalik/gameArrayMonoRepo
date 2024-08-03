@@ -1,4 +1,4 @@
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Grid, GridItem, Text } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import RadarChartComponent from "../components/dashboard/RadarChartComponent";
 import BarChartComponent from "../components/dashboard/BarChartComponent";
@@ -49,11 +49,19 @@ const Dashboard = () => {
       </GridItem>
 
       <GridItem margin={10} mb={0} mt={0} area="statbox">
+        {totalPlaytimeLoading && <Text>Loading Total Playtime</Text>}
+        {totalPlaytimeError && (
+          <Text>Error loading Total Playtime: {totalPlaytimeError}</Text>
+        )}
         {totalGames && (
           <TotalGames label={"Total number of games"} number={totalGames} />
         )}
       </GridItem>
       <GridItem margin={10} mb={0} mt={0} area="statbox2">
+        {totalPlaytimeLoading && <Text>Loading Total Playtime </Text>}
+        {totalPlaytimeError && (
+          <Text>Error loading Total Playtime:{totalPlaytimeError}</Text>
+        )}
         {totalPlaytime && (
           <TotalPlaytime
             label={"Total playtime"}
@@ -71,9 +79,17 @@ const Dashboard = () => {
         area="rosechart"
         alignItems={"flex-end"}
       >
+        {topGenresLoading && <Text>Loading Top Genres</Text>}
+        {topGenresError && (
+          <Text>Error loading Top Genres: {totalPlaytimeError}</Text>
+        )}
         {topGenres && <RadarChartComponent topGenres={topGenres} />}
       </GridItem>
       <GridItem margin={10} marginTop={5} area="barchart">
+        {topGamesLoading && <Text>Loading Top Games</Text>}
+        {topGamesError && (
+          <Text>Error loading Top Games: {totalPlaytimeError}</Text>
+        )}
         {topGames && <BarChartComponent userGames={topGames} />}
       </GridItem>
 
