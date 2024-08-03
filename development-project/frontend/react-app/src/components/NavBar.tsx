@@ -1,6 +1,6 @@
 import { HStack, Heading, VStack } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
-import LogOutButton from "./dashboard/LogOutButton";
+import LogOutButton from "./LogOutButton";
 
 const NavBar = () => {
   const location = useLocation();

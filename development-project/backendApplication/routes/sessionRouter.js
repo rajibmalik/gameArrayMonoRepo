@@ -20,10 +20,18 @@ router.get('/', (req, res) => {
   }
 });
 
-router.get('/logout', (req, res) => {
-  req.logout(() => {
-    req.session.destroy(() => {
-      res.redirect('http://localhost:5173');
+router.post('/logout', (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).json({ message: 'Logout failed', error: err });
+    }
+    req.session.destroy((err) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ message: 'Session destruction failed', error: err });
+      }
+      res.json({ message: 'Logout successful' });
     });
   });
 });

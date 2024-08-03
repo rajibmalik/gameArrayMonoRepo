@@ -8,8 +8,6 @@ interface Props {
 }
 
 const GameGrid = ({ gameQuery }: Props) => {
-  // Retrieves UserGame with Game data
-  console.log(`GAME QUERY: ${gameQuery}`);
   const { userGames, error, isLoading } = useUserGames(gameQuery);
 
   return (
