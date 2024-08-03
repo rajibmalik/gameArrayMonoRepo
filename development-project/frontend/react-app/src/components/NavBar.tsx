@@ -1,5 +1,6 @@
-import { Button, HStack, Heading, VStack } from "@chakra-ui/react";
+import { HStack, Heading, VStack } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
+import LogOutButton from "./dashboard/LogOutButton";
 
 const NavBar = () => {
   const location = useLocation();
@@ -8,14 +9,7 @@ const NavBar = () => {
     <VStack backgroundColor="#17252A">
       <HStack justifyContent={"space-between"} width={"full"} p={2}>
         <Heading size={"xs"}>GameArray</Heading>
-        <Button
-          onClick={() =>
-            (window.location.href =
-              "http://localhost:3000/api/v1/session/logout")
-          }
-        >
-          Logout
-        </Button>
+        <LogOutButton />
       </HStack>
 
       <HStack
