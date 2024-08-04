@@ -29,7 +29,7 @@ describe("GameGrid", () => {
     render(
       <GameGrid
         gameQuery={{
-          steamID: 123,
+          steamID: "123",
           username: "userOne",
           searchText: "",
           genre: "",
@@ -73,7 +73,7 @@ describe("GameGrid", () => {
     render(
       <GameGrid
         gameQuery={{
-          steamID: 123,
+          steamID: "123",
           username: "userOne",
           searchText: "",
           genre: "",
@@ -119,7 +119,7 @@ describe("GameGrid", () => {
     render(
       <GameGrid
         gameQuery={{
-          steamID: 123,
+          steamID: "123",
           username: "userOne",
           searchText: "",
           genre: "",
@@ -153,7 +153,7 @@ describe("GameGrid", () => {
     render(
       <GameGrid
         gameQuery={{
-          steamID: 123,
+          steamID: "123",
           username: "userOne",
           searchText: "",
           genre: "",
