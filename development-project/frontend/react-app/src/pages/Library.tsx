@@ -7,7 +7,7 @@ import SearchBox from "../components/library/SearchBox";
 import Footer from "../components/Footer";
 
 export interface GameQuery {
-  steamID: number | null;
+  steamID: string | null;
   username: string | null;
   searchText: string;
   genre: string;

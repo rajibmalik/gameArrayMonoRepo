@@ -2,7 +2,7 @@ import axios, { CanceledError } from "axios";
 import { useEffect, useState } from "react";
 
 interface UserData {
-  steamID: number;
+  steamID: string;
   username: string;
 }
 
