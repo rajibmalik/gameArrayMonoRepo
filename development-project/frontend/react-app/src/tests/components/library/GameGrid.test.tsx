@@ -15,6 +15,8 @@ describe("GameGrid", () => {
         name: "GameOne",
         playtimeHours: 10,
         headerImage: "imageOne.jpg",
+        totalAchievements: 100,
+        acquiredAchievements: 20,
       },
     ];
 
@@ -31,6 +33,7 @@ describe("GameGrid", () => {
           username: "userOne",
           searchText: "",
           genre: "",
+          sort: "",
         }}
       />
     );
@@ -47,12 +50,16 @@ describe("GameGrid", () => {
         name: "GameOne",
         playtimeHours: 10,
         headerImage: "imageOne.jpg",
+        totalAchievements: 100,
+        acquiredAchievements: 20,
       },
       {
         appid: "2",
         name: "GameTwo",
         playtimeHours: 15,
         headerImage: "imageTwo.jpg",
+        totalAchievements: 100,
+        acquiredAchievements: 20,
       },
     ];
 
@@ -69,6 +76,7 @@ describe("GameGrid", () => {
           username: "userOne",
           searchText: "",
           genre: "",
+          sort: "",
         }}
       />
     );

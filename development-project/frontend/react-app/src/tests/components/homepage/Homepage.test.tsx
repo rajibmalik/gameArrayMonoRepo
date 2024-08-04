@@ -7,7 +7,7 @@ describe("Homepage", () => {
     render(<Homepage />);
 
     // Headers
-    expect(screen.getByText("WELCOME")).toBeInTheDocument();
+    expect(screen.getByText("WELCOME TO GAME ARRAY")).toBeInTheDocument();
     expect(screen.getByText("TO ACCESS YOUR")).toBeInTheDocument();
 
     // InfoContainer components
