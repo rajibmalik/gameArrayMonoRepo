@@ -40,6 +40,7 @@ describe("GameGrid", () => {
 
     expect(screen.getByText("GameOne")).toBeInTheDocument();
     expect(screen.getByText("10 hours played")).toBeInTheDocument();
+    expect(screen.getByText("20%")).toBeInTheDocument();
     const image = screen.getByRole("img") as HTMLImageElement;
     expect(image).toHaveAttribute("src", "imageOne.jpg");
   });
@@ -59,7 +60,7 @@ describe("GameGrid", () => {
         playtimeHours: 15,
         headerImage: "imageTwo.jpg",
         totalAchievements: 100,
-        acquiredAchievements: 20,
+        acquiredAchievements: 30,
       },
     ];
 
@@ -85,6 +86,8 @@ describe("GameGrid", () => {
     const images = screen.getAllByRole("img");
     // regex as unable to use getAllByRole for Badge component
     const badges = screen.getAllByText(/hours played/);
+    expect(screen.getByText("20%")).toBeInTheDocument();
+    expect(screen.getByText("30%")).toBeInTheDocument();
 
     mockGames.forEach((game, index) => {
       expect(names[index]).toHaveTextContent(game.name);
@@ -93,5 +96,72 @@ describe("GameGrid", () => {
         `${game.playtimeHours} hours played`
       );
     });
+  });
+
+  it("correctly renders the loading Spinner", () => {
+    const mockGames = [
+      {
+        appid: "1",
+        name: "GameOne",
+        playtimeHours: 10,
+        headerImage: "imageOne.jpg",
+        totalAchievements: 100,
+        acquiredAchievements: 20,
+      },
+    ];
+
+    vi.mocked(useUserGames).mockReturnValue({
+      userGames: mockGames,
+      error: "",
+      isLoading: true,
+    });
+
+    render(
+      <GameGrid
+        gameQuery={{
+          steamID: 123,
+          username: "userOne",
+          searchText: "",
+          genre: "",
+          sort: "",
+        }}
+      />
+    );
+
+    const spinner = screen.getByTestId("loading-spinner");
+    expect(spinner).toBeInTheDocument();
+  });
+
+  it("correctly renders the error message", () => {
+    const mockGames = [
+      {
+        appid: "1",
+        name: "GameOne",
+        playtimeHours: 10,
+        headerImage: "imageOne.jpg",
+        totalAchievements: 100,
+        acquiredAchievements: 20,
+      },
+    ];
+
+    vi.mocked(useUserGames).mockReturnValue({
+      userGames: mockGames,
+      error: "An error occured",
+      isLoading: false,
+    });
+
+    render(
+      <GameGrid
+        gameQuery={{
+          steamID: 123,
+          username: "userOne",
+          searchText: "",
+          genre: "",
+          sort: "",
+        }}
+      />
+    );
+
+    expect(screen.getByText("An error occured")).toBeInTheDocument();
   });
 });

@@ -14,7 +14,13 @@ const GameGrid = ({ gameQuery }: Props) => {
     <>
       {isLoading && (
         <Box textAlign="center" padding="50px">
-          <Spinner size="xl" color="blue.500" speed="0.65s" thickness="5px" />
+          <Spinner
+            size="xl"
+            color="blue.500"
+            speed="0.65s"
+            thickness="5px"
+            data-testid="loading-spinner"
+          />
         </Box>
       )}
 
