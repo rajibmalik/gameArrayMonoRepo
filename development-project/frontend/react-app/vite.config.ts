@@ -10,7 +10,7 @@ export default defineConfig({
     setupFiles: "./src/tests/setup.ts",
     coverage: {
       reporter: ["text", "html"],
-      exclude: ["node_modules/", "tests/"], // Files or directories to exclude from coverage
+      exclude: ["node_modules/", "src/tests/"], // Files or directories to exclude from coverage
     },
   },
 });
