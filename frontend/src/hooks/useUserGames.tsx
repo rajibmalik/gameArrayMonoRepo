@@ -30,6 +30,11 @@ const useUserGames = ({ steamID, searchText, genre, sort }: GameQuery) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!steamID) {
+      setUserGames([]);
+      return;
+    }
+
     const controller = new AbortController();
 
     setIsLoading(true);
