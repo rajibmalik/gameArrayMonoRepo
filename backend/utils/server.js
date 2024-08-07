@@ -37,9 +37,11 @@ function createServer() {
     session({
       secret: process.env.SESSION_SECRET,
       resave: false,
-      saveUninitialized: true,
+      saveUninitialized: false,
       cookie: {
-        maxAge: 1 * 60 * 60 * 24 * 1000,
+        maxAge: 1 * 60 * 60 * 24 * 1000, // Equivalent to 1 day
+        sameSite: 'none', // Required for cross-site cookie
+        secure: true, // Required when using sameSite
       },
     }),
   );
