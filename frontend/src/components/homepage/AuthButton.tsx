@@ -3,7 +3,7 @@ import { FaSteam } from "react-icons/fa";
 
 const AuthButton = () => {
   const url =
-    `${process.env.RENDER_URL}/auth/steam` ||
+    `${import.meta.env.VITE_RENDER_URL}/auth/steam` ||
     "http://localhost:3000/auth/steam";
   return (
     <Button
