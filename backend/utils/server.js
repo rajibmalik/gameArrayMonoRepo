@@ -16,10 +16,6 @@ const sessionRouter = require('../routes/sessionRouter');
 function createServer() {
   const app = express();
 
-  // Set up view engine
-  app.set('view engine', 'ejs');
-  app.set('views', `${__dirname}/views`);
-
   // Enable CORS
   app.use(
     cors({
