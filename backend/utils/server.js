@@ -44,11 +44,6 @@ function createServer() {
   // Middleware for parsing JSON
   app.use(express.json());
 
-  // Home route
-  app.get('/', (req, res) => {
-    res.render('index', { user: req.user });
-  });
-
   // Routes
   app.use('/auth/steam', steamAuthRouter);
   app.use('/account', accountRouter);
