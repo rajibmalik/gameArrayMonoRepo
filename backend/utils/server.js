@@ -16,10 +16,17 @@ const sessionRouter = require('../routes/sessionRouter');
 function createServer() {
   const app = express();
 
+  app.set('trust proxy', 1); // Required to work with deployment platforms
+
   // Enable CORS
   app.use(
     cors({
-      origin: ['http://localhost:3000', 'http://localhost:5173'],
+      origin: [
+        'http://localhost:3000',
+        'http://localhost:5173',
+        process.env.VERCEL_URL,
+        process.env.RENDER_URL,
+      ],
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       credentials: true,
     }),

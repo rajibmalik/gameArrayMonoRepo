@@ -2,6 +2,14 @@ const passport = require('passport');
 const SteamStrategy = require('passport-steam').Strategy;
 require('dotenv').config();
 
+const isProduction = process.env.NODE_ENV === 'production';
+const returnURL = isProduction
+  ? `${process.env.RENDER_URL}/auth/steam/callback`
+  : 'http://localhost:3000/auth/steam/callback';
+const realm = isProduction
+  ? `${process.env.RENDER_URL}/`
+  : 'http://localhost:3000/';
+
 // This is the configuration for Passport, which uses the SteamStrategy.
 
 // returnURL: where Steam redirects user after authentication
@@ -15,9 +23,9 @@ passport.use(
   // SteamStrategy passes identifier, profile and done to the anonymous callback function
   new SteamStrategy(
     {
-      returnURL: 'http://localhost:3000/auth/steam/callback',
+      returnURL: returnURL,
       // returnURL: 'http://localhost:5173/auth/steam',
-      realm: 'http://localhost:3000/',
+      realm: realm,
       apiKey: process.env.STEAM_API_KEY,
     },
     (identifier, profile, done) => {

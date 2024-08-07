@@ -25,5 +25,9 @@ exports.createUser = async (req, res, next) => {
 
 // Renders account page with associated user data
 exports.redirectToAccount = (req, res) => {
-  res.redirect('http://localhost:5173/library');
+  if (process.env.NODE_ENV === 'production') {
+    res.redirect(`${process.env.VERCEL_URL}/library`);
+  } else {
+    res.redirect('http://localhost:5173/library');
+  }
 };
