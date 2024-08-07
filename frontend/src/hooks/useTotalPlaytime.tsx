@@ -1,6 +1,7 @@
-import axios, { CanceledError } from "axios";
+import { CanceledError } from "axios";
 import { useEffect, useState } from "react";
 import useSessionData from "./useSessionData";
+import apiClient from "../services/api-client";
 
 interface FetchTotalPlaytimeResponse {
   data: {
@@ -22,9 +23,9 @@ const useTotalPlaytime = () => {
 
       setIsLoading(true);
 
-      axios
+      apiClient
         .get<FetchTotalPlaytimeResponse>(
-          `http://localhost:3000/api/v1/usergames/total-playtime/${userData.steamID}`,
+          `/usergames/total-playtime/${userData.steamID}`,
           {
             signal: controller.signal,
             withCredentials: true,

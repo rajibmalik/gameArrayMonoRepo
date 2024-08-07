@@ -1,7 +1,8 @@
-import axios, { CanceledError } from "axios";
+import { CanceledError } from "axios";
 import { useEffect, useState } from "react";
 import useSessionData from "./useSessionData";
 import { UserGame } from "./useUserGames";
+import apiClient from "../services/api-client";
 
 interface fetchTopGamesResponse {
   results: number;
@@ -22,9 +23,9 @@ const useTopGames = () => {
 
       setIsLoading(true);
 
-      axios
+      apiClient
         .get<fetchTopGamesResponse>(
-          `http://localhost:3000/api/v1/usergames/top-10-by-playtime/${userData.steamID}`,
+          `/usergames/top-10-by-playtime/${userData.steamID}`,
           {
             signal: controller.signal,
             withCredentials: true,

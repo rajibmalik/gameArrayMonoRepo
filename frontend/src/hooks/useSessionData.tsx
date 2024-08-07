@@ -1,5 +1,6 @@
-import axios, { CanceledError } from "axios";
+import { CanceledError } from "axios";
 import { useEffect, useState } from "react";
+import apiClient from "../services/api-client";
 
 interface UserData {
   steamID: string;
@@ -16,8 +17,8 @@ const useSessionData = () => {
 
     setIsLoading(true);
 
-    axios
-      .get<{ user: UserData }>("http://localhost:3000/api/v1/session", {
+    apiClient
+      .get<{ user: UserData }>("/session", {
         signal: controller.signal,
         withCredentials: true,
       })

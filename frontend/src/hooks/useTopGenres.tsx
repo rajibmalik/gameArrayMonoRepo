@@ -1,6 +1,7 @@
-import axios, { CanceledError } from "axios";
+import { CanceledError } from "axios";
 import { useEffect, useState } from "react";
 import useSessionData from "./useSessionData";
+import apiClient from "../services/api-client";
 
 export interface TopGenres {
   genre: string;
@@ -28,9 +29,9 @@ const useTopGenres = () => {
 
       setIsLoading(true);
 
-      axios
+      apiClient
         .get<fetchDashboardDataResponse>(
-          `http://localhost:3000/api/v1/usergames/top-genres-by-playtime/${userData.steamID}/6`,
+          `/usergames/top-genres-by-playtime/${userData.steamID}/6`,
           {
             signal: controller.signal,
             withCredentials: true,
