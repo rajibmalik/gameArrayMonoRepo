@@ -10,8 +10,6 @@ exports.createAndUpdateUserGames = async (req, res, next) => {
       user: { steamID: steamid },
     } = req;
 
-    console.log('createAndUpdateuserGames: ' + JSON.stringify(games, null, 2));
-
     const [existingGames, existingUser] = await Promise.all([
       Game.find({ appid: { $in: games.map((game) => game.appid.toString()) } }),
       User.findOne({ steamID: steamid }),

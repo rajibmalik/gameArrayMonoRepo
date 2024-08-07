@@ -12,7 +12,13 @@ const AuthButton = () => {
       bgColor="#17252A"
       variant={"solid"}
       size={"lg"}
-      onClick={() => (window.location.href = url)}
+      onClick={() => {
+        if (import.meta.env.VITE_RENDER_URL) {
+          window.location.href = url;
+        } else {
+          window.location.href = "http://localhost:3000/auth/steam";
+        }
+      }}
       _hover={{ bgColor: "#17252A" }}
       p={10}
     >
