@@ -16,7 +16,11 @@ const sessionRouter = require('../routes/sessionRouter');
 function createServer() {
   const app = express();
 
-  app.set('trust proxy', 1); // Required to work with deployment platforms
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  if (isProduction) {
+    app.set('trust proxy', 1); // Required to work with deployment platforms
+  }
 
   // Enable CORS
   app.use(
@@ -40,8 +44,8 @@ function createServer() {
       saveUninitialized: false,
       cookie: {
         maxAge: 1 * 60 * 60 * 24 * 1000, // Equivalent to 1 day
-        sameSite: 'none', // Required for cross-site cookie
-        secure: true, // Required when using sameSite
+        sameSite: isProduction ? 'none' : 'lax', // Required for cross-site cookie
+        secure: isProduction, // Required when using sameSite
       },
     }),
   );
