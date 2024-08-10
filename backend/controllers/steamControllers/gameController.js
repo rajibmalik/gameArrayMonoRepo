@@ -10,21 +10,13 @@ exports.fetchAndProcessGames = async (req, res, next) => {
   try {
     const steamID = req.user.steamID;
     const ownedGames = await steamService.getOwnedGames(steamID);
-    const playedGames = [];
-
-    // Add games with playtime to playedGames
-    ownedGames.forEach((game) => {
-      if (game.playtime_forever > 0) {
-        playedGames.push(game);
-      }
-    });
 
     // Find games which are not already saved to the database
-    const newAppids = await this.findNewGames(playedGames);
+    const newAppids = await this.findNewGames(ownedGames);
     req.appids = newAppids;
 
     // Create an array of games objects containing games and their playtime
-    const gamesWithPlaytime = playedGames.map((game) => ({
+    const gamesWithPlaytime = ownedGames.map((game) => ({
       appid: game.appid,
       playtime: game.playtime_forever,
     }));
