@@ -36,7 +36,7 @@ const RadarChartComponent = ({ topGenres }: Props) => {
         p="3"
         borderRadius="md"
         boxShadow="md"
-        width={"80%"}
+        width={"100%"}
         height={"100%"}
       >
         <Heading size={"sm"} textAlign={"center"} color={"black"} pb={1}>
@@ -52,8 +52,6 @@ const RadarChartComponent = ({ topGenres }: Props) => {
             />
             <PolarRadiusAxis tick={false} axisLine={false} />
             <Radar
-              // Animation does not work as the component is rendered instantly
-              // research work around
               animationBegin={400}
               animationDuration={1000}
               name="Playtime"

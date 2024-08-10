@@ -8,6 +8,7 @@ import useTopGenres from "../hooks/useTopGenres";
 import useTotalPlaytime from "../hooks/useTotalPlaytime";
 import useTopGames from "../hooks/useTopGames";
 import Footer from "../components/Footer";
+import useTotalAchievements from "../hooks/useTotalAchievements";
 
 const Dashboard = () => {
   const {
@@ -16,6 +17,12 @@ const Dashboard = () => {
     isLoading: totalPlaytimeLoading,
     error: totalPlaytimeError,
   } = useTotalPlaytime();
+
+  const {
+    totalAchievements,
+    isLoading: totalAchievementsLoading,
+    error: totalAchievementsError,
+  } = useTotalAchievements();
 
   const {
     topGenres,
@@ -32,14 +39,15 @@ const Dashboard = () => {
   return (
     <Grid
       templateAreas={`
-      "nav nav"
+      "nav nav "
       "statbox rosechart"
       "statbox2 rosechart"
+      "statbox3 rosechart"
       "barchart barchart"
       "footer footer"
     `}
-      gridTemplateRows={"auto 1.0fr 1.0fr 700px 0.5fr"}
-      gridTemplateColumns={"1.25fr 2.5fr"}
+      gridTemplateRows={"auto auto 1fr auto"}
+      gridTemplateColumns={"0.5fr 1fr"}
       maxHeight="100vh"
       maxWidth="100vw"
       gap={5}
@@ -49,14 +57,18 @@ const Dashboard = () => {
       </GridItem>
 
       <GridItem margin={10} mb={0} mt={0} area="statbox">
-        {totalPlaytimeLoading && <Text>Loading Total Playtime</Text>}
-        {totalPlaytimeError && (
-          <Text>Error loading Total Playtime: {totalPlaytimeError}</Text>
+        {totalAchievementsLoading && <Text>Loading Total Playtime</Text>}
+        {totalAchievementsError && (
+          <Text>Error loading Total Playtime: {totalAchievementsError}</Text>
         )}
         {totalGames && (
-          <TotalGames label={"Total number of games"} number={totalGames} />
+          <TotalGames
+            label={"Total number of achievements"}
+            number={totalAchievements}
+          />
         )}
       </GridItem>
+
       <GridItem margin={10} mb={0} mt={0} area="statbox2">
         {totalPlaytimeLoading && <Text>Loading Total Playtime </Text>}
         {totalPlaytimeError && (
@@ -68,6 +80,15 @@ const Dashboard = () => {
             number={totalPlaytime}
             helpText="hours"
           />
+        )}
+      </GridItem>
+      <GridItem margin={10} mb={0} mt={0} area="statbox3">
+        {totalPlaytimeLoading && <Text>Loading Total Playtime</Text>}
+        {totalPlaytimeError && (
+          <Text>Error loading Total Playtime: {totalPlaytimeError}</Text>
+        )}
+        {totalGames && (
+          <TotalGames label={"Total number of games"} number={totalGames} />
         )}
       </GridItem>
       <GridItem

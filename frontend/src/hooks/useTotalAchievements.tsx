@@ -5,14 +5,14 @@ import apiClient from "../services/api-client";
 
 interface FetchTotalPlaytimeResponse {
   data: {
-    totalPlaytime: number;
+    totalAchievements: number;
     numberOfGames: number;
   };
 }
 
-const useTotalPlaytime = () => {
+const useTotalAchievements = () => {
   const { userData, error: sessionError } = useSessionData();
-  const [totalPlaytime, setTotalPlaytime] = useState<number>(0);
+  const [totalAchievements, setTotalAchievements] = useState<number>(0);
   const [totalGames, setTotalGames] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -25,15 +25,14 @@ const useTotalPlaytime = () => {
 
       apiClient
         .get<FetchTotalPlaytimeResponse>(
-          `/usergames/total-playtime/${userData.steamID}`,
+          `/usergames/total-achievements/${userData.steamID}`,
           {
             signal: controller.signal,
             withCredentials: true,
           }
         )
         .then((res) => {
-          // Sets userData to user session object, created in Passport.js in Express backend
-          setTotalPlaytime(res.data.data.totalPlaytime);
+          setTotalAchievements(res.data.data.totalAchievements);
           setTotalGames(res.data.data.numberOfGames);
           setIsLoading(false);
         })
@@ -48,7 +47,7 @@ const useTotalPlaytime = () => {
     }
   }, [userData]);
 
-  return { totalPlaytime, totalGames, isLoading, error };
+  return { totalAchievements, totalGames, isLoading, error };
 };
 
-export default useTotalPlaytime;
+export default useTotalAchievements;
