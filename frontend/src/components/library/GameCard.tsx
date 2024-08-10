@@ -7,17 +7,19 @@ import {
   Image,
   Tooltip,
   VStack,
+  Badge,
 } from "@chakra-ui/react";
 import { FaClock, FaTrophy } from "react-icons/fa6";
-import { Badge } from "@chakra-ui/react";
+import LikeButton from "./LikeButton";
 
 interface Props {
   game: UserGame;
+  steamID: string;
 }
 
 const maxGameNameLength = 44;
 
-const GameCard = ({ game }: Props) => {
+const GameCard = ({ game, steamID }: Props) => {
   const truncatedName =
     game.name.length > maxGameNameLength
       ? `${game.name.substring(0, maxGameNameLength)}...`
@@ -31,6 +33,7 @@ const GameCard = ({ game }: Props) => {
     const gameUrl = `steam://rungameid/${game.appid}`;
     window.location.href = gameUrl;
   };
+
   return (
     <Tooltip
       label="Click to play"
@@ -51,8 +54,9 @@ const GameCard = ({ game }: Props) => {
         margin={3}
         onClick={launchGame}
         cursor="pointer"
+        position="relative"
       >
-        <Image src={game.headerImage}></Image>
+        <Image src={game.headerImage} />
         <CardBody>
           <Heading
             minH={"65px"}
@@ -63,6 +67,7 @@ const GameCard = ({ game }: Props) => {
           >
             {truncatedName}
           </Heading>
+          <LikeButton steamID={steamID} game={game} />
           <VStack justifyContent={"center"}>
             <HStack spacing={7}>
               <HStack padding={"2.5px"}>
