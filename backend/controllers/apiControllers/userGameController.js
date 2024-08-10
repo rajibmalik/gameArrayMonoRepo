@@ -128,14 +128,49 @@ exports.getTotalPlaytime = async (req, res) => {
   }
 };
 
+exports.toggleFavourite = async (req, res) => {
+  const { steamid, appid } = req.params;
+
+  try {
+    const userGame = await UserGame.findOne({ steamid, appid });
+
+    if (!userGame) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'User game could not be found',
+      });
+    }
+
+    userGame.favourite = !userGame.favourite;
+
+    await userGame.save();
+    res.status(200).json({
+      status: 'success',
+      data: {
+        userGame,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'fail',
+      message: 'Failed to toggle the favourite status of the usergame',
+      error: err.message,
+    });
+  }
+};
+
 exports.getFilteredGames = async (req, res) => {
   const { steamid } = req.params;
-  const { searchtext, genre, sort } = req.query;
+  const { searchtext, genre, sort, showFavourites } = req.query;
 
   try {
     const userGamesWithGames = await getUserGamesWithGames(steamid);
 
     let filteredGames = userGamesWithGames;
+
+    if (showFavourites === 'true') {
+      filteredGames = filteredGames.filter((game) => game.favourite == true);
+    }
 
     // Filter by searchtext
     if (searchtext) {

@@ -27,6 +27,10 @@ router
 //   .get(validator.steamid, userGameController.getAllUserGames);
 
 router
+  .route('/toggle-favourite/:steamid/:appid')
+  .post(validator.steamid, userGameController.toggleFavourite);
+
+router
   // Gets the top 10 userGames by playtime for a user
   .route('/top-10-by-playtime/:steamid')
   .get(validator.steamid, userGameController.getTop10PlayedGames);
