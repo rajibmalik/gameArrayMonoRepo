@@ -13,6 +13,7 @@ export interface UserGame {
   headerImage: string;
   totalAchievements: number;
   acquiredAchievements: number;
+  favourite: boolean;
 }
 
 // The interface for the response data
@@ -24,13 +25,13 @@ interface fetchUserGamesResponse {
   };
 }
 
-const useUserGames = ({ steamID, searchText, genre, sort }: GameQuery) => {
+const useUserGames = (gameQuery: GameQuery) => {
   const [userGames, setUserGames] = useState<UserGame[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!steamID) {
+    if (!gameQuery.steamID) {
       setUserGames([]);
       return;
     }
@@ -39,13 +40,14 @@ const useUserGames = ({ steamID, searchText, genre, sort }: GameQuery) => {
 
     setIsLoading(true);
 
-    const baseUrl = `/usergames/${steamID}`;
+    const baseUrl = `/usergames/${gameQuery.steamID}`;
 
     // Create URLSearchParams object for query parameters
     const params = new URLSearchParams();
-    if (searchText) params.append("searchtext", searchText);
-    if (genre) params.append("genre", genre);
-    if (sort) params.append("sort", sort);
+    if (gameQuery.searchText) params.append("searchtext", gameQuery.searchText);
+    if (gameQuery.genre) params.append("genre", gameQuery.genre);
+    if (gameQuery.sort) params.append("sort", gameQuery.sort);
+    if (gameQuery.showFavourites) params.append("showFavourites", "true");
 
     // Constructs full URL with base and query parameters
     const url = `${baseUrl}?${params.toString()}`;
@@ -65,7 +67,7 @@ const useUserGames = ({ steamID, searchText, genre, sort }: GameQuery) => {
       });
 
     return () => controller.abort();
-  }, [steamID, searchText, genre, sort]);
+  }, [gameQuery]);
 
   return { userGames, error, isLoading };
 };

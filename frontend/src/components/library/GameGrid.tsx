@@ -32,7 +32,11 @@ const GameGrid = ({ gameQuery }: Props) => {
         spacing={10}
       >
         {userGames.map((game) => (
-          <GameCard key={game.appid} game={game}></GameCard>
+          <GameCard
+            key={game.appid}
+            game={game}
+            steamID={gameQuery.steamID}
+          ></GameCard>
         ))}
       </SimpleGrid>
     </>

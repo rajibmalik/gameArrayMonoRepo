@@ -5,18 +5,31 @@ import useSessionData from "../hooks/useSessionData";
 import { useEffect, useState } from "react";
 import SearchBox from "../components/library/SearchBox";
 import Footer from "../components/Footer";
+import { UserGame } from "../hooks/useUserGames";
 
 export interface GameQuery {
-  steamID: string | null;
+  steamID: string;
   username: string | null;
   searchText: string;
   genre: string;
   sort: string;
+  showFavourites: boolean;
+  userGames: UserGame[];
 }
+
+const defaultGameQuery: GameQuery = {
+  steamID: "",
+  username: null,
+  searchText: "",
+  genre: "",
+  sort: "",
+  showFavourites: false,
+  userGames: [],
+};
 
 const Library = () => {
   const { userData, error, isLoading } = useSessionData();
-  const [gameQuery, setGameQuery] = useState<GameQuery>({} as GameQuery);
+  const [gameQuery, setGameQuery] = useState<GameQuery>(defaultGameQuery);
 
   // Set userData in gameQuery
   useEffect(() => {
@@ -29,7 +42,6 @@ const Library = () => {
     }
   }, [userData]);
 
-  // Update gameQuery with searchText when input is given
   const handleSearch = (searchText: string) => {
     setGameQuery((prevGameQuery) => ({
       ...prevGameQuery,
@@ -38,7 +50,6 @@ const Library = () => {
   };
 
   const handleGenreChange = (genre: string) => {
-    console.log(genre);
     setGameQuery((prevGameQuery) => ({
       ...prevGameQuery,
       genre: genre,
@@ -46,10 +57,16 @@ const Library = () => {
   };
 
   const handleSortChange = (sort: string) => {
-    console.log(sort);
     setGameQuery((prevGameQuery) => ({
       ...prevGameQuery,
       sort: sort,
+    }));
+  };
+
+  const handleFavoriteToggle = async (showFavourites: boolean) => {
+    setGameQuery((prevGameQuery) => ({
+      ...prevGameQuery,
+      showFavourites: showFavourites,
     }));
   };
 
@@ -78,6 +95,7 @@ const Library = () => {
             onSearch={handleSearch}
             onGenreChange={handleGenreChange}
             onSortChange={handleSortChange}
+            onFavourites={handleFavoriteToggle}
           />
         </Box>
       </GridItem>
