@@ -14,6 +14,11 @@ router
   .route('/total-playtime/:steamid')
   .get(validator.steamid, userGameController.getTotalPlaytime);
 
+router
+  // Gets total playtime for user
+  .route('/total-achievements/:steamid')
+  .get(validator.steamid, userGameController.getTotalAchievements);
+
 // This endpoint takes two optional query parameters:
 // 1) searchtext - a string representing the name of game
 // 2) genre - a string representing the genre of a game

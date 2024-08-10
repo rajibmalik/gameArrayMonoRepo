@@ -128,6 +128,33 @@ exports.getTotalPlaytime = async (req, res) => {
   }
 };
 
+exports.getTotalAchievements = async (req, res) => {
+  try {
+    const userGamesWithGames = await getUserGamesWithGames(req.params.steamid);
+    const numberOfGames = userGamesWithGames.length;
+    let totalAchievements = 0;
+
+    userGamesWithGames.map((game) => {
+      if (game.totalAchievements) {
+        totalAchievements += game.totalAchievements;
+      }
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        totalAchievements: totalAchievements,
+        numberOfGames: numberOfGames,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
 exports.toggleFavourite = async (req, res) => {
   const { steamid, appid } = req.params;
 
