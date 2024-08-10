@@ -13,6 +13,7 @@ interface UserGamesResponse {
   totalAchievements: number | null;
   acquiredAchievements: number;
   headerImage: string;
+  favourite: boolean;
 }
 
 // Database
@@ -26,6 +27,7 @@ const userGamesDatabase: Record<string, UserGamesResponse[]> = {
       totalAchievements: 100,
       acquiredAchievements: 50,
       headerImage: "imageOne",
+      favourite: false,
     },
     {
       appid: "2",
@@ -35,6 +37,7 @@ const userGamesDatabase: Record<string, UserGamesResponse[]> = {
       totalAchievements: 100,
       acquiredAchievements: 20,
       headerImage: "imageTwo",
+      favourite: false,
     },
     {
       appid: "3",
@@ -44,6 +47,7 @@ const userGamesDatabase: Record<string, UserGamesResponse[]> = {
       totalAchievements: 100,
       acquiredAchievements: 30,
       headerImage: "imageThree",
+      favourite: false,
     },
   ],
 };
@@ -59,55 +63,58 @@ export const handlers = [
   // "http://127.0.0.1:3000/api/v1"
   // This mocks the endpoint responsible for retrieving userGames based on
   // the query a user makes to the Express endpoint
-  http.get(
-    "http://127.0.0.1:3000/api/v1/usergames/:steamid",
-    ({ params, request }) => {
-      const steamid = params.steamid as string; // Ensure steamid is a string
-      const url = new URL(request.url);
-      const searchText = url.searchParams.get("searchtext");
-      const genre = url.searchParams.get("genre");
-      const sort = url.searchParams.get("sort");
+  http.get("/api/v1/usergames/:steamid", ({ params, request }) => {
+    console.log("Mock handler called", params, request.url);
+    const steamid = params.steamid as string; // Ensure steamid is a string
+    const url = new URL(request.url);
+    const searchText = url.searchParams.get("searchtext");
+    const genre = url.searchParams.get("genre");
+    const sort = url.searchParams.get("sort");
+    const showFavourites = url.searchParams.get("showFavourites");
 
-      // Retrieve user games based on steamid
-      let games: UserGamesResponse[] = userGamesDatabase[steamid] || [];
+    // Retrieve user games based on steamid
+    let games: UserGamesResponse[] = userGamesDatabase[steamid] || [];
 
-      // Filter by searchText
-      if (searchText) {
-        games = games.filter((game) =>
-          game.name.toLowerCase().includes(searchText.toLowerCase())
-        );
-      }
-
-      // Filter by genre
-      if (genre) {
-        games = games.filter((game) =>
-          game.genres.some((g) => g.toLowerCase().includes(genre.toLowerCase()))
-        );
-      }
-
-      // Sort games
-      if (sort) {
-        switch (sort.toLowerCase()) {
-          case "playtime":
-            games.sort((a, b) => b.playtimeHours - a.playtimeHours);
-            break;
-          case "name":
-            games.sort((a, b) => a.name.localeCompare(b.name));
-            break;
-        }
-      }
-
-      return HttpResponse.json<{
-        status: string;
-        results: number;
-        data: { userGames: UserGamesResponse[] };
-      }>({
-        status: "success",
-        results: games.length,
-        data: {
-          userGames: games,
-        },
-      });
+    if (showFavourites === "true") {
+      games = games.filter((game) => game.favourite == true);
     }
-  ),
+
+    // Filter by searchText
+    if (searchText) {
+      games = games.filter((game) =>
+        game.name.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
+
+    // Filter by genre
+    if (genre) {
+      games = games.filter((game) =>
+        game.genres.some((g) => g.toLowerCase().includes(genre.toLowerCase()))
+      );
+    }
+
+    // Sort games
+    if (sort) {
+      switch (sort.toLowerCase()) {
+        case "playtime":
+          games.sort((a, b) => b.playtimeHours - a.playtimeHours);
+          break;
+        case "name":
+          games.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+      }
+    }
+
+    return HttpResponse.json<{
+      status: string;
+      results: number;
+      data: { userGames: UserGamesResponse[] };
+    }>({
+      status: "success",
+      results: games.length,
+      data: {
+        userGames: games,
+      },
+    });
+  }),
 ];

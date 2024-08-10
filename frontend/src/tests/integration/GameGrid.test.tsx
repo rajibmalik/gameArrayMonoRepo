@@ -24,6 +24,8 @@ describe("GameGrid Component", () => {
     );
 
     await waitFor(() => {
+      // const gameCardOne = screen.getByTestId("game-card-1");
+      // expect(gameCardOne).toBeInTheDocument();
       expect(screen.getByText("Game One")).toBeInTheDocument();
       expect(screen.getByText("50%")).toBeInTheDocument();
       expect(screen.getByText("10 hours played")).toBeInTheDocument();

@@ -15,11 +15,12 @@ import LikeButton from "./LikeButton";
 interface Props {
   game: UserGame;
   steamID: string;
+  testId?: string;
 }
 
 const maxGameNameLength = 44;
 
-const GameCard = ({ game, steamID }: Props) => {
+const GameCard = ({ game, steamID, testId }: Props) => {
   const truncatedName =
     game.name.length > maxGameNameLength
       ? `${game.name.substring(0, maxGameNameLength)}...`
@@ -47,6 +48,7 @@ const GameCard = ({ game, steamID }: Props) => {
       bg={"#17252A"}
     >
       <Card
+        data-testid={testId}
         transition="transform 0.5s"
         _hover={{ transform: "scale(1.05)" }}
         borderRadius={5}

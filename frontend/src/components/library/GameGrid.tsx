@@ -36,6 +36,7 @@ const GameGrid = ({ gameQuery }: Props) => {
             key={game.appid}
             game={game}
             steamID={gameQuery.steamID}
+            testId={`game-card-${game.appid}`}
           ></GameCard>
         ))}
       </SimpleGrid>
