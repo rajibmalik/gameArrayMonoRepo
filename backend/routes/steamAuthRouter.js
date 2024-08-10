@@ -12,4 +12,6 @@ router.get('/', steamAuthController.initiateSteamAuth);
 // Route to handle the callback after Steam authentication
 router.get('/callback', steamAuthController.steamAuthCallback);
 
+router.get('/validate-account', steamAuthController.validateAccount);
+
 module.exports = router;

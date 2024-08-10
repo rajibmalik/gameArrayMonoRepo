@@ -156,9 +156,36 @@ const getAppDetailsForOneApp = async (appID) => {
   }
 };
 
+const getIsProfileVisibile = async (steamID) => {
+  try {
+    const response = await axios.get(
+      `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/`,
+      {
+        params: {
+          key: process.env.STEAM_API_KEY,
+          steamids: steamID,
+        },
+      },
+    );
+
+    const player = response.data.response.players[0];
+
+    if (player && player.communityvisibilitystate === 3) {
+      console.log('User profile is public');
+      return true;
+    } else {
+      console.log('User profile is not public');
+      return false;
+    }
+  } catch (err) {
+    console.error('Error fetching Steam profile:', err.message);
+  }
+};
+
 module.exports = {
   getOwnedGames,
   getAppDetails,
   getAppDetailsForOneApp,
   getUserAchievements,
+  getIsProfileVisibile,
 };
