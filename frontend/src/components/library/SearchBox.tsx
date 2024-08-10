@@ -1,25 +1,36 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 import SearchBar from "./SearchBar";
 import GenreFilter from "./GenreFilter";
 import SortBy from "./SortBy";
+import FavouriteCheckBox from "./FavouriteCheckBox";
 
 interface Props {
   onSearch: (searchText: string) => void;
   onGenreChange: (genre: string) => void;
   onSortChange: (sort: string) => void;
+  onFavourites: (showFavourites: boolean) => void;
 }
 
-const SearchBox = ({ onSearch, onGenreChange, onSortChange }: Props) => {
+const SearchBox = ({
+  onSearch,
+  onGenreChange,
+  onSortChange,
+  onFavourites,
+}: Props) => {
   return (
-    <Box
-      display={"flex"}
-      justifyContent={"space-between"}
-      alignItems={"center"}
-      width={"100%"}
-    >
-      <GenreFilter onGenreChange={onGenreChange} />
-      <SearchBar onSearch={onSearch} />
-      <SortBy onSortChange={onSortChange} />
+    <Box width={"100%"}>
+      <Grid templateColumns="1fr auto 1fr" alignItems="center" gap={3}>
+        <Box display="flex" justifyContent="flex-start" gap={10}>
+          <GenreFilter onGenreChange={onGenreChange} />
+          <SortBy onSortChange={onSortChange} />
+        </Box>
+        <Box display="flex" justifyContent="center">
+          <SearchBar onSearch={onSearch} />
+        </Box>
+        <Box display="flex" justifyContent="center">
+          <FavouriteCheckBox onFavourites={onFavourites} />
+        </Box>
+      </Grid>
     </Box>
   );
 };
