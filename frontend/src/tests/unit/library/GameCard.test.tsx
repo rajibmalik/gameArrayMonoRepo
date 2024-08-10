@@ -11,8 +11,9 @@ describe("GameCard", () => {
       playtimeHours: 10,
       totalAchievements: 100,
       acquiredAchievements: 20,
+      favourite: false,
     };
-    render(<GameCard game={mockGame} />);
+    render(<GameCard steamID="" game={mockGame} />);
     expect(screen.getByText("Test")).toBeInTheDocument();
     expect(screen.getByText("10 hours played")).toBeInTheDocument();
     expect(screen.getByText("20%")).toBeInTheDocument();
@@ -28,8 +29,9 @@ describe("GameCard", () => {
       playtimeHours: 10,
       totalAchievements: 0,
       acquiredAchievements: 0,
+      favourite: false,
     };
-    render(<GameCard game={mockGame} />);
+    render(<GameCard steamID="" game={mockGame} />);
     expect(screen.getByText("N/A")).toBeInTheDocument();
   });
 
@@ -43,8 +45,9 @@ describe("GameCard", () => {
       playtimeHours: 10,
       totalAchievements: 100,
       acquiredAchievements: 20,
+      favourite: false,
     };
-    render(<GameCard game={mockGame} />);
+    render(<GameCard steamID="" game={mockGame} />);
     const heading = screen.getByRole("heading");
     expect(heading).toHaveTextContent(
       "A very long game name that exceeds the maxim..."

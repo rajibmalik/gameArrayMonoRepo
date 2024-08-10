@@ -18,6 +18,7 @@ describe("GameGrid Component", () => {
           searchText: "",
           genre: "",
           sort: "",
+          showFavourites: false,
         }}
       />
     );

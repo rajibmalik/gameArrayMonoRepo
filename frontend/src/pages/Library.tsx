@@ -5,7 +5,6 @@ import useSessionData from "../hooks/useSessionData";
 import { useEffect, useState } from "react";
 import SearchBox from "../components/library/SearchBox";
 import Footer from "../components/Footer";
-import { UserGame } from "../hooks/useUserGames";
 
 export interface GameQuery {
   steamID: string;
@@ -14,7 +13,6 @@ export interface GameQuery {
   genre: string;
   sort: string;
   showFavourites: boolean;
-  userGames: UserGame[];
 }
 
 const defaultGameQuery: GameQuery = {
@@ -24,7 +22,6 @@ const defaultGameQuery: GameQuery = {
   genre: "",
   sort: "",
   showFavourites: false,
-  userGames: [],
 };
 
 const Library = () => {

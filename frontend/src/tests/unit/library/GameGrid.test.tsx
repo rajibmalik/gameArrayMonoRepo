@@ -17,6 +17,7 @@ describe("GameGrid", () => {
         headerImage: "imageOne.jpg",
         totalAchievements: 100,
         acquiredAchievements: 20,
+        favourite: false,
       },
     ];
 
@@ -34,6 +35,7 @@ describe("GameGrid", () => {
           searchText: "",
           genre: "",
           sort: "",
+          showFavourites: false,
         }}
       />
     );
@@ -53,6 +55,7 @@ describe("GameGrid", () => {
         headerImage: "imageOne.jpg",
         totalAchievements: 100,
         acquiredAchievements: 20,
+        favourite: false,
       },
       {
         appid: "2",
@@ -61,6 +64,7 @@ describe("GameGrid", () => {
         headerImage: "imageTwo.jpg",
         totalAchievements: 100,
         acquiredAchievements: 30,
+        favourite: false,
       },
     ];
 
@@ -78,6 +82,7 @@ describe("GameGrid", () => {
           searchText: "",
           genre: "",
           sort: "",
+          showFavourites: false,
         }}
       />
     );
@@ -107,6 +112,7 @@ describe("GameGrid", () => {
         headerImage: "imageOne.jpg",
         totalAchievements: 100,
         acquiredAchievements: 20,
+        favourite: false,
       },
     ];
 
@@ -124,6 +130,7 @@ describe("GameGrid", () => {
           searchText: "",
           genre: "",
           sort: "",
+          showFavourites: false,
         }}
       />
     );
@@ -141,6 +148,7 @@ describe("GameGrid", () => {
         headerImage: "imageOne.jpg",
         totalAchievements: 100,
         acquiredAchievements: 20,
+        favourite: false,
       },
     ];
 
@@ -158,6 +166,7 @@ describe("GameGrid", () => {
           searchText: "",
           genre: "",
           sort: "",
+          showFavourites: false,
         }}
       />
     );
