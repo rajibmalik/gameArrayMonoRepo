@@ -92,7 +92,6 @@ const getUserAchievements = async (appIDs, steamID) => {
     let currentRequests = [];
 
     for (const appID of appIDs) {
-      console.log(`Querying game achievements for ${appID}`);
       const request = axios
         .get(
           `http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/`,
@@ -137,8 +136,6 @@ const getUserAchievements = async (appIDs, steamID) => {
     }
 
     await Promise.all(currentRequests);
-
-    console.log('Achievements: ' + JSON.stringify(achievements, null, 2));
 
     return achievements;
   } catch (err) {

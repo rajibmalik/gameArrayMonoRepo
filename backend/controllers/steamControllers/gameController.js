@@ -68,16 +68,8 @@ exports.findNewGames = async (ownedGames) => {
 // Using steamService, queries an array of appids for more game information
 exports.queryGames = async (req, res, next) => {
   try {
-    // Times the length of the query
-    const startTime = Date.now();
-
     const appids = req.appids;
-    console.log(`appids ${appids}`);
     const responseData = await steamService.getAppDetails(appids);
-
-    // Calculated length of time querying
-    const elapsedTime = Date.now() - startTime;
-    console.log(`Querying took ${elapsedTime} milliseconds`);
 
     const games = [];
 
