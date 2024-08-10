@@ -19,6 +19,10 @@ const userGameSchema = new mongoose.Schema({
     type: Number,
     trim: true,
   },
+  favourite: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const UserGame = mongoose.model('UserGame', userGameSchema);
