@@ -171,6 +171,51 @@ exports.toggleFavourite = async (req, res) => {
     userGame.favourite = !userGame.favourite;
 
     await userGame.save();
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        userGame,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'fail',
+      message: 'Failed to toggle the favourite status of the usergame',
+      error: err.message,
+    });
+  }
+};
+
+exports.rateUserGame = async (req, res) => {
+  const { steamid, appid, rating } = req.params;
+  // const { rating } = req.body;
+
+  if (rating < 0 || rating > 5) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Rating must be between 0 and 5',
+    });
+  }
+
+  try {
+    const userGame = await UserGame.findOne({ steamid, appid });
+
+    if (!userGame) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'User game could not be found',
+      });
+    }
+
+    if (userGame.rating === rating) {
+      userGame.rating = 0;
+    } else {
+      userGame.rating = rating;
+    }
+
+    await userGame.save();
+
     res.status(200).json({
       status: 'success',
       data: {
@@ -188,12 +233,19 @@ exports.toggleFavourite = async (req, res) => {
 
 exports.getFilteredGames = async (req, res) => {
   const { steamid } = req.params;
-  const { searchtext, genre, sort, showFavourites } = req.query;
+  const { searchtext, genre, sort, showFavourites, rating } = req.query;
 
   try {
     const userGamesWithGames = await getUserGamesWithGames(steamid);
 
     let filteredGames = userGamesWithGames;
+
+    if (rating !== undefined && rating !== null) {
+      const ratingNumber = Number(rating);
+      filteredGames = filteredGames.filter(
+        (game) => game.rating === ratingNumber,
+      );
+    }
 
     if (showFavourites === 'true') {
       filteredGames = filteredGames.filter((game) => game.favourite == true);

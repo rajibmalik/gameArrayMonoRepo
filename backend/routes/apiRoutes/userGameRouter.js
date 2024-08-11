@@ -26,14 +26,13 @@ router
   .route('/:steamid')
   .get(validator.steamid, userGameController.getFilteredGames);
 
-// router
-//   .route('/:steamid')
-//   // Gets userGames with Game information for a user
-//   .get(validator.steamid, userGameController.getAllUserGames);
-
 router
   .route('/toggle-favourite/:steamid/:appid')
   .post(validator.steamid, userGameController.toggleFavourite);
+
+router
+  .route('/rate/:steamid/:appid/:rating')
+  .patch(validator.steamid, userGameController.rateUserGame);
 
 router
   // Gets the top 10 userGames by playtime for a user
