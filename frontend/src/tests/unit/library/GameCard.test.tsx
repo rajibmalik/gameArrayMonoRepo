@@ -12,6 +12,7 @@ describe("GameCard", () => {
       totalAchievements: 100,
       acquiredAchievements: 20,
       favourite: false,
+      rating: 0,
     };
     render(<GameCard steamID="" game={mockGame} />);
     expect(screen.getByText("Test")).toBeInTheDocument();
@@ -30,6 +31,7 @@ describe("GameCard", () => {
       totalAchievements: 0,
       acquiredAchievements: 0,
       favourite: false,
+      rating: 0,
     };
     render(<GameCard steamID="" game={mockGame} />);
     expect(screen.getByText("N/A")).toBeInTheDocument();
@@ -46,6 +48,7 @@ describe("GameCard", () => {
       totalAchievements: 100,
       acquiredAchievements: 20,
       favourite: false,
+      rating: 0,
     };
     render(<GameCard steamID="" game={mockGame} />);
     const heading = screen.getByRole("heading");
