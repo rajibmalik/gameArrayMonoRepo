@@ -5,12 +5,13 @@ import {
   HStack,
   Heading,
   Image,
-  Tooltip,
   VStack,
   Badge,
+  Tooltip,
 } from "@chakra-ui/react";
 import { FaClock, FaTrophy } from "react-icons/fa6";
 import LikeButton from "./LikeButton";
+import StarRating from "./StarRating";
 
 interface Props {
   game: UserGame;
@@ -36,67 +37,67 @@ const GameCard = ({ game, steamID, testId }: Props) => {
   };
 
   return (
-    <Tooltip
-      label="Click to play"
-      fontSize={"md"}
-      placement="top"
-      hasArrow
-      arrowSize={20}
-      p={2}
-      borderRadius={"md"}
-      fontWeight={"bold"}
-      bg={"#17252A"}
+    <Card
+      data-testid={testId}
+      transition="transform 0.5s"
+      _hover={{ transform: "scale(1.05)" }}
+      borderRadius={5}
+      overflow={"hidden"}
+      margin={3}
+      cursor="pointer"
+      position="relative"
     >
-      <Card
-        data-testid={testId}
-        transition="transform 0.5s"
-        _hover={{ transform: "scale(1.05)" }}
-        borderRadius={5}
-        overflow={"hidden"}
-        margin={3}
-        onClick={launchGame}
-        cursor="pointer"
-        position="relative"
+      <Tooltip
+        label="Click to play"
+        fontSize={"md"}
+        placement="top"
+        hasArrow
+        arrowSize={20}
+        p={2}
+        borderRadius={"md"}
+        fontWeight={"bold"}
+        bg={"#17252A"}
       >
-        <Image src={game.headerImage} />
-        <CardBody>
-          <Heading
-            minH={"65px"}
-            display={"flex"}
-            justifyContent={"center"}
-            overflow={"hidden"}
-            fontSize="xl"
-          >
-            {truncatedName}
-          </Heading>
-          <LikeButton steamID={steamID} game={game} />
-          <VStack justifyContent={"center"}>
-            <HStack spacing={7}>
+        <Image src={game.headerImage} onClick={launchGame} />
+      </Tooltip>
+      <CardBody>
+        <Heading
+          minH={"65px"}
+          display={"flex"}
+          justifyContent={"center"}
+          overflow={"hidden"}
+          fontSize="xl"
+        >
+          {truncatedName}
+        </Heading>
+        <LikeButton steamID={steamID} game={game} />
+        <VStack justifyContent={"center"}>
+          <HStack spacing={7}>
+            <HStack padding={"2.5px"}>
+              <Badge backgroundColor={"white"}>
+                {game.playtimeHours} hours played
+              </Badge>
+              <FaClock />
+            </HStack>
+            {game.acquiredAchievements >= 0 && game.totalAchievements > 0 && (
               <HStack padding={"2.5px"}>
                 <Badge backgroundColor={"white"}>
-                  {game.playtimeHours} hours played
+                  {achievementProgression}%
                 </Badge>
-                <FaClock />
+                <FaTrophy />
               </HStack>
-              {game.acquiredAchievements >= 0 && game.totalAchievements > 0 && (
-                <HStack padding={"2.5px"}>
-                  <Badge backgroundColor={"white"}>
-                    {achievementProgression}%
-                  </Badge>
-                  <FaTrophy />
-                </HStack>
-              )}
-              {!game.totalAchievements && (
-                <HStack padding={"2.5px"}>
-                  <Badge backgroundColor={"white"}>N/A</Badge>
-                  <FaTrophy />
-                </HStack>
-              )}
-            </HStack>
-          </VStack>
-        </CardBody>
-      </Card>
-    </Tooltip>
+            )}
+            {!game.totalAchievements && (
+              <HStack padding={"2.5px"}>
+                <Badge backgroundColor={"white"}>N/A</Badge>
+                <FaTrophy />
+              </HStack>
+            )}
+          </HStack>
+          <StarRating appid={game.appid} steamID={steamID} game={game} />
+        </VStack>
+      </CardBody>
+    </Card>
   );
 };
 
