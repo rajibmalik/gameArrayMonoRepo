@@ -3,12 +3,14 @@ import SearchBar from "./SearchBar";
 import GenreFilter from "./GenreFilter";
 import SortBy from "./SortBy";
 import FavouriteCheckBox from "./FavouriteCheckBox";
+import RatingFilter from "./RatingFilter";
 
 interface Props {
   onSearch: (searchText: string) => void;
   onGenreChange: (genre: string) => void;
   onSortChange: (sort: string) => void;
   onFavourites: (showFavourites: boolean) => void;
+  onRatingChange: (rating: number | null) => void;
 }
 
 const SearchBox = ({
@@ -16,6 +18,7 @@ const SearchBox = ({
   onGenreChange,
   onSortChange,
   onFavourites,
+  onRatingChange,
 }: Props) => {
   return (
     <Box width={"100%"}>
@@ -28,6 +31,7 @@ const SearchBox = ({
           <SearchBar onSearch={onSearch} />
         </Box>
         <Box display="flex" justifyContent="center">
+          <RatingFilter onRatingChange={onRatingChange} />
           <FavouriteCheckBox onFavourites={onFavourites} />
         </Box>
       </Grid>

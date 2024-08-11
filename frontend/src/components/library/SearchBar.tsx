@@ -14,7 +14,7 @@ const SearchBar = ({ onSearch }: Props) => {
   const ref = useRef<HTMLInputElement>(null);
   return (
     <form
-      onChange={(event) => {
+      onSubmit={(event) => {
         event.preventDefault();
         if (ref.current) {
           const sanitizedSearchText = sanitizeInput(ref.current.value);

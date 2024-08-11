@@ -14,6 +14,7 @@ export interface UserGame {
   totalAchievements: number;
   acquiredAchievements: number;
   favourite: boolean;
+  rating: number;
 }
 
 // The interface for the response data
@@ -48,6 +49,10 @@ const useUserGames = (gameQuery: GameQuery) => {
     if (gameQuery.genre) params.append("genre", gameQuery.genre);
     if (gameQuery.sort) params.append("sort", gameQuery.sort);
     if (gameQuery.showFavourites) params.append("showFavourites", "true");
+    // Required for recognising 0 as a rating
+    if (gameQuery.rating !== null) {
+      params.append("rating", gameQuery.rating.toString());
+    }
 
     // Constructs full URL with base and query parameters
     const url = `${baseUrl}?${params.toString()}`;

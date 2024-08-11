@@ -13,6 +13,7 @@ export interface GameQuery {
   genre: string;
   sort: string;
   showFavourites: boolean;
+  rating: number | null;
 }
 
 const defaultGameQuery: GameQuery = {
@@ -22,6 +23,7 @@ const defaultGameQuery: GameQuery = {
   genre: "",
   sort: "",
   showFavourites: false,
+  rating: null,
 };
 
 const Library = () => {
@@ -67,6 +69,13 @@ const Library = () => {
     }));
   };
 
+  const handleRatingChange = async (rating: number | null) => {
+    setGameQuery((prevGameQuery) => ({
+      ...prevGameQuery,
+      rating: rating,
+    }));
+  };
+
   return (
     <Grid
       templateAreas={{
@@ -93,6 +102,7 @@ const Library = () => {
             onGenreChange={handleGenreChange}
             onSortChange={handleSortChange}
             onFavourites={handleFavoriteToggle}
+            onRatingChange={handleRatingChange}
           />
         </Box>
       </GridItem>
