@@ -11,7 +11,7 @@ interface Props {
 }
 
 const StarRating = ({ steamID, appid, game }: Props) => {
-  const { rateGame, isLoading, error } = useRateGame(steamID);
+  const { rateGame } = useRateGame(steamID);
   const [rating, setRating] = useState<number>(0);
   const [hoveredStar, setHoveredStar] = useState<number | null>(null);
 
