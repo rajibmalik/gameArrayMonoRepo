@@ -16,7 +16,12 @@ const InfoContainer = ({ header, image, text }: Props) => {
       padding={5}
     >
       <Heading textAlign={"center"}> {header}</Heading>
-      <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
+      <Box
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        height={"250px"}
+      >
         <Img src={image} p={10}></Img>
       </Box>
       <Text

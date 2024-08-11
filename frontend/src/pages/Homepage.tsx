@@ -40,7 +40,7 @@ const Homepage = () => {
           header={"LIBRARY"}
           image={"/images/Library.png"}
           text={
-            "Search and filter games by genre, sort your collection, view achievement progress and playtime, and launch your favorite games."
+            "Navigate your gaming collection, rate, favourite and launch games"
           }
         />
       </GridItem>
@@ -48,7 +48,7 @@ const Homepage = () => {
         <InfoContainer
           header={"DASHBOARD"}
           image={"/images/Dashboard.png"}
-          text={"View graphs visualising your gaming data"}
+          text={"Gain insight into your gaming habits"}
         />
       </GridItem>
       <GridItem area="footer">
