@@ -8,11 +8,18 @@ const FavouriteCheckBox = ({ onFavourites }: Props) => {
   return (
     <Checkbox
       colorScheme="teal"
-      spacing={"1rem"}
+      spacing={"0.5rem"}
       size={"lg"}
-      borderColor={"black"}
       color={"black"}
       onChange={(e) => onFavourites(e.target.checked)}
+      sx={{
+        ".chakra-checkbox__control": {
+          width: "2.3rem",
+          height: "2.3rem",
+          borderWidth: "1px",
+          borderColor: "black",
+        },
+      }}
     >
       FAVOURITES
     </Checkbox>

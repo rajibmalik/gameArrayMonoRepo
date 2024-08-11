@@ -30,6 +30,8 @@ const GameGrid = ({ gameQuery }: Props) => {
         columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
         padding="25px"
         spacing={10}
+        marginLeft={{ base: 2, md: 3, lg: 4, xl: 5 }}
+        marginRight={{ base: 2, md: 3, lg: 4, xl: 5 }}
       >
         {userGames.map((game) => (
           <GameCard

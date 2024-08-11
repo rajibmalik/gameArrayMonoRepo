@@ -24,9 +24,10 @@ const SearchBar = ({ onSearch }: Props) => {
     >
       <InputGroup
         overflow={"hidden"}
-        borderRadius={2}
+        borderRadius={5}
         borderWidth={1}
         width={"100%"}
+        height={"100%"}
         borderColor={"black"}
       >
         <Input

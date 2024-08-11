@@ -30,7 +30,7 @@ const SearchBox = ({
         <Box display="flex" justifyContent="center">
           <SearchBar onSearch={onSearch} />
         </Box>
-        <Box display="flex" justifyContent="center">
+        <Box display="flex" justifyContent="flex-end" gap={10}>
           <RatingFilter onRatingChange={onRatingChange} />
           <FavouriteCheckBox onFavourites={onFavourites} />
         </Box>

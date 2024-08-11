@@ -20,7 +20,7 @@ const LogOutButton = () => {
       onClick={handleLogOut}
       bg={"#FEFFFF"}
       size={"sm"}
-      padding={5}
+      padding={3}
       borderRadius={"md"}
       margin={"5px"}
     >
