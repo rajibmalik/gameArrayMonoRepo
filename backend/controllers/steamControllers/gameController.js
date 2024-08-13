@@ -53,7 +53,7 @@ exports.findNewGames = async (ownedGames) => {
 
     return newGamesids;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -112,7 +112,7 @@ exports.createGames = async (req, res, next) => {
 
     next();
   } catch (err) {
-    throw new Error(
+    console.error(
       `Failed to create game details from Steam API: ${err.message}`,
     );
   }
