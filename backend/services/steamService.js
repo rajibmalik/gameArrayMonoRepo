@@ -60,7 +60,7 @@ const getAppDetails = async (appIDs) => {
           }
         })
         .catch((err) => {
-          throw new Error(`Error fetching details for appID ${appID}:`, err);
+          console.err(`Error fetching details for appID ${appID}:`, err);
         });
 
       // Add the request to the concurrent batch
