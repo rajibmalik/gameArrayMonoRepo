@@ -146,4 +146,22 @@ describe('UserGames Controller', () => {
     });
     expect(next).not.toHaveBeenCalled();
   });
+
+  it('should correctly query user achievements and update req object ', async () => {
+    const req = {
+      user: { steamID: '76561198087601822' },
+      games: [{ appid: 550 }],
+      usergames: [{ appid: 550, playtime: 100 }],
+    };
+
+    const result = await userGamesController.queryUserAchievements(
+      req,
+      res,
+      next,
+    );
+
+    expect(req.games[0]).toHaveProperty('totalAchievements');
+    expect(req.usergames[0]).toHaveProperty('acquiredAchievements');
+    expect(next).toHaveBeenCalled();
+  });
 });
