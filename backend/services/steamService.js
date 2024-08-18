@@ -144,19 +144,6 @@ const getUserAchievements = async (appIDs, steamID) => {
   }
 };
 
-const getAppDetailsForOneApp = async (appID) => {
-  try {
-    const response = await axios.get(
-      `https://store.steampowered.com/api/appdetails/?appids=${appID}`,
-    );
-
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching details for appID ${appID}:`, error);
-    throw error;
-  }
-};
-
 const getIsProfileVisibile = async (steamID) => {
   try {
     const response = await axios.get(
@@ -186,7 +173,6 @@ const getIsProfileVisibile = async (steamID) => {
 module.exports = {
   getOwnedGames,
   getAppDetails,
-  getAppDetailsForOneApp,
   getUserAchievements,
   getIsProfileVisibile,
 };
