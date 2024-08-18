@@ -1,4 +1,5 @@
 const axios = require('axios');
+require('dotenv').config();
 
 // Makes a request to the Steam API at the /GetOwned/Games endpoint
 // Returns an array containing objects which have:
@@ -139,7 +140,7 @@ const getUserAchievements = async (appIDs, steamID) => {
 
     return achievements;
   } catch (err) {
-    throw new Error(`Failed to fetch game achievements from Steam API: ${err}`);
+    console.error(`Failed to fetch games achievements from Steam API: ${err}`);
   }
 };
 
