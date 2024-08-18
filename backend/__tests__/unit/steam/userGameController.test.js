@@ -128,4 +128,22 @@ describe('UserGames Controller', () => {
 
     expect(userGames).toHaveLength(1);
   });
+  it('should throw error if the steamid does not exist ', async () => {
+    const req = {
+      user: { steamID: '12356789123456799' },
+      usergames: [
+        { appid: '1', playtime: 10000 },
+        { appid: '2000', playtime: 50 },
+      ],
+    };
+
+    await userGamesController.createAndUpdateUserGames(req, res, next);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({
+      message: 'Failed to fetch, update and add new games',
+      error: 'User not found for the steamid: 12356789123456799',
+    });
+    expect(next).not.toHaveBeenCalled();
+  });
 });
