@@ -38,8 +38,9 @@ describe('Game Controller', () => {
   describe('fetchAndProcessGames', () => {
     it('should fetch and process games correctly', async () => {
       const req = {
-        user: { steamID: '12345' },
+        user: { steamID: '12356789123456789' },
       };
+
       const mockOwnedGames = [
         { appid: 1, playtime_forever: 100 },
         { appid: 2, playtime_forever: 0 },
@@ -55,12 +56,9 @@ describe('Game Controller', () => {
         next,
       );
 
-      expect(steamService.getOwnedGames).toHaveBeenCalledWith('12345');
-      expect(req.usergames).toEqual([
-        { appid: 1, playtime: 100 },
-        { appid: 3, playtime: 200 },
-        { appid: 4, playtime: 300 },
-      ]);
+      expect(steamService.getOwnedGames).toHaveBeenCalledWith(
+        '12356789123456789',
+      );
       expect(req.usergames).toEqual(gamesWithPlaytime);
       expect(next).toHaveBeenCalled();
     });
