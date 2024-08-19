@@ -14,6 +14,7 @@ interface UserGamesResponse {
   acquiredAchievements: number;
   headerImage: string;
   favourite: boolean;
+  rating: number;
 }
 
 // Database
@@ -28,6 +29,7 @@ const userGamesDatabase: Record<string, UserGamesResponse[]> = {
       acquiredAchievements: 50,
       headerImage: "imageOne",
       favourite: false,
+      rating: 3,
     },
     {
       appid: "2",
@@ -38,6 +40,7 @@ const userGamesDatabase: Record<string, UserGamesResponse[]> = {
       acquiredAchievements: 20,
       headerImage: "imageTwo",
       favourite: false,
+      rating: 2,
     },
     {
       appid: "3",
@@ -48,6 +51,18 @@ const userGamesDatabase: Record<string, UserGamesResponse[]> = {
       acquiredAchievements: 30,
       headerImage: "imageThree",
       favourite: false,
+      rating: 1,
+    },
+    {
+      appid: "4",
+      name: "Game Four",
+      genres: ["Action"],
+      playtimeHours: 500,
+      totalAchievements: 100,
+      acquiredAchievements: 90,
+      headerImage: "imageFour",
+      favourite: true,
+      rating: 5,
     },
   ],
 };
@@ -71,9 +86,15 @@ export const handlers = [
     const genre = url.searchParams.get("genre");
     const sort = url.searchParams.get("sort");
     const showFavourites = url.searchParams.get("showFavourites");
+    const rating = url.searchParams.get("rating");
 
     // Retrieve user games based on steamid
     let games: UserGamesResponse[] = userGamesDatabase[steamid] || [];
+
+    if (rating !== undefined && rating !== null) {
+      const ratingNumber = Number(rating);
+      games = games.filter((game) => game.rating === ratingNumber);
+    }
 
     if (showFavourites === "true") {
       games = games.filter((game) => game.favourite == true);
